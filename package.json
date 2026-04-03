@@ -16,6 +16,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oabus-tech/ui"
+  },
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch",
