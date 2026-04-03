@@ -9,10 +9,6 @@ name: Publish Package
 on:
   workflow_call:
 
-permissions:
-  id-token: write
-  contents: write
-
 jobs:
   publish:
     name: Publish
