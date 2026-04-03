@@ -27,7 +27,6 @@
     "lint": "biome lint",
     "format": "biome format --write ./src",
     "check": "biome check --write ./src",
-    "test:e2e": "echo 'No E2E tests configured yet'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

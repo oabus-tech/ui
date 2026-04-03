@@ -56,23 +56,9 @@ jobs:
       - name: Run unit tests
         run: pnpm test
 
-  test-e2e:
-    name: Test (E2E)
-    needs: [test-unit]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: ./.github/actions/setup-node
-
-      - name: Run E2E tests
-        run: pnpm test:e2e
-
   build:
     name: Build
-    needs: [test-e2e]
+    needs: [test-unit]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
