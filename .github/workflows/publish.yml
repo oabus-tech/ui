@@ -1,17 +1,85 @@
 # ==============================================================================
 # Publish Package
 # ==============================================================================
-# Reusable workflow chamado pelo pipeline-main
+# Trigger: Push na branch main
+# CI (typecheck, lint, test, build) → Publish (npm trusted publishing)
 # Filename DEVE ser publish.yml (exigência do npm trusted publishing)
 # ==============================================================================
 name: Publish Package
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
 
 jobs:
+  typecheck:
+    name: Typecheck
+    if: "!contains(github.event.head_commit.message, 'chore: release')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+  lint:
+    name: Lint
+    if: "!contains(github.event.head_commit.message, 'chore: release')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Lint
+        run: pnpm lint
+
+  test-unit:
+    name: Test (Unit)
+    needs: [typecheck, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Run unit tests
+        run: pnpm test
+
+  build:
+    name: Build
+    needs: [test-unit]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Build
+        run: pnpm build
+
   publish:
     name: Publish
+    needs: [build]
     if: "!contains(github.event.head_commit.message, 'chore: release')"
     runs-on: ubuntu-latest
     steps:
