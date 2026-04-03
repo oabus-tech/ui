@@ -1,4 +1,24 @@
-// Dependencies: none (pure CSS component with polymorphic rendering)
+/**
+ * Typography
+ *
+ * Polymorphic text component that renders as any HTML text element.
+ * Controls font size, weight, variant, and truncation.
+ *
+ * Behavior:
+ * - component prop determines the rendered HTML element (span, p, h1-h6, div)
+ * - Size: xs (12px) through 9xl (128px) following Tailwind scale
+ * - Weight: thin through black (9 weights)
+ * - Variant: default (foreground) or muted (text-muted-foreground)
+ * - Truncate: adds text-overflow ellipsis with overflow-hidden (requires block display)
+ *
+ * Implementation:
+ * - Dynamic element via React.createElement or JSX with variable tag
+ * - tailwind-variants (tv) for all text properties
+ * - <Typography component="h1" size="3xl" weight="bold">Title</Typography>
+ * - <Typography component="p" variant="muted" truncate>Long text...</Typography>
+ *
+ * Dependencies: none (pure CSS utility)
+ */
 
 export type TypographySize =
   | 'xs'

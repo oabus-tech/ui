@@ -1,4 +1,22 @@
-// Dependencies: none (pure CSS utility component)
+/**
+ * Flex
+ *
+ * Flexbox layout primitive for composing flexible layouts.
+ * Maps flex properties to design-token-based presets.
+ *
+ * Behavior:
+ * - direction maps to flex-direction (row, col, row-reverse, col-reverse)
+ * - gap uses spacing tokens: xs (4px), sm (8px), md (16px), lg (24px), xl (32px)
+ * - inline renders as inline-flex instead of flex
+ * - block makes the container full-width
+ *
+ * Implementation:
+ * - tailwind-variants (tv) for all flex properties
+ * - Renders a <div> with computed flex classes
+ * - <Flex direction="row" justify="between" align="center" gap="md">children</Flex>
+ *
+ * Dependencies: none (pure CSS utility)
+ */
 
 export type FlexDirection = 'row' | 'col' | 'row-reverse' | 'col-reverse'
 

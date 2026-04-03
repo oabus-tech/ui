@@ -1,4 +1,39 @@
-// Dependencies: @radix-ui/react-dropdown-menu (or @base-ui equivalent)
+/**
+ * DropdownMenu
+ *
+ * Context menu / action menu with items, checkboxes, radio groups,
+ * sub-menus, labels, separators, and keyboard shortcuts.
+ *
+ * Behavior:
+ * - Trigger click opens a floating menu via Portal
+ * - Items: clickable actions with optional icon and destructive variant (red text)
+ * - CheckboxItem: toggleable with check indicator
+ * - RadioGroup + RadioItem: single-select within group with dot indicator
+ * - Sub-menus: hover/click SubTrigger opens SubContent (ChevronRight icon)
+ * - Shortcut: right-aligned keyboard shortcut text
+ * - Label: non-interactive section header (inset variant for alignment)
+ * - Separator: horizontal divider between groups
+ *
+ * Implementation:
+ * - Use Radix UI DropdownMenu primitives (full keyboard nav, ARIA, focus management)
+ * - Portal rendering for z-index isolation
+ * - Animation: zoom 95%, fade in, slide from anchor side
+ * - <DropdownMenu>
+ *     <DropdownMenu.Trigger asChild><Button>Actions</Button></DropdownMenu.Trigger>
+ *     <DropdownMenu.Content side="bottom" align="end">
+ *       <DropdownMenu.Label>Options</DropdownMenu.Label>
+ *       <DropdownMenu.Item onClick={handleEdit}>Edit<DropdownMenu.Shortcut>⌘E</DropdownMenu.Shortcut></DropdownMenu.Item>
+ *       <DropdownMenu.Separator />
+ *       <DropdownMenu.Item variant="destructive" onClick={handleDelete}>Delete</DropdownMenu.Item>
+ *       <DropdownMenu.Sub>
+ *         <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
+ *         <DropdownMenu.SubContent>...</DropdownMenu.SubContent>
+ *       </DropdownMenu.Sub>
+ *     </DropdownMenu.Content>
+ *   </DropdownMenu>
+ *
+ * Dependencies: @radix-ui/react-dropdown-menu, lucide-react (Check, Circle, ChevronRight)
+ */
 
 export type DropdownMenuSide = 'top' | 'right' | 'bottom' | 'left'
 export type DropdownMenuAlign = 'start' | 'center' | 'end'

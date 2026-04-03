@@ -1,4 +1,29 @@
-// Dependencies: @/components/pagination (PaginationProps for built-in pagination)
+/**
+ * Table
+ *
+ * Data table with column configuration, row selection,
+ * sorting, pagination, and loading overlay.
+ *
+ * Behavior:
+ * - Columns define key, label, selector (custom cell renderer), width, alignment, sorter, hide
+ * - Selection "multiple": renders header checkbox (select all) + row checkboxes
+ * - Sort: clicking sortable column header toggles asc/desc (prefix "-" for desc)
+ * - Pagination integrates Pagination component below the table
+ * - Loading state renders LoadingOverlay over the table body
+ * - Row click handler fires onRowClick with the row data
+ * - Empty state renders emptySection when items array is empty
+ *
+ * Implementation:
+ * - Semantic <table> with <thead>/<tbody> structure
+ * - Checkbox component for selection column
+ * - Sort icons change direction based on current sort state
+ * - Row hover: bg-muted transition
+ * - <Table columns={cols} items={data} itemKey="id" selection="multiple"
+ *     pagination={{ mode: "offset", page, rowsPerPage, total, onPageChange, onRowsPerPageChange }}
+ *     sort={sortKey} onSortChange={setSortKey} onRowClick={handleClick} />
+ *
+ * Dependencies: Checkbox component, Pagination component, LoadingOverlay component
+ */
 
 import type { PaginationProps } from '@/components/pagination/pagination.types'
 

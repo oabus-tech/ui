@@ -1,4 +1,24 @@
-// Dependencies: class-variance-authority (for variant styling)
+/**
+ * Badge
+ *
+ * Small inline label for status indicators, counts, or categories.
+ * Supports loading state with a spinner overlay.
+ *
+ * Behavior:
+ * - Displays as inline-flex, rounded-full pill shape
+ * - Loading state: content becomes invisible, spinner overlays center
+ * - Variants: default (primary bg), secondary, destructive (red), outline (border only)
+ * - Block mode makes badge full-width
+ * - asChild enables polymorphic rendering via Radix Slot
+ *
+ * Implementation:
+ * - Use class-variance-authority (cva) or tailwind-variants for variant styling
+ * - Radix UI Slot for asChild polymorphism
+ * - Loading renders Loader component absolutely centered over invisible children
+ * - <Badge variant="destructive" loading>Error</Badge>
+ *
+ * Dependencies: @radix-ui/react-slot, lucide-react (Loader2 for loading)
+ */
 
 export type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
 

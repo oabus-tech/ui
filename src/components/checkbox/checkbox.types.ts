@@ -1,4 +1,25 @@
-// Dependencies: @radix-ui/react-checkbox (or @base-ui equivalent)
+/**
+ * Checkbox
+ *
+ * Toggle input for boolean or multi-select choices.
+ * Supports individual checkboxes and grouped checkbox lists.
+ *
+ * Behavior:
+ * - Check icon (Lucide) appears on checked state
+ * - Bordered variant wraps checkbox + label in a clickable bordered container
+ * - Group renders multiple checkboxes in horizontal or vertical layout
+ * - Group tracks selected values as string[] and fires onChange on any toggle
+ * - Size variants: sm (12px), md (16px), lg (20px) indicator
+ *
+ * Implementation:
+ * - Use Radix UI Checkbox primitive for accessibility (keyboard, ARIA)
+ * - Peer selectors associate label styling with checkbox state
+ * - Controlled (checked/onChange) and uncontrolled (defaultChecked) patterns
+ * - <Checkbox label="Accept" size="md" bordered />
+ * - <Checkbox.Group items={items} value={selected} variant="horizontal" onChange={setSelected} />
+ *
+ * Dependencies: @radix-ui/react-checkbox, lucide-react (Check icon)
+ */
 
 export type CheckboxSize = 'sm' | 'md' | 'lg'
 

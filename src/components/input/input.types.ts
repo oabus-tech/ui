@@ -1,4 +1,26 @@
-// Dependencies: none (base input component, used by many specialized inputs)
+/**
+ * Input
+ *
+ * Base text input with support for left/right sections, loading state,
+ * and debounced onChange. Foundation for all specialized input components.
+ *
+ * Behavior:
+ * - leftSection/rightSection render icons or elements inside the input container
+ * - Loading state shows a Loader spinner in the right section area
+ * - Debounce mode delays onChange calls (useful for search-as-you-type)
+ * - Empty string converts to null in onChange for cleaner form handling
+ * - Size variants: sm (36px), md (40px), lg (44px)
+ *
+ * Implementation:
+ * - Wrapper div (root) with relative positioning for sections
+ * - Native <input> with padded sides to accommodate sections
+ * - useDebounceFn hook for debounce behavior
+ * - Controlled (value/onChange) and uncontrolled (defaultValue) patterns
+ * - type prop is internal-only (used by PasswordInput)
+ * - <Input value={v} onChange={setV} leftSection={<SearchIcon />} size="md" loading />
+ *
+ * Dependencies: none (base component)
+ */
 
 export type InputSize = 'sm' | 'md' | 'lg'
 

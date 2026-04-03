@@ -1,4 +1,22 @@
-// Dependencies: none (pure CSS utility component)
+/**
+ * Box
+ *
+ * Generic layout container with preset styling tokens for spacing,
+ * background, border-radius, and positioning. The foundational building block.
+ *
+ * Behavior:
+ * - Maps props directly to Tailwind utility classes
+ * - paddingX/paddingY override uniform padding for specific axes
+ * - grow enables flex-grow: 1 within flex containers
+ * - All values use design tokens (not arbitrary values)
+ *
+ * Implementation:
+ * - tailwind-variants (tv) mapping each prop to corresponding Tailwind classes
+ * - Renders a <div> with computed className
+ * - <Box bg="muted" padding="md" rounded="lg">Content</Box>
+ *
+ * Dependencies: none (pure CSS utility)
+ */
 
 export type BoxPadding = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 

@@ -1,4 +1,27 @@
-// Dependencies: @base-ui/react (Button primitive), class-variance-authority (variant styling)
+/**
+ * Button
+ *
+ * Primary interactive element for actions and form submissions.
+ * Supports multiple visual variants, sizes, and loading state.
+ *
+ * Behavior:
+ * - Variants: default (primary), destructive, outline, dashed, secondary, ghost, link
+ * - Sizes: sm, md, lg for text buttons; icon-sm, icon-md, icon-lg for icon-only
+ * - Loading state disables interaction and shows a spinner replacing leftSection
+ * - leftSection/rightSection render icons or elements beside the label
+ * - Block mode makes button full-width
+ * - asChild polymorphism for rendering as anchor or custom element
+ * - Active state: translateY 1px for press feedback
+ * - Focus: visible ring with ring-ring/50
+ *
+ * Implementation:
+ * - Use @base-ui/react Button primitive (or Radix Slot for asChild)
+ * - class-variance-authority (cva) for variant × size matrix
+ * - cn() utility for className merging
+ * - <Button variant="outline" size="sm" loading leftSection={<Icon />}>Save</Button>
+ *
+ * Dependencies: @base-ui/react/button (or @radix-ui/react-slot), class-variance-authority
+ */
 
 export type ButtonType = 'button' | 'submit' | 'reset'
 

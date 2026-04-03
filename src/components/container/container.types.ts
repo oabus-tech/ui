@@ -1,4 +1,20 @@
-// Dependencies: none (pure CSS utility component)
+/**
+ * Container
+ *
+ * Width-constrained wrapper that centers content horizontally.
+ * Used as the main content wrapper for page-level layouts.
+ *
+ * Behavior:
+ * - maxWidth sets the constraint: xs (320px) through 2xl (1536px) or full (100%)
+ * - centered (default true) applies mx-auto for horizontal centering
+ * - textAlign controls inner text alignment
+ *
+ * Implementation:
+ * - Single <div> with max-width and margin classes
+ * - <Container maxWidth="lg" centered>Page content</Container>
+ *
+ * Dependencies: none (pure CSS utility)
+ */
 
 export type ContainerMaxWidth =
   | 'xs'

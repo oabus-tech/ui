@@ -1,4 +1,28 @@
-// Dependencies: @radix-ui/react-select (or custom popover + listbox), virtual scroll for large lists
+/**
+ * Select
+ *
+ * Dropdown selection component supporting single and multiple modes,
+ * searchable filtering, option grouping, and infinite scroll.
+ *
+ * Behavior:
+ * - Single mode: click opens popover, selecting an item shows checkmark and closes
+ * - Multiple mode: click opens popover, items have checkboxes, selected shown as badges (max 2 visible + "+N")
+ * - Searchable: renders a filter input inside the popover (case-insensitive)
+ * - Option grouping: groups options under section headers
+ * - Infinite scroll: triggers onLoadMore when scrolling near bottom
+ * - renderOption/renderValue allow custom rendering of items and selected display
+ * - Empty state: shows emptySection content when no options match
+ *
+ * Implementation:
+ * - Use Radix Popover with Command (cmdk) pattern for search + list
+ * - Generic types: T (option type), I (input value), O (output value)
+ * - optionLabel/optionValue can be key of T or extractor function
+ * - aria-expanded, role="combobox" for accessibility
+ * - <Select mode="single" options={items} optionLabel="name" optionValue="id" value={v} onChange={setV} />
+ * - <Select mode="multiple" options={items} optionLabel="name" optionValue="id" searchable />
+ *
+ * Dependencies: @radix-ui/react-popover, cmdk (command menu), Badge component
+ */
 
 export type SelectMode = 'single' | 'multiple'
 
