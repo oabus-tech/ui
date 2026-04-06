@@ -28,8 +28,8 @@
     "format": "biome format --write ./src",
     "check": "biome check --write ./src",
     "typecheck": "tsc --noEmit",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "dev": "storybook dev -p 6006",
+    "build:docs": "storybook build"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
