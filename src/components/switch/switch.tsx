@@ -5,6 +5,7 @@ import { useId } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Label } from '@/components/label'
+
 import type { SwitchProps } from './switch.types'
 
 const styles = tv({
