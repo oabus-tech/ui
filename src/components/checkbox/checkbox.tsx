@@ -4,6 +4,8 @@ import { Check } from 'lucide-react'
 import { useId } from 'react'
 import { tv } from 'tailwind-variants'
 
+import { Label } from '@/components/label'
+
 import type { CheckboxGroupProps, CheckboxProps } from './checkbox.types'
 
 const styles = tv({
@@ -15,7 +17,6 @@ const styles = tv({
     icon: 'block',
     indicator:
       'flex shrink-0 cursor-pointer items-center justify-center rounded-sm border border-input bg-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',
-    label: 'cursor-pointer font-medium text-sm leading-none',
     labelWrapper: 'flex flex-col gap-1',
     root: 'flex cursor-pointer select-none items-start gap-2',
   },
@@ -101,7 +102,7 @@ function CheckboxRoot(props: CheckboxProps) {
       </BaseCheckbox.Root>
       {(label || description) && (
         <div className={s.labelWrapper()}>
-          {label && <span className={s.label()}>{label}</span>}
+          {label && <Label disabled={disabled}>{label}</Label>}
           {description && (
             <span className={s.description()}>{description}</span>
           )}
