@@ -1,9 +1,84 @@
 import type { PropsWithChildren } from 'react'
 
+import { Button as ButtonPrimitive } from '@base-ui/react/button'
+import { Loader2 } from 'lucide-react'
+import { tv } from 'tailwind-variants'
+
 import type { ButtonProps } from './button.types'
 
-function Button(_props: PropsWithChildren<ButtonProps>) {
-  return <div></div>
+const button = tv({
+  base: [
+    'button group/button inline-flex shrink-0 items-center justify-center rounded-lg',
+    'border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap',
+    'transition-all outline-none select-none',
+    'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+    'active:translate-y-px',
+    'disabled:pointer-events-none disabled:opacity-50',
+    'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20',
+    'dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+    '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-4',
+  ],
+  variants: {
+    variant: {
+      default: 'bg-primary text-primary-foreground hover:bg-primary/80',
+      destructive:
+        'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
+      outline:
+        'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+      dashed:
+        'border-dashed border-border bg-background hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+      secondary:
+        'bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
+      ghost:
+        'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50',
+      link: 'text-primary underline-offset-4 hover:underline',
+    },
+    size: {
+      sm: 'h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] [&_svg:not([class*=size-])]:size-3.5',
+      md: 'h-8 gap-1.5 px-2.5',
+      lg: 'h-9 gap-1.5 px-2.5',
+      'icon-sm': 'size-7 rounded-[min(var(--radius-md),12px)]',
+      'icon-md': 'size-8',
+      'icon-lg': 'size-9',
+    },
+    block: {
+      true: 'w-full',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'md',
+  },
+})
+
+function Button({
+  children,
+  variant,
+  size,
+  block,
+  loading,
+  disabled,
+  leftSection,
+  rightSection,
+  type = 'button',
+  form,
+  onClick,
+}: PropsWithChildren<ButtonProps>) {
+  return (
+    <ButtonPrimitive
+      data-slot="button"
+      data-testid="button"
+      type={type}
+      form={form}
+      disabled={disabled || loading}
+      onClick={onClick}
+      className={button({ variant, size, block })}
+    >
+      {loading ? <Loader2 className="animate-spin" /> : leftSection}
+      {children}
+      {rightSection}
+    </ButtonPrimitive>
+  )
 }
 
 export { Button }
