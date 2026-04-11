@@ -1,129 +1,135 @@
-import { Accordion as BaseAccordion } from '@base-ui/react/accordion'
-import { ChevronDown } from 'lucide-react'
+import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion'
+import { ChevronDownIcon } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type {
-  AccordionContent as AccordionContentProps,
-  AccordionItem as AccordionItemProps,
+  AccordionContent as AccordionContentType,
+  AccordionItem as AccordionItemType,
   AccordionProps,
-  AccordionTrigger as AccordionTriggerProps,
+  AccordionTrigger as AccordionTriggerType,
 } from './accordion.types'
 
 const styles = tv({
   slots: {
-    header: 'flex',
-    icon: 'h-4 w-4 shrink-0 transition-transform duration-200 group-aria-expanded:rotate-180',
-    item: 'border-b last:border-b-0',
-    panel:
-      'grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 data-[open]:grid-rows-[1fr]',
-    panelInner: 'overflow-hidden pb-4 text-sm',
-    root: 'w-full',
-    trigger:
-      'group flex w-full flex-1 cursor-pointer items-center justify-between py-4 text-left font-medium text-sm transition-all hover:underline disabled:cursor-not-allowed disabled:opacity-50',
+    contentInner:
+      'h-(--accordion-panel-height) pt-0 pb-2.5 data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4',
+    contentRoot: 'overflow-hidden text-sm',
+    item: 'not-last:border-b px-2',
+    root: 'flex w-full flex-col',
+    triggerHeader: 'flex',
+    triggerIcon:
+      'ml-auto size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-aria-expanded/accordion-trigger:rotate-180',
+    triggerRoot:
+      'group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent py-2.5 text-left font-medium text-sm outline-none transition-all hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-disabled:pointer-events-none aria-disabled:opacity-50',
   },
   variants: {
     bordered: {
       true: {
-        item: 'px-4',
-        root: 'rounded-md border',
+        root: 'rounded-lg border',
       },
     },
   },
 })
 
 function AccordionRoot(props: PropsWithChildren<AccordionProps>) {
-  const { children, bordered, type, value, defaultValue, onChange } = props
-
+  const { bordered, children, type, ...rest } = props
   const s = styles({
     bordered,
   })
 
-  const isMultiple = type === 'multiple'
-
-  const rootValue =
-    value !== undefined
-      ? Array.isArray(value)
-        ? value
-        : [
-            value,
-          ]
-      : undefined
-
-  const rootDefaultValue =
-    defaultValue !== undefined
-      ? Array.isArray(defaultValue)
-        ? defaultValue
-        : [
-            defaultValue,
-          ]
-      : undefined
-
-  const handleValueChange = onChange
-    ? (next: string[]) => {
-        if (isMultiple) {
-          ;(onChange as (v: string[]) => void)(next)
-        } else {
-          ;(onChange as (v: string) => void)(next[0] ?? '')
+  if (type === 'single') {
+    const { collapsible, defaultValue, onChange, value, ...rootRest } =
+      rest as Extract<
+        AccordionProps,
+        {
+          type: 'single'
         }
-      }
-    : undefined
+      >
+
+    return (
+      <AccordionPrimitive.Root
+        className={s.root()}
+        defaultValue={
+          defaultValue
+            ? [
+                defaultValue,
+              ]
+            : undefined
+        }
+        onValueChange={(val) => onChange?.(val[0] ?? '')}
+        value={
+          value !== undefined
+            ? [
+                value,
+              ]
+            : undefined
+        }
+        {...rootRest}
+      >
+        {children}
+      </AccordionPrimitive.Root>
+    )
+  }
+
+  const { defaultValue, onChange, value, ...rootRest } = rest as Extract<
+    AccordionProps,
+    {
+      type: 'multiple'
+    }
+  >
 
   return (
-    <BaseAccordion.Root
+    <AccordionPrimitive.Root
       className={s.root()}
-      defaultValue={rootDefaultValue}
-      multiple={isMultiple}
-      onValueChange={handleValueChange}
-      value={rootValue}
+      defaultValue={defaultValue}
+      multiple
+      onValueChange={onChange}
+      value={value}
+      {...rootRest}
     >
       {children}
-    </BaseAccordion.Root>
+    </AccordionPrimitive.Root>
   )
 }
 
-function AccordionItem({
-  children,
-  value,
-  disabled,
-}: PropsWithChildren<AccordionItemProps>) {
+function AccordionItem(props: PropsWithChildren<AccordionItemType>) {
+  const { children, disabled, value } = props
   const s = styles()
 
   return (
-    <BaseAccordion.Item
+    <AccordionPrimitive.Item
       className={s.item()}
       disabled={disabled}
       value={value}
     >
       {children}
-    </BaseAccordion.Item>
+    </AccordionPrimitive.Item>
   )
 }
 
-function AccordionTrigger({
-  children,
-}: PropsWithChildren<AccordionTriggerProps>) {
+function AccordionTrigger(props: PropsWithChildren<AccordionTriggerType>) {
+  const { children } = props
   const s = styles()
 
   return (
-    <BaseAccordion.Header className={s.header()}>
-      <BaseAccordion.Trigger className={s.trigger()}>
+    <AccordionPrimitive.Header className={s.triggerHeader()}>
+      <AccordionPrimitive.Trigger className={s.triggerRoot()}>
         {children}
-        <ChevronDown className={s.icon()} />
-      </BaseAccordion.Trigger>
-    </BaseAccordion.Header>
+        <ChevronDownIcon className={s.triggerIcon()} />
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
   )
 }
 
-function AccordionContent({
-  children,
-}: PropsWithChildren<AccordionContentProps>) {
+function AccordionContent(props: PropsWithChildren<AccordionContentType>) {
+  const { children } = props
   const s = styles()
 
   return (
-    <BaseAccordion.Panel className={s.panel()}>
-      <div className={s.panelInner()}>{children}</div>
-    </BaseAccordion.Panel>
+    <AccordionPrimitive.Panel className={s.contentRoot()}>
+      <div className={s.contentInner()}>{children}</div>
+    </AccordionPrimitive.Panel>
   )
 }
 
