@@ -42,39 +42,43 @@ Each component lives in `src/components/<name>/` with three files:
 
 #### `tv()` pattern (tailwind-variants)
 
-All component styles must use `tv` from `class-variance-authority` (tailwind-variants). Define styles at the top of each component file. Sub-element styles use their own `tv()` call; the root element's styles are exported as `styles`:
+All component styles must use a **single `styles` object** with `slots` defined via `tv` from `tailwind-variants`. Never split styles across multiple `tv()` calls. Never use `cn()` for className — all classes must come from `styles` slots. Define `styles` at the top of each component file:
 
 ```ts
 import { tv } from 'tailwind-variants'
 
-const contentStyles = tv({
-  base: 'inline-flex items-center gap-2',
-  variants: {
-    loading: {
-      true: 'invisible',
-    },
+const styles = tv({
+  slots: {
+    root: 'relative inline-flex cursor-pointer ...',
+    inner: 'inline-flex items-center gap-2',
+    icon: 'size-4 shrink-0',
   },
-})
-
-export const styles = tv({
-  base: 'relative inline-flex cursor-pointer ...',
   defaultVariants: {
     size: 'md',
     variant: 'default',
   },
   variants: {
     size: {
-      sm: 'h-9 px-3',
-      md: 'h-10 px-4 py-2',
-      lg: 'h-11 px-8',
+      sm: { root: 'h-9 px-3' },
+      md: { root: 'h-10 px-4 py-2' },
+      lg: { root: 'h-11 px-8' },
     },
     variant: {
-      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      default: { root: 'bg-primary text-primary-foreground hover:bg-primary/90' },
       // ...
     },
   },
 })
+
+// Usage in component:
+const s = styles({ size, variant })
+// <div className={s.root()}>
+//   <span className={s.inner()}>
 ```
+
+### Package installation
+
+**Never install packages.** The user installs all dependencies manually. When asked to implement a component that uses a new library, assume it is already installed and refactor directly to the project patterns.
 
 ### Primitives
 
