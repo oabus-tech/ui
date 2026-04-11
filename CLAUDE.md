@@ -80,6 +80,20 @@ export const styles = tv({
 
 Components are built on **`@base-ui/react`** (Base UI by the shadcn team) for accessible headless primitives (dialogs, menus, tooltips, etc.). Wrap Base UI primitives with `tv()`-based styles rather than styling them inline.
 
+**Rule: always use Base UI primitives — never raw HTML interactive elements.**
+- Buttons → `@base-ui/react/button` (or our `Button` component which wraps it)
+- Checkboxes → `@base-ui/react/checkbox`
+- Dialogs → `@base-ui/react/dialog`
+- Select/menus → `@base-ui/react/select` or `@base-ui/react/menu`
+- Tooltips → `@base-ui/react/tooltip`
+- Progress → `@base-ui/react/progress`
+- Switch → `@base-ui/react/switch`
+- ... and so on for every interactive element Base UI provides.
+
+Native `<button>`, `<input>`, `<select>` are only acceptable when Base UI has no equivalent primitive (e.g. `<option>` inside a native select, or `<input type="file">`). When in doubt, check `node_modules/@base-ui/react/` for available modules first.
+
+See `src/shadcn/` for reference implementations of how each Base UI primitive is wrapped.
+
 ### Provider setup
 
 `OABusProvider` (wrapping `ThemeProvider` + `ColorSchemeProvider`) must wrap the app. It accepts:
