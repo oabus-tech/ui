@@ -1,7 +1,6 @@
-import { useState } from 'react'
-
 import { Menu } from '@base-ui/react/menu'
 import { ChevronDown } from 'lucide-react'
+import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { MaskInput } from '@/components/mask-input'
@@ -11,22 +10,22 @@ import type { PhoneInputProps, PhoneValue } from './phone-input.types'
 
 const phoneInput = tv({
   slots: {
-    trigger: [
-      'phone-input-trigger flex h-full items-center gap-1 rounded-l-lg border-r border-input',
-      'bg-transparent px-2 text-sm outline-none transition-colors select-none',
-      'pointer-events-auto hover:bg-muted focus-visible:ring-0',
-      'disabled:cursor-not-allowed disabled:opacity-50',
+    item: [
+      'phone-input-item relative flex cursor-default items-center gap-2 rounded-md px-2 py-1',
+      'select-none text-sm outline-none focus:bg-accent focus:text-accent-foreground',
+      'data-disabled:pointer-events-none data-disabled:opacity-50',
     ],
     popup: [
       'phone-input-popup z-50 max-h-60 min-w-[200px] origin-(--transform-origin) overflow-y-auto',
       'rounded-lg bg-popover p-1 shadow-md ring-1 ring-foreground/10',
-      'duration-100 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
-      'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+      'data-open:fade-in-0 data-open:zoom-in-95 duration-100 data-open:animate-in',
+      'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',
     ],
-    item: [
-      'phone-input-item relative flex cursor-default items-center gap-2 rounded-md px-2 py-1',
-      'text-sm outline-none select-none focus:bg-accent focus:text-accent-foreground',
-      'data-disabled:pointer-events-none data-disabled:opacity-50',
+    trigger: [
+      'phone-input-trigger flex h-full items-center gap-1 rounded-l-lg border-input border-r',
+      'select-none bg-transparent px-2 text-sm outline-none transition-colors',
+      'pointer-events-auto hover:bg-muted focus-visible:ring-0',
+      'disabled:cursor-not-allowed disabled:opacity-50',
     ],
   },
 })
@@ -60,42 +59,60 @@ function PhoneInput({
 
   const handleNumberChange = (number: string | null) => {
     const num = number ?? ''
-    if (!isControlled) setInternalNumber(num)
-    const next: PhoneValue = { iso: country.code, number: num, ddi: country.ddi }
+    if (!isControlled) {
+      setInternalNumber(num)
+    }
+    const next: PhoneValue = {
+      ddi: country.ddi,
+      iso: country.code,
+      number: num,
+    }
     onChange?.(num ? next : null)
   }
 
   const handleCountrySelect = (iso: string) => {
     const selected = COUNTRIES.find((c) => c.code === iso) ?? COUNTRIES[0]
-    if (!isControlled) setInternalIso(iso)
-    const next: PhoneValue = { iso, number: activeNumber, ddi: selected.ddi }
+    if (!isControlled) {
+      setInternalIso(iso)
+    }
+    const next: PhoneValue = {
+      ddi: selected.ddi,
+      iso,
+      number: activeNumber,
+    }
     onChange?.(next)
   }
 
   const countryTrigger = (
     <Menu.Root>
       <Menu.Trigger
+        className={trigger()}
         data-testid="phone-input-trigger"
         disabled={disabled}
-        className={trigger()}
       >
         <span>{country.flag}</span>
-        <span className="text-xs text-muted-foreground">{country.ddi}</span>
-        <ChevronDown size={10} className="text-muted-foreground" />
+        <span className="text-muted-foreground text-xs">{country.ddi}</span>
+        <ChevronDown
+          className="text-muted-foreground"
+          size={10}
+        />
       </Menu.Trigger>
       <Menu.Portal>
         <Menu.Positioner className="isolate z-50">
-          <Menu.Popup data-testid="phone-input-popup" className={popup()}>
+          <Menu.Popup
+            className={popup()}
+            data-testid="phone-input-popup"
+          >
             {COUNTRIES.map((c) => (
               <Menu.Item
-                key={c.code}
-                data-testid="phone-input-item"
                 className={item()}
+                data-testid="phone-input-item"
+                key={c.code}
                 onClick={() => handleCountrySelect(c.code)}
               >
                 <span>{c.flag}</span>
                 <span className="flex-1">{c.name}</span>
-                <span className="text-xs text-muted-foreground">{c.ddi}</span>
+                <span className="text-muted-foreground text-xs">{c.ddi}</span>
               </Menu.Item>
             ))}
           </Menu.Popup>
@@ -107,13 +124,13 @@ function PhoneInput({
   return (
     <MaskInput
       {...props}
-      mask={country.mask}
-      value={activeNumber}
-      placeholder={props.placeholder ?? country.mask.replace(/0/g, '_')}
       disabled={disabled}
-      size={size}
       leftSection={countryTrigger}
+      mask={country.mask}
       onChange={handleNumberChange}
+      placeholder={props.placeholder ?? country.mask.replace(/0/g, '_')}
+      size={size}
+      value={activeNumber}
     />
   )
 }

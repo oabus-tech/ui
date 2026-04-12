@@ -6,11 +6,15 @@ import { Label } from '@/components/label'
 import type { SwitchProps } from './switch.types'
 
 const switchStyles = tv({
+  defaultVariants: {
+    size: 'md',
+  },
   slots: {
-    wrapper: 'switch-wrapper flex items-start gap-3',
+    content: 'switch-content flex flex-col gap-0.5',
+    description: 'switch-description text-muted-foreground text-sm',
     root: [
       'switch-root group/switch relative inline-flex shrink-0 cursor-pointer items-center',
-      'rounded-full border border-transparent transition-all outline-none',
+      'rounded-full border border-transparent outline-none transition-all',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
       'data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80',
       'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -20,20 +24,29 @@ const switchStyles = tv({
       'data-checked:translate-x-[calc(100%-2px)] data-unchecked:translate-x-0',
       'dark:data-checked:bg-primary-foreground dark:data-unchecked:bg-foreground',
     ],
-    content: 'switch-content flex flex-col gap-0.5',
-    description: 'switch-description text-sm text-muted-foreground',
+    wrapper: 'switch-wrapper flex items-start gap-3',
   },
   variants: {
-    size: {
-      sm: { root: 'h-3.5 w-6', thumb: 'size-3' },
-      md: { root: 'h-[18px] w-8', thumb: 'size-4' },
-      lg: { root: 'h-[22px] w-10', thumb: 'size-5' },
-    },
     bordered: {
-      true: { wrapper: 'rounded-lg border border-input px-3 py-2.5' },
+      true: {
+        wrapper: 'rounded-lg border border-input px-3 py-2.5',
+      },
+    },
+    size: {
+      lg: {
+        root: 'h-[22px] w-10',
+        thumb: 'size-5',
+      },
+      md: {
+        root: 'h-[18px] w-8',
+        thumb: 'size-4',
+      },
+      sm: {
+        root: 'h-3.5 w-6',
+        thumb: 'size-3',
+      },
     },
   },
-  defaultVariants: { size: 'md' },
 })
 
 function Switch({
@@ -47,40 +60,92 @@ function Switch({
   disabled,
   onCheckedChange,
 }: SwitchProps) {
-  const { wrapper, root, thumb, content, description: descCls } = switchStyles({ size, bordered })
+  const {
+    wrapper,
+    root,
+    thumb,
+    content,
+    description: descCls,
+  } = switchStyles({
+    bordered,
+    size,
+  })
 
   const labelText = typeof label === 'string' ? label : label?.content
   const labelExtras = typeof label === 'object' && label !== null ? label : {}
   const hasContent = Boolean(labelText || description)
 
   return (
-    <div data-testid="switch-wrapper" className={wrapper()}>
+    <div
+      className={wrapper()}
+      data-testid="switch-wrapper"
+    >
       <SwitchPrimitive.Root
-        data-testid="switch-root"
-        value={value}
         checked={checked}
+        className={root()}
+        data-testid="switch-root"
         defaultChecked={defaultChecked}
         disabled={disabled}
         onCheckedChange={onCheckedChange}
-        className={root()}
+        value={value}
       >
-        <SwitchPrimitive.Thumb data-testid="switch-thumb" className={thumb()} />
+        <SwitchPrimitive.Thumb
+          className={thumb()}
+          data-testid="switch-thumb"
+        />
       </SwitchPrimitive.Root>
       {hasContent && (
-        <div data-testid="switch-content" className={content()}>
+        <div
+          className={content()}
+          data-testid="switch-content"
+        >
           {labelText && (
             <Label
-              required={(labelExtras as { required?: boolean }).required}
-              optional={(labelExtras as { optional?: boolean }).optional}
-              tooltip={(labelExtras as { tooltip?: React.ReactNode }).tooltip}
-              disabled={disabled ?? (labelExtras as { disabled?: boolean }).disabled}
-              htmlFor={(labelExtras as { htmlFor?: string }).htmlFor}
+              disabled={
+                disabled ??
+                (
+                  labelExtras as {
+                    disabled?: boolean
+                  }
+                ).disabled
+              }
+              htmlFor={
+                (
+                  labelExtras as {
+                    htmlFor?: string
+                  }
+                ).htmlFor
+              }
+              optional={
+                (
+                  labelExtras as {
+                    optional?: boolean
+                  }
+                ).optional
+              }
+              required={
+                (
+                  labelExtras as {
+                    required?: boolean
+                  }
+                ).required
+              }
+              tooltip={
+                (
+                  labelExtras as {
+                    tooltip?: React.ReactNode
+                  }
+                ).tooltip
+              }
             >
               {labelText}
             </Label>
           )}
           {description && (
-            <span data-testid="switch-description" className={descCls()}>
+            <span
+              className={descCls()}
+              data-testid="switch-description"
+            >
               {description}
             </span>
           )}

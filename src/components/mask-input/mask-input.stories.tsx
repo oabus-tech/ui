@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MaskInput } from './mask-input'
 
 const meta = {
-  title: 'Form/MaskInput',
   component: MaskInput,
+  title: 'Form/MaskInput',
 } satisfies Meta<typeof MaskInput>
 
 export default meta
@@ -26,7 +26,10 @@ export const CNPJ: Story = {
 
 export const Phone: Story = {
   args: {
-    mask: ['(00) 0000-0000', '(00) 00000-0000'],
+    mask: [
+      '(00) 0000-0000',
+      '(00) 00000-0000',
+    ],
     placeholder: '(00) 00000-0000',
   },
 }
@@ -40,16 +43,16 @@ export const CEP: Story = {
 
 export const Loading: Story = {
   args: {
+    loading: true,
     mask: '000.000.000-00',
     placeholder: '000.000.000-00',
-    loading: true,
   },
 }
 
 export const Disabled: Story = {
   args: {
+    disabled: true,
     mask: '000.000.000-00',
     placeholder: '000.000.000-00',
-    disabled: true,
   },
 }

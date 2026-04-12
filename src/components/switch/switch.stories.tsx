@@ -3,53 +3,74 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Switch } from './switch'
 
 const meta = {
-  title: 'Form/Switch',
   component: Switch,
+  title: 'Form/Switch',
 } satisfies Meta<typeof Switch>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: { label: 'Dark mode' },
+  args: {
+    label: 'Dark mode',
+  },
 }
 
 export const WithDescription: Story = {
   args: {
-    label: 'Notifications',
     description: 'Receive email notifications when someone mentions you.',
+    label: 'Notifications',
   },
 }
 
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <Switch size="sm" label="Small" />
-      <Switch size="md" label="Medium" />
-      <Switch size="lg" label="Large" />
+      <Switch
+        label="Small"
+        size="sm"
+      />
+      <Switch
+        label="Medium"
+        size="md"
+      />
+      <Switch
+        label="Large"
+        size="lg"
+      />
     </div>
   ),
 }
 
 export const Bordered: Story = {
   args: {
-    label: 'Airplane mode',
-    description: 'Disable all wireless connections.',
     bordered: true,
+    description: 'Disable all wireless connections.',
+    label: 'Airplane mode',
   },
 }
 
 export const Checked: Story = {
-  args: { label: 'Dark mode', checked: true },
+  args: {
+    checked: true,
+    label: 'Dark mode',
+  },
 }
 
 export const Disabled: Story = {
-  args: { label: 'Disabled', disabled: true },
+  args: {
+    disabled: true,
+    label: 'Disabled',
+  },
 }
 
 export const RichLabel: Story = {
   args: {
-    label: { content: 'Marketing emails', required: true, tooltip: 'You can unsubscribe anytime.' },
     description: 'Receive updates about new features and promotions.',
+    label: {
+      content: 'Marketing emails',
+      required: true,
+      tooltip: 'You can unsubscribe anytime.',
+    },
   },
 }

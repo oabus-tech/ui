@@ -1,12 +1,11 @@
-import { useState } from 'react'
-
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 
 import { TagsInput } from './tags-input'
 
 const meta = {
-  title: 'Form/TagsInput',
   component: TagsInput,
+  title: 'Form/TagsInput',
 } satisfies Meta<typeof TagsInput>
 
 export default meta
@@ -20,20 +19,27 @@ export const Default: Story = {
 
 export const WithDefaultValue: Story = {
   args: {
-    defaultValue: ['react', 'typescript', 'tailwind'],
+    defaultValue: [
+      'react',
+      'typescript',
+      'tailwind',
+    ],
     placeholder: 'Add tag...',
   },
 }
 
 export const Controlled: Story = {
   render: (args) => {
-    const [tags, setTags] = useState(['react', 'typescript'])
+    const [tags, setTags] = useState([
+      'react',
+      'typescript',
+    ])
     return (
       <TagsInput
         {...args}
-        value={tags}
         onChange={setTags}
         placeholder="Add tag..."
+        value={tags}
       />
     )
   },
@@ -41,7 +47,10 @@ export const Controlled: Story = {
 
 export const MaxTags: Story = {
   args: {
-    defaultValue: ['react', 'typescript'],
+    defaultValue: [
+      'react',
+      'typescript',
+    ],
     maxTags: 3,
     placeholder: 'Max 3 tags',
   },
@@ -49,15 +58,20 @@ export const MaxTags: Story = {
 
 export const NoDuplicates: Story = {
   args: {
-    defaultValue: ['react'],
     allowDuplicates: false,
+    defaultValue: [
+      'react',
+    ],
     placeholder: 'No duplicates allowed',
   },
 }
 
 export const Disabled: Story = {
   args: {
-    defaultValue: ['react', 'typescript'],
+    defaultValue: [
+      'react',
+      'typescript',
+    ],
     disabled: true,
   },
 }

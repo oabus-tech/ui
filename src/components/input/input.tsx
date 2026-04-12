@@ -1,5 +1,4 @@
 import { useCallback, useRef } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import { Loader } from '@/components/loader'
@@ -7,11 +6,13 @@ import { Loader } from '@/components/loader'
 import type { InputProps } from './input.types'
 
 const input = tv({
+  defaultVariants: {
+    size: 'md',
+  },
   slots: {
-    root: 'input-root relative flex w-full items-center',
     field: [
       'input-field w-full min-w-0 rounded-lg border border-input bg-transparent',
-      'text-base md:text-sm transition-colors outline-none',
+      'text-base outline-none transition-colors md:text-sm',
       'placeholder:text-muted-foreground',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
       'disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
@@ -19,19 +20,33 @@ const input = tv({
       'dark:bg-input/30 dark:disabled:bg-input/80',
       'dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
     ],
+    root: 'input-root relative flex w-full items-center',
     section:
       'input-section pointer-events-none absolute top-1/2 flex -translate-y-1/2 items-center text-muted-foreground',
   },
   variants: {
-    size: {
-      sm: { field: 'h-9 px-2.5 py-1' },
-      md: { field: 'h-10 px-2.5 py-1' },
-      lg: { field: 'h-11 px-3 py-1' },
+    hasLeft: {
+      true: {
+        field: 'pl-9',
+      },
     },
-    hasLeft: { true: { field: 'pl-9' } },
-    hasRight: { true: { field: 'pr-9' } },
+    hasRight: {
+      true: {
+        field: 'pr-9',
+      },
+    },
+    size: {
+      lg: {
+        field: 'h-11 px-3 py-1',
+      },
+      md: {
+        field: 'h-10 px-2.5 py-1',
+      },
+      sm: {
+        field: 'h-9 px-2.5 py-1',
+      },
+    },
   },
-  defaultVariants: { size: 'md' },
 })
 
 function Input({
@@ -51,7 +66,9 @@ function Input({
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!onChange) return
+      if (!onChange) {
+        return
+      }
       const val = e.target.value === '' ? null : e.target.value
       if (!debounce) {
         onChange(val)
@@ -60,38 +77,64 @@ function Input({
       clearTimeout(timerRef.current)
       timerRef.current = setTimeout(() => onChange(val), 300)
     },
-    [onChange, debounce],
+    [
+      onChange,
+      debounce,
+    ],
   )
 
   const effectiveRight = loading ? <Loader size="sm" /> : rightSection
   const hasLeft = Boolean(leftSection)
   const hasRight = Boolean(effectiveRight)
 
-  const { root, field, section } = input({ size, hasLeft, hasRight })
+  const { root, field, section } = input({
+    hasLeft,
+    hasRight,
+    size,
+  })
 
   const controlledProps =
     value !== undefined
-      ? { value: value ?? '' }
-      : { defaultValue: defaultValue ?? undefined }
+      ? {
+          value: value ?? '',
+        }
+      : {
+          defaultValue: defaultValue ?? undefined,
+        }
 
   return (
-    <div data-testid="input-root" className={root({ className: rootClassName })}>
+    <div
+      className={root({
+        className: rootClassName,
+      })}
+      data-testid="input-root"
+    >
       {hasLeft && (
-        <span data-testid="input-section-left" className={section({ className: 'left-2.5' })}>
+        <span
+          className={section({
+            className: 'left-2.5',
+          })}
+          data-testid="input-section-left"
+        >
           {leftSection}
         </span>
       )}
       <input
+        className={field()}
         data-slot="input"
         data-testid="input-field"
-        type={type}
         onChange={handleChange}
-        className={field()}
+        type={type}
         {...controlledProps}
         {...props}
       />
       {hasRight && (
-        <span data-testid="input-section-right" className={section({ className: 'right-2.5' })}>
+        <span
+          className={section({
+            className: 'right-2.5',
+          })}
+          data-testid="input-section-right"
+        >
           {effectiveRight}
         </span>
       )}

@@ -1,40 +1,60 @@
-import type { PropsWithChildren } from 'react'
-
 import { Loader2 } from 'lucide-react'
+import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type { BadgeProps } from './badge.types'
 
 const badge = tv({
+  defaultVariants: {
+    align: 'center',
+    variant: 'default',
+  },
   slots: {
+    content: 'badge-content inline-flex items-center gap-1',
     root: [
       'badge-root relative inline-flex h-5 w-fit shrink-0 items-center justify-center',
       'gap-1 overflow-hidden rounded-full border border-transparent',
-      'px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-all',
+      'whitespace-nowrap px-2 py-0.5 font-medium text-xs transition-all',
       '[&>svg]:pointer-events-none [&>svg]:size-3',
     ],
-    content: 'badge-content inline-flex items-center gap-1',
   },
   variants: {
-    variant: {
-      default: { root: 'bg-primary text-primary-foreground' },
-      secondary: { root: 'bg-secondary text-secondary-foreground' },
-      destructive: { root: 'bg-destructive/10 text-destructive' },
-      outline: { root: 'border-border text-foreground' },
-    },
     align: {
-      start: { root: 'justify-start' },
-      center: { root: 'justify-center' },
-      end: { root: 'justify-end' },
+      center: {
+        root: 'justify-center',
+      },
+      end: {
+        root: 'justify-end',
+      },
+      start: {
+        root: 'justify-start',
+      },
     },
     block: {
-      true: { root: 'w-full' },
+      true: {
+        root: 'w-full',
+      },
     },
     loading: {
-      true: { content: 'invisible' },
+      true: {
+        content: 'invisible',
+      },
+    },
+    variant: {
+      default: {
+        root: 'bg-primary text-primary-foreground',
+      },
+      destructive: {
+        root: 'bg-destructive/10 text-destructive',
+      },
+      outline: {
+        root: 'border-border text-foreground',
+      },
+      secondary: {
+        root: 'bg-secondary text-secondary-foreground',
+      },
     },
   },
-  defaultVariants: { variant: 'default', align: 'center' },
 })
 
 function Badge({
@@ -45,11 +65,23 @@ function Badge({
   loading,
   onClick,
 }: PropsWithChildren<BadgeProps>) {
-  const { root, content } = badge({ variant, align, block, loading })
+  const { root, content } = badge({
+    align,
+    block,
+    loading,
+    variant,
+  })
 
   return (
-    <span data-testid="badge" className={root()} onClick={onClick}>
-      <span data-testid="badge-content" className={content()}>
+    <span
+      className={root()}
+      data-testid="badge"
+      onClick={onClick}
+    >
+      <span
+        className={content()}
+        data-testid="badge-content"
+      >
         {children}
       </span>
       {loading && (

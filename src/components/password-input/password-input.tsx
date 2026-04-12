@@ -1,62 +1,90 @@
-import { useState } from 'react'
-
 import { Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Input } from '@/components/input'
 
-import type { PasswordStrengthLevel, PasswordInputProps } from './password-input.types'
+import type {
+  PasswordInputProps,
+  PasswordStrengthLevel,
+} from './password-input.types'
 
 const passwordInput = tv({
   slots: {
     root: 'password-input-root flex flex-col gap-2',
+    strengthBar:
+      'password-input-strength-bar h-1 flex-1 rounded-full transition-colors',
     strengthBars: 'password-input-strength-bars flex gap-1',
-    strengthBar: 'password-input-strength-bar h-1 flex-1 rounded-full transition-colors',
-    strengthFooter: 'password-input-strength-footer flex items-center justify-between',
-    strengthLabel: 'password-input-strength-label text-xs text-muted-foreground',
+    strengthFooter:
+      'password-input-strength-footer flex items-center justify-between',
+    strengthLabel:
+      'password-input-strength-label text-muted-foreground text-xs',
   },
 })
 
 const strengthLevelLabels: Record<PasswordStrengthLevel, string> = {
-  'very-weak': 'Very weak',
-  weak: 'Weak',
   medium: 'Medium',
   strong: 'Strong',
   'very-strong': 'Very strong',
+  'very-weak': 'Very weak',
+  weak: 'Weak',
 }
 
 const strengthLevelColors: Record<PasswordStrengthLevel, string> = {
-  'very-weak': 'bg-red-500',
-  weak: 'bg-orange-500',
   medium: 'bg-yellow-500',
   strong: 'bg-green-500',
   'very-strong': 'bg-emerald-500',
+  'very-weak': 'bg-red-500',
+  weak: 'bg-orange-500',
 }
 
 const strengthLevelScore: Record<PasswordStrengthLevel, number> = {
-  'very-weak': 1,
-  weak: 2,
   medium: 3,
   strong: 4,
   'very-strong': 5,
+  'very-weak': 1,
+  weak: 2,
 }
 
 function getStrengthLevel(password: string): PasswordStrengthLevel {
   let score = 0
-  if (password.length >= 8) score++
-  if (/[A-Z]/.test(password)) score++
-  if (/[a-z]/.test(password)) score++
-  if (/[0-9]/.test(password)) score++
-  if (/[^A-Za-z0-9]/.test(password)) score++
+  if (password.length >= 8) {
+    score++
+  }
+  if (/[A-Z]/.test(password)) {
+    score++
+  }
+  if (/[a-z]/.test(password)) {
+    score++
+  }
+  if (/[0-9]/.test(password)) {
+    score++
+  }
+  if (/[^A-Za-z0-9]/.test(password)) {
+    score++
+  }
 
-  if (score <= 1) return 'very-weak'
-  if (score === 2) return 'weak'
-  if (score === 3) return 'medium'
-  if (score === 4) return 'strong'
+  if (score <= 1) {
+    return 'very-weak'
+  }
+  if (score === 2) {
+    return 'weak'
+  }
+  if (score === 3) {
+    return 'medium'
+  }
+  if (score === 4) {
+    return 'strong'
+  }
   return 'very-strong'
 }
 
-function PasswordInput({ showStrength, value, onChange, ...props }: PasswordInputProps) {
+function PasswordInput({
+  showStrength,
+  value,
+  onChange,
+  ...props
+}: PasswordInputProps) {
   const [visible, setVisible] = useState(false)
   const { root, strengthBars, strengthBar, strengthFooter, strengthLabel } =
     passwordInput()
@@ -67,40 +95,57 @@ function PasswordInput({ showStrength, value, onChange, ...props }: PasswordInpu
 
   const toggle = (
     <button
-      type="button"
+      className="pointer-events-auto flex items-center text-muted-foreground hover:text-foreground"
       onClick={() => setVisible((v) => !v)}
-      className="flex items-center pointer-events-auto text-muted-foreground hover:text-foreground"
       tabIndex={-1}
+      type="button"
     >
       {visible ? <EyeOff size={16} /> : <Eye size={16} />}
     </button>
   )
 
   return (
-    <div data-testid="password-input-root" className={root()}>
+    <div
+      className={root()}
+      data-testid="password-input-root"
+    >
       <Input
         {...props}
-        type={visible ? 'text' : 'password'}
-        value={value}
         onChange={onChange}
         rightSection={toggle}
+        type={visible ? 'text' : 'password'}
+        value={value}
       />
       {showStrength && (
         <>
-          <div data-testid="password-input-strength-bars" className={strengthBars()}>
-            {Array.from({ length: 5 }, (_, i) => (
-              <div
-                key={i}
-                data-testid="password-input-strength-bar"
-                className={strengthBar({
-                  className: i < score ? activeColor : 'bg-muted',
-                })}
-              />
-            ))}
+          <div
+            className={strengthBars()}
+            data-testid="password-input-strength-bars"
+          >
+            {Array.from(
+              {
+                length: 5,
+              },
+              (_, i) => (
+                <div
+                  className={strengthBar({
+                    className: i < score ? activeColor : 'bg-muted',
+                  })}
+                  data-testid="password-input-strength-bar"
+                  key={String(_)}
+                />
+              ),
+            )}
           </div>
           {level && (
-            <div data-testid="password-input-strength-footer" className={strengthFooter()}>
-              <span data-testid="password-input-strength-label" className={strengthLabel()}>
+            <div
+              className={strengthFooter()}
+              data-testid="password-input-strength-footer"
+            >
+              <span
+                className={strengthLabel()}
+                data-testid="password-input-strength-label"
+              >
                 {strengthLevelLabels[level]}
               </span>
             </div>

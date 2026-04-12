@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PhoneInput } from './phone-input'
 
 const meta = {
-  title: 'Form/PhoneInput',
   component: PhoneInput,
+  title: 'Form/PhoneInput',
 } satisfies Meta<typeof PhoneInput>
 
 export default meta
@@ -14,16 +14,26 @@ export const Default: Story = {}
 
 export const WithDefaultValue: Story = {
   args: {
-    defaultValue: { iso: 'BR', number: '11999887766', ddi: '+55' },
+    defaultValue: {
+      ddi: '+55',
+      iso: 'BR',
+      number: '11999887766',
+    },
   },
 }
 
 export const US: Story = {
   args: {
-    defaultValue: { iso: 'US', number: '', ddi: '+1' },
+    defaultValue: {
+      ddi: '+1',
+      iso: 'US',
+      number: '',
+    },
   },
 }
 
 export const Disabled: Story = {
-  args: { disabled: true },
+  args: {
+    disabled: true,
+  },
 }

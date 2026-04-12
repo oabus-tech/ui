@@ -400,8 +400,7 @@ function MultipleSelect<T, I = string, O = I>({
   const [internalValues, setInternalValues] = useState<string[]>(
     (defaultValue as unknown as I[] | undefined)?.map((v) =>
       toKey(v as unknown as O),
-    ) ??
-      [],
+    ) ?? [],
   )
   const sentinelRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')

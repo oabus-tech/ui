@@ -22,30 +22,53 @@ function MaskInput({
   const hasLeft = Boolean(leftSection)
   const hasRight = Boolean(effectiveRight)
 
-  const { root, field, section } = inputShared({ size, hasLeft, hasRight })
+  const { root, field, section } = inputShared({
+    hasLeft,
+    hasRight,
+    size,
+  })
 
   const maskOptions = Array.isArray(mask)
-    ? mask.map((m) => ({ mask: m }))
+    ? mask.map((m) => ({
+        mask: m,
+      }))
     : mask
 
   return (
-    <div data-testid="mask-input-root" className={root({ className: rootClassName })}>
+    <div
+      className={root({
+        className: rootClassName,
+      })}
+      data-testid="mask-input-root"
+    >
       {hasLeft && (
-        <span data-testid="mask-input-section-left" className={section({ className: 'left-2.5' })}>
+        <span
+          className={section({
+            className: 'left-2.5',
+          })}
+          data-testid="mask-input-section-left"
+        >
           {leftSection}
         </span>
       )}
       <IMaskInput
         {...(props as object)}
+        className={field({
+          className,
+        })}
         data-testid="mask-input-field"
-        mask={maskOptions as string}
-        value={value ?? ''}
         defaultValue={defaultValue ?? undefined}
+        mask={maskOptions as string}
         onAccept={(val: string) => onChange?.(val === '' ? null : val)}
-        className={field({ className })}
+        value={value ?? ''}
       />
       {hasRight && (
-        <span data-testid="mask-input-section-right" className={section({ className: 'right-2.5' })}>
+        <span
+          className={section({
+            className: 'right-2.5',
+          })}
+          data-testid="mask-input-section-right"
+        >
           {effectiveRight}
         </span>
       )}

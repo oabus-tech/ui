@@ -10,11 +10,11 @@ const separator = tv({
 function Separator({ orientation = 'horizontal', decorative }: SeparatorProps) {
   return (
     <SeparatorPrimitive
+      aria-hidden={decorative}
+      className={separator()}
       data-slot="separator"
       data-testid="separator"
       orientation={orientation}
-      aria-hidden={decorative}
-      className={separator()}
     />
   )
 }

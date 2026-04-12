@@ -1,21 +1,20 @@
 import { useState } from 'react'
-
 import { IMaskInput } from 'react-imask'
 import { tv } from 'tailwind-variants'
 
 import { DropdownMenu } from '@/components/dropdown-menu'
 import { inputShared } from '@/components/input/input.shared'
 
-import type { Currency, CurrencyInputProps, CurrencyVariant } from './currency-input.types'
+import type { Currency, CurrencyInputProps } from './currency-input.types'
 
 const currencyInput = tv({
   extend: inputShared,
   slots: {
-    root: 'currency-input-root',
     field: 'currency-input-field',
+    root: 'currency-input-root',
     section: 'currency-input-section',
     variantTrigger: [
-      'currency-input-variant-trigger flex items-center gap-1 text-sm font-medium',
+      'currency-input-variant-trigger flex items-center gap-1 font-medium text-sm',
       'pointer-events-auto outline-none',
       'hover:text-foreground focus-visible:ring-0',
       'disabled:cursor-not-allowed disabled:opacity-50',
@@ -31,19 +30,39 @@ type CurrencyConfig = {
 }
 
 const CURRENCY_CONFIGS: Record<Currency, CurrencyConfig> = {
-  brl: { symbol: 'R$', thousandsSeparator: '.', radix: ',', label: 'BRL' },
-  usd: { symbol: '$', thousandsSeparator: ',', radix: '.', label: 'USD' },
-  eur: { symbol: '€', thousandsSeparator: '.', radix: ',', label: 'EUR' },
+  brl: {
+    label: 'BRL',
+    radix: ',',
+    symbol: 'R$',
+    thousandsSeparator: '.',
+  },
+  eur: {
+    label: 'EUR',
+    radix: ',',
+    symbol: '€',
+    thousandsSeparator: '.',
+  },
+  usd: {
+    label: 'USD',
+    radix: '.',
+    symbol: '$',
+    thousandsSeparator: ',',
+  },
 }
 
-function parseCurrencyValue(val: string, config: CurrencyConfig): number | null {
-  if (!val) return null
+function parseCurrencyValue(
+  val: string,
+  config: CurrencyConfig,
+): number | null {
+  if (!val) {
+    return null
+  }
   const cleaned = val
     .split(config.thousandsSeparator)
     .join('')
     .replace(config.radix, '.')
   const num = parseFloat(cleaned)
-  return isNaN(num) ? null : num
+  return Number.isNaN(num) ? null : num
 }
 
 function CurrencyInput({
@@ -59,51 +78,86 @@ function CurrencyInput({
     variant === 'any' ? 'brl' : (variant as Currency),
   )
 
-  const activeCurrency = variant === 'any' ? internalCurrency : (variant as Currency)
+  const activeCurrency =
+    variant === 'any' ? internalCurrency : (variant as Currency)
   const config = CURRENCY_CONFIGS[activeCurrency]
 
   const hasRight = variant === 'any'
-  const { root, field, section, variantTrigger } = currencyInput({ size, hasLeft: true, hasRight })
+  const { root, field, section, variantTrigger } = currencyInput({
+    hasLeft: true,
+    hasRight,
+    size,
+  })
 
   return (
-    <div data-testid="currency-input-root" className={root()}>
-      <span data-testid="currency-input-section-left" className={section({ className: 'left-2.5' })}>
+    <div
+      className={root()}
+      data-testid="currency-input-root"
+    >
+      <span
+        className={section({
+          className: 'left-2.5',
+        })}
+        data-testid="currency-input-section-left"
+      >
         {config.symbol}
       </span>
       <IMaskInput
+        className={field()}
         data-testid="currency-input-field"
-        mask={Number as unknown as string}
-        scale={2}
-        normalizeZeros
-        padFractionalZeros
-        thousandsSeparator={config.thousandsSeparator}
-        radix={config.radix}
-        value={value !== null && value !== undefined ? value.toFixed(2).replace('.', config.radix) : ''}
         defaultValue={
           defaultValue !== null && defaultValue !== undefined
             ? defaultValue.toFixed(2).replace('.', config.radix)
             : undefined
         }
-        onAccept={(val: string) => onChange?.(parseCurrencyValue(val, config))}
         disabled={disabled}
+        mask={Number as unknown as string}
+        normalizeZeros
+        onAccept={(val: string) => onChange?.(parseCurrencyValue(val, config))}
+        padFractionalZeros
         placeholder={placeholder}
-        className={field()}
+        radix={config.radix}
+        scale={2}
+        thousandsSeparator={config.thousandsSeparator}
+        value={
+          value !== null && value !== undefined
+            ? value.toFixed(2).replace('.', config.radix)
+            : ''
+        }
       />
       {variant === 'any' && (
-        <span data-testid="currency-input-section-right" className={section({ className: 'right-2.5' })}>
+        <span
+          className={section({
+            className: 'right-2.5',
+          })}
+          data-testid="currency-input-section-right"
+        >
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
               <button
+                className={variantTrigger()}
                 data-testid="currency-input-variant-trigger"
                 disabled={disabled}
-                className={variantTrigger()}
+                type="button"
               >
                 {config.label}
               </button>
             </DropdownMenu.Trigger>
-            <DropdownMenu.Content width={100} sideOffset={4}>
-              {(['brl', 'usd', 'eur'] as Currency[]).map((c) => (
-                <DropdownMenu.Item key={c} onClick={() => setInternalCurrency(c)}>
+            <DropdownMenu.Content
+              sideOffset={4}
+              width={100}
+            >
+              {(
+                [
+                  'brl',
+                  'usd',
+                  'eur',
+                ] as Currency[]
+              ).map((c) => (
+                <DropdownMenu.Item
+                  key={c}
+                  onClick={() => setInternalCurrency(c)}
+                >
                   {CURRENCY_CONFIGS[c].label}
                 </DropdownMenu.Item>
               ))}

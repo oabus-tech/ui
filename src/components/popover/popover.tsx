@@ -1,26 +1,25 @@
-import type { PropsWithChildren } from 'react'
-
 import { Popover as PopoverPrimitive } from '@base-ui/react/popover'
+import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type { PopoverProps } from './popover.types'
 
 const popover = tv({
   slots: {
-    trigger: 'popover-trigger inline-flex',
-    positioner: 'isolate z-50',
     popup: [
       'popover-popup z-50 w-72 rounded-lg',
-      'bg-popover p-4 text-sm text-popover-foreground',
-      'shadow-md ring-1 ring-foreground/10 outline-hidden',
+      'bg-popover p-4 text-popover-foreground text-sm',
+      'shadow-md outline-hidden ring-1 ring-foreground/10',
       'origin-(--transform-origin)',
       'data-[side=bottom]:slide-in-from-top-2',
       'data-[side=left]:slide-in-from-right-2',
       'data-[side=right]:slide-in-from-left-2',
       'data-[side=top]:slide-in-from-bottom-2',
-      'duration-100 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
-      'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+      'data-open:fade-in-0 data-open:zoom-in-95 duration-100 data-open:animate-in',
+      'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',
     ],
+    positioner: 'isolate z-50',
+    trigger: 'popover-trigger inline-flex',
   },
 })
 
@@ -36,7 +35,10 @@ function Popover({
   align = 'center',
 }: PropsWithChildren<PopoverProps>) {
   return (
-    <PopoverPrimitive.Root open={open} onOpenChange={onOpenChange}>
+    <PopoverPrimitive.Root
+      onOpenChange={onOpenChange}
+      open={open}
+    >
       <PopoverPrimitive.Trigger
         data-testid="popover-trigger"
         render={<span className={trigger()} />}
@@ -45,12 +47,15 @@ function Popover({
       </PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Positioner
-          side={side}
-          sideOffset={sideOffset}
           align={align}
           className={positioner()}
+          side={side}
+          sideOffset={sideOffset}
         >
-          <PopoverPrimitive.Popup data-testid="popover-popup" className={popup()}>
+          <PopoverPrimitive.Popup
+            className={popup()}
+            data-testid="popover-popup"
+          >
             {content}
           </PopoverPrimitive.Popup>
         </PopoverPrimitive.Positioner>

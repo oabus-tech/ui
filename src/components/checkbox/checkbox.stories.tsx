@@ -3,54 +3,84 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Checkbox } from './checkbox'
 
 const meta = {
-  title: 'Form/Checkbox',
   component: Checkbox,
+  title: 'Form/Checkbox',
 } satisfies Meta<typeof Checkbox>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: { label: 'Accept terms and conditions' },
+  args: {
+    label: 'Accept terms and conditions',
+  },
 }
 
 export const WithDescription: Story = {
   args: {
-    label: 'Marketing emails',
     description: 'Receive emails about new products and features.',
+    label: 'Marketing emails',
   },
 }
 
 export const Checked: Story = {
-  args: { label: 'Already checked', checked: true },
+  args: {
+    checked: true,
+    label: 'Already checked',
+  },
 }
 
 export const Bordered: Story = {
   args: {
-    label: 'Bordered checkbox',
-    description: 'With a visible container.',
     bordered: true,
+    description: 'With a visible container.',
+    label: 'Bordered checkbox',
   },
 }
 
 export const Disabled: Story = {
-  args: { label: 'Disabled', disabled: true },
+  args: {
+    disabled: true,
+    label: 'Disabled',
+  },
 }
 
-export const Small: Story = { args: { label: 'Small', size: 'sm' } }
+export const Small: Story = {
+  args: {
+    label: 'Small',
+    size: 'sm',
+  },
+}
 
-export const Large: Story = { args: { label: 'Large', size: 'lg' } }
+export const Large: Story = {
+  args: {
+    label: 'Large',
+    size: 'lg',
+  },
+}
 
 export const Group: Story = {
   render: () => (
     <Checkbox.Group
       items={[
-        { value: 'react', label: 'React' },
-        { value: 'vue', label: 'Vue' },
-        { value: 'svelte', label: 'Svelte', disabled: true },
+        {
+          label: 'React',
+          value: 'react',
+        },
+        {
+          label: 'Vue',
+          value: 'vue',
+        },
+        {
+          disabled: true,
+          label: 'Svelte',
+          value: 'svelte',
+        },
       ]}
-      value={['react']}
       onChange={() => {}}
+      value={[
+        'react',
+      ]}
     />
   ),
 }
@@ -58,14 +88,23 @@ export const Group: Story = {
 export const HorizontalGroup: Story = {
   render: () => (
     <Checkbox.Group
-      variant="horizontal"
       items={[
-        { value: 'a', label: 'Option A' },
-        { value: 'b', label: 'Option B' },
-        { value: 'c', label: 'Option C' },
+        {
+          label: 'Option A',
+          value: 'a',
+        },
+        {
+          label: 'Option B',
+          value: 'b',
+        },
+        {
+          label: 'Option C',
+          value: 'c',
+        },
       ]}
-      value={[]}
       onChange={() => {}}
+      value={[]}
+      variant="horizontal"
     />
   ),
 }

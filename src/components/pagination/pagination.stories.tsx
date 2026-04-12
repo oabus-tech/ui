@@ -11,8 +11,8 @@ import {
 } from './pagination'
 
 const meta = {
-  title: 'Components/Pagination',
   component: Pagination,
+  title: 'Components/Pagination',
 } satisfies Meta<typeof Pagination>
 
 export default meta
@@ -29,7 +29,10 @@ export const Default: Story = {
           <PaginationLink href="#">1</PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#" isActive>
+          <PaginationLink
+            href="#"
+            isActive
+          >
             2
           </PaginationLink>
         </PaginationItem>
@@ -88,7 +91,10 @@ export const WithEllipsis: Story = {
           <PaginationLink href="#">4</PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#" isActive>
+          <PaginationLink
+            href="#"
+            isActive
+          >
             5
           </PaginationLink>
         </PaginationItem>

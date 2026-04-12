@@ -11,7 +11,8 @@
       "**/src/**/*",
       "**/.vscode/**/*",
       "**/vite.config.ts",
-      "!**/*.css"
+      "!**/*.css",
+      "!**/src/shadcn"
     ]
   },
   "formatter": {
@@ -29,19 +30,33 @@
           "level": "on",
           "options": {
             "groups": [
-              [":NODE:"],
+              [
+                ":NODE:"
+              ],
               ":BLANK_LINE:",
-              [":PACKAGE:"],
+              [
+                ":PACKAGE:"
+              ],
               ":BLANK_LINE:",
-              ["@/**"],
+              [
+                "@/**"
+              ],
               ":BLANK_LINE:",
-              [":PATH:"]
+              [
+                ":PATH:"
+              ]
             ]
           }
         },
-        "useSortedAttributes": { "level": "on" },
-        "useSortedKeys": { "level": "on" },
-        "useSortedProperties": { "level": "on" }
+        "useSortedAttributes": {
+          "level": "on"
+        },
+        "useSortedKeys": {
+          "level": "on"
+        },
+        "useSortedProperties": {
+          "level": "on"
+        }
       }
     }
   },
@@ -49,13 +64,21 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off"
+      },
       "nursery": {
         "useSortedClasses": {
           "fix": "safe",
           "level": "error",
           "options": {
-            "attributes": ["className"],
-            "functions": ["tv"]
+            "attributes": [
+              "className"
+            ],
+            "functions": [
+              "tv"
+            ]
           }
         }
       },
@@ -64,6 +87,9 @@
       },
       "style": {
         "useBlockStatements": "error"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
       }
     }
   },
@@ -82,11 +108,15 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.json"],
+      "includes": [
+        "**/*.json"
+      ],
       "assist": {
         "actions": {
           "source": {
-            "useSortedKeys": { "level": "off" }
+            "useSortedKeys": {
+              "level": "off"
+            }
           }
         }
       }

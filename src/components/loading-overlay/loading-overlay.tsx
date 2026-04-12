@@ -10,16 +10,23 @@ const loadingOverlay = tv({
   },
   variants: {
     visible: {
-      false: { root: 'hidden' },
+      false: {
+        root: 'hidden',
+      },
     },
   },
 })
 
 function LoadingOverlay({ visible = false }: LoadingOverlayProps) {
-  const { root } = loadingOverlay({ visible })
+  const { root } = loadingOverlay({
+    visible,
+  })
 
   return (
-    <div data-testid="loading-overlay-root" className={root()}>
+    <div
+      className={root()}
+      data-testid="loading-overlay-root"
+    >
       <Loader size="md" />
     </div>
   )

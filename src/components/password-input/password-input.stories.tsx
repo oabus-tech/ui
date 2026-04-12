@@ -1,12 +1,11 @@
-import { useState } from 'react'
-
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 
 import { PasswordInput } from './password-input'
 
 const meta = {
-  title: 'Form/PasswordInput',
   component: PasswordInput,
+  title: 'Form/PasswordInput',
 } satisfies Meta<typeof PasswordInput>
 
 export default meta
@@ -24,10 +23,10 @@ export const WithStrength: Story = {
     return (
       <PasswordInput
         {...args}
-        value={value}
         onChange={(v) => setValue(v ?? '')}
         placeholder="Enter password"
         showStrength
+        value={value}
       />
     )
   },
@@ -35,14 +34,14 @@ export const WithStrength: Story = {
 
 export const Disabled: Story = {
   args: {
-    placeholder: 'Enter password',
     disabled: true,
+    placeholder: 'Enter password',
   },
 }
 
 export const Invalid: Story = {
   args: {
-    placeholder: 'Enter password',
     'aria-invalid': true,
+    placeholder: 'Enter password',
   },
 }
