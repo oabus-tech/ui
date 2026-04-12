@@ -1,182 +1,200 @@
-import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import { tv } from 'tailwind-variants'
 
-import type {
-  PaginationContentProps,
-  PaginationEllipsisProps,
-  PaginationItemProps,
-  PaginationLinkProps,
-  PaginationNextProps,
-  PaginationPreviousProps,
-  PaginationProps,
-} from './pagination.types'
+import { Button } from '@/components/button'
+import { Select } from '@/components/select'
 
-const pagination = tv({
+import type { PaginationProps } from './pagination.types'
+
+const ROWS_OPTIONS = [
+  { label: '10', value: 10 },
+  { label: '20', value: 20 },
+  { label: '50', value: 50 },
+  { label: '100', value: 100 },
+]
+
+const styles = tv({
   slots: {
-    content: 'pagination-content flex items-center gap-0.5',
     ellipsis:
       'pagination-ellipsis flex size-8 items-center justify-center text-muted-foreground',
-    item: 'pagination-item',
-    link: [
-      'pagination-link inline-flex size-8 items-center justify-center gap-1 rounded-lg border text-sm',
+    info: 'pagination-info whitespace-nowrap text-muted-foreground text-sm',
+    pageBtn: [
+      'pagination-page-btn inline-flex size-8 items-center justify-center rounded-lg border text-sm',
       'select-none outline-none transition-colors',
-      'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-      'disabled:pointer-events-none disabled:opacity-50',
       'border-transparent hover:bg-muted hover:text-foreground',
-      'aria-[current=page]:border-border aria-[current=page]:bg-muted',
-    ],
-    navLink: [
-      'pagination-nav-link inline-flex h-8 items-center justify-center gap-1 rounded-lg border text-sm',
-      'select-none border-transparent px-2.5 outline-none transition-colors',
-      'hover:bg-muted hover:text-foreground',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-      'disabled:pointer-events-none disabled:opacity-50',
     ],
-    root: 'pagination-root mx-auto flex w-full justify-center',
+    pageBtnActive: 'border-border bg-muted',
+    root: 'pagination-root flex w-full items-center justify-between gap-4',
+    rowsPerPage:
+      'pagination-rows-per-page flex items-center gap-2 whitespace-nowrap text-muted-foreground text-sm',
   },
 })
 
-const { root, content, item, link, navLink, ellipsis } = pagination()
+const { root, info, rowsPerPage, pageBtn, pageBtnActive, ellipsis } = styles()
 
-function Pagination({ children, className }: PaginationProps) {
+function getVisiblePages(page: number, totalPages: number): (number | '...')[] {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1)
+  }
+
+  const pages: (number | '...')[] = [1]
+
+  if (page > 3) {
+    pages.push('...')
+  }
+
+  const start = Math.max(2, page - 1)
+  const end = Math.min(totalPages - 1, page + 1)
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
+  if (page < totalPages - 2) {
+    pages.push('...')
+  }
+
+  pages.push(totalPages)
+
+  return pages
+}
+
+function Pagination(props: PaginationProps) {
+  if (props.mode === 'offset') {
+    const {
+      page,
+      rowsPerPage: rpp,
+      total,
+      onPageChange,
+      onRowsPerPageChange,
+    } = props
+    const totalPages = Math.ceil(total / rpp)
+    const from = (page - 1) * rpp + 1
+    const to = Math.min(page * rpp, total)
+    const isFirst = page <= 1
+    const isLast = page >= totalPages
+
+    return (
+      <nav
+        aria-label="pagination"
+        className={root()}
+        data-testid="pagination-root"
+      >
+        <div className={rowsPerPage()}>
+          <span>Rows per page</span>
+          <Select
+            mode="single"
+            onChange={(v) => onRowsPerPageChange(v as number)}
+            optionLabel="label"
+            optionValue="value"
+            options={ROWS_OPTIONS}
+            size="sm"
+            value={rpp}
+          />
+        </div>
+        <div className="flex items-center gap-1">
+          <span className={info({ className: 'mr-2' })}>
+            {from}-{to} of {total}
+          </span>
+          <Button
+            data-testid="pagination-prev"
+            disabled={isFirst}
+            onClick={() => onPageChange(page - 1)}
+            size="icon-sm"
+            variant="outline"
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          {getVisiblePages(page, totalPages).map((p, i) =>
+            p === '...' ? (
+              <span
+                className={ellipsis()}
+                key={`ellipsis-${i}`}
+              >
+                <MoreHorizontal className="size-4" />
+              </span>
+            ) : (
+              <button
+                className={pageBtn({
+                  className: p === page ? pageBtnActive() : undefined,
+                })}
+                data-testid="pagination-page"
+                key={p}
+                onClick={() => onPageChange(p)}
+                type="button"
+              >
+                {p}
+              </button>
+            ),
+          )}
+          <Button
+            data-testid="pagination-next"
+            disabled={isLast}
+            onClick={() => onPageChange(page + 1)}
+            size="icon-sm"
+            variant="outline"
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </nav>
+    )
+  }
+
+  const {
+    rowsPerPage: rpp,
+    hasPreviousPage,
+    hasNextPage,
+    onPreviousPage,
+    onNextPage,
+    onRowsPerPageChange,
+  } = props
+
   return (
     <nav
       aria-label="pagination"
-      className={root({
-        className,
-      })}
+      className={root()}
       data-testid="pagination-root"
     >
-      {children}
+      {onRowsPerPageChange ? (
+        <div className={rowsPerPage()}>
+          <span>Rows per page</span>
+          <Select
+            mode="single"
+            onChange={(v) => onRowsPerPageChange(v as number)}
+            optionLabel="label"
+            optionValue="value"
+            options={ROWS_OPTIONS}
+            size="sm"
+            value={rpp}
+          />
+        </div>
+      ) : (
+        <div />
+      )}
+      <div className="flex items-center gap-2">
+        <Button
+          data-testid="pagination-prev"
+          disabled={!hasPreviousPage}
+          onClick={() => onPreviousPage?.()}
+          size="icon-sm"
+          variant="outline"
+        >
+          <ChevronLeft className="size-4" />
+        </Button>
+        <Button
+          data-testid="pagination-next"
+          disabled={!hasNextPage}
+          onClick={() => onNextPage?.()}
+          size="icon-sm"
+          variant="outline"
+        >
+          <ChevronRight className="size-4" />
+        </Button>
+      </div>
     </nav>
   )
 }
 
-function PaginationContent({ children, className }: PaginationContentProps) {
-  return (
-    <ul
-      className={content({
-        className,
-      })}
-      data-testid="pagination-content"
-    >
-      {children}
-    </ul>
-  )
-}
-
-function PaginationItem({ children, className }: PaginationItemProps) {
-  return (
-    <li
-      className={item({
-        className,
-      })}
-      data-testid="pagination-item"
-    >
-      {children}
-    </li>
-  )
-}
-
-function PaginationLink(props: PaginationLinkProps) {
-  const { isActive, href, className, disabled, onClick } = props
-  return (
-    <ButtonPrimitive
-      aria-current={isActive ? 'page' : undefined}
-      className={link({
-        className,
-      })}
-      data-testid="pagination-link"
-      disabled={disabled}
-      onClick={onClick}
-      render={
-        href ? (
-          <a
-            aria-current={isActive ? 'page' : undefined}
-            data-active={isActive}
-            data-slot="pagination-link"
-            {...props}
-          />
-        ) : undefined
-      }
-    ></ButtonPrimitive>
-  )
-}
-
-function PaginationPrevious(props: PaginationPreviousProps) {
-  const { href, text = 'Previous', className, disabled, onClick } = props
-  return (
-    <ButtonPrimitive
-      aria-label="Go to previous page"
-      className={navLink({
-        className,
-      })}
-      data-testid="pagination-prev"
-      disabled={disabled}
-      onClick={onClick}
-      render={
-        href ? (
-          <a
-            data-slot="pagination-link"
-            {...props}
-          />
-        ) : undefined
-      }
-    >
-      <ChevronLeft className="size-4" />
-      <span className="hidden sm:block">{text}</span>
-    </ButtonPrimitive>
-  )
-}
-
-function PaginationNext(props: PaginationNextProps) {
-  const { href, text = 'Next', className, disabled, onClick } = props
-  return (
-    <ButtonPrimitive
-      aria-label="Go to next page"
-      className={navLink({
-        className,
-      })}
-      data-testid="pagination-next"
-      disabled={disabled}
-      onClick={onClick}
-      render={
-        href ? (
-          <a
-            data-slot="pagination-link"
-            {...props}
-          />
-        ) : undefined
-      }
-    >
-      <span className="hidden sm:block">{text}</span>
-      <ChevronRight className="size-4" />
-    </ButtonPrimitive>
-  )
-}
-
-function PaginationEllipsis({ className }: PaginationEllipsisProps) {
-  return (
-    <span
-      aria-hidden
-      className={ellipsis({
-        className,
-      })}
-      data-testid="pagination-ellipsis"
-    >
-      <MoreHorizontal className="size-4" />
-      <span className="sr-only">More pages</span>
-    </span>
-  )
-}
-
-export {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-}
+export { Pagination }
