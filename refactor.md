@@ -444,6 +444,24 @@ Após cada componente confirme: `✅ <nome>.tsx — Tipo A/B — refatorado.`
 - Não usar abstração (helper function) pra section styles — inline direto é mais claro. Cada componente sabe seu width.
 - `pointer-events-auto` obrigatório em ambas sections (left e right) do Input pra elementos interativos ficarem clicáveis.
 
+### Sidebar
+
+- Para `side="right"`, o `<SidebarInset>` deve vir ANTES do `<Sidebar>` no DOM. O wrapper flex do Provider posiciona filhos em flow order — o gap do sidebar reserva espaço onde ele aparece no flow.
+- Header no collapsed (icon) mode: ícone com `shrink-0`, texto com `group-data-[collapsible=icon]:hidden`, wrapper com `group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0` pra centralizar o ícone.
+- Mobile sidebar usa `Dialog` do Base UI diretamente (não nosso Sheet wrapper) — o Sheet wrapper tem structure fixa (Header/Body/Footer) que não combina com o conteúdo livre do sidebar.
+- `SidebarMenuButton` usa `<button>` nativo com tv() em vez do nosso Button wrapper — precisa de `className` e data attrs arbitrários que o Button não suporta.
+
+### Sheet
+
+- Mesmo pattern do Modal (Dialog do Base UI). Variant `side` controla posição e animação (slide-in/out).
+- `compoundVariants` com `bordered: true` aplica bordas no header e footer simultaneamente — mesmo approach que o Modal.
+
+### Layout primitives (Box, Flex, Grid, Container)
+
+- São componentes puramente de CSS utility — sem Base UI, sem interatividade.
+- Cada prop mapeia 1:1 pra classes Tailwind via tv() variants.
+- Grid usa dois tv() separados (GridRoot e GridItem) porque variants não se sobrepõem — é a exceção permitida pela regra de slots.
+
 ---
 
 ## Verificação final

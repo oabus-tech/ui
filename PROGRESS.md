@@ -55,11 +55,13 @@ Status da implementação dos componentes do library, organizados em blocos de p
 
 | Componente | Status |
 |---|---|
-| box | ⏳ stub |
-| flex | ⏳ stub |
-| grid | ⏳ stub |
-| container | ⏳ stub |
-| layout | ⏳ stub |
+| box | ✅ |
+| flex | ✅ |
+| grid | ✅ |
+| container | ✅ |
+| layout | ✅ |
+| sheet | ✅ |
+| sidebar | ✅ |
 
 ## C-5 — Feedback & Display
 
@@ -75,11 +77,10 @@ Status da implementação dos componentes do library, organizados em blocos de p
 | typography | ⏳ stub |
 | toast | ⏳ stub |
 
-## C-6 — Overlays & Form Restantes
+## C-6 — Form Restantes
 
 | Componente | Status |
 |---|---|
-| sheet | ⏳ stub |
 | radio | ⏳ stub |
 | otp-input | ⏳ stub |
 | slider | ⏳ stub |
@@ -103,7 +104,7 @@ Status da implementação dos componentes do library, organizados em blocos de p
 - Library React (`@oabus/ui`) construída sobre **Base UI** (`@base-ui/react`) para primitivas acessíveis headless.
 - Styling via **Tailwind CSS v4** + **tailwind-variants** (`tv()`) com pattern de slots no topo do arquivo.
 - Dois temas (`mono`, `nova`) via `data-theme` em `<html>`; dark mode via classe `.dark`.
-- Componentes compound usam `Object.assign` (ex: `Modal.Header.Title`, `DropdownMenu.Item`).
+- Componentes compound usam `Object.assign` (ex: `Modal.Header.Title`, `Sidebar.Menu.Button`).
 - Cada componente em `src/components/<name>/` com `<name>.tsx`, `<name>.types.ts`, `index.ts`.
 - Stories colocalizadas (`<name>.stories.tsx`), excluídas do build.
 
@@ -136,6 +137,32 @@ Componente standalone (`src/components/calendar/`) wrapping `react-day-picker` v
 - DateRangeInput usa `className="w-auto"` no Popover pra sobrescrever `w-72` fixo
 - Ambos têm botão X no rightSection (always rendered, `visible`/`invisible` pra não mudar tamanho do input)
 
+### Sidebar
+
+Componente complexo (~25 sub-componentes) em `src/components/layout/sidebar/`:
+- `Sidebar.Provider` gerencia state (open/collapsed), cookie persistence, Ctrl+B toggle, mobile detection
+- Desktop: fixed sidebar com transition, 3 variants (sidebar/floating/inset), 3 collapsible modes (offcanvas/icon/none)
+- Mobile: usa `Dialog` do Base UI diretamente (não nosso Sheet wrapper) pra controle preciso do content
+- `Sidebar.Menu.Button` usa tv() com size (sm/default/lg) e variant (default/outline), tooltip no collapsed mode via nosso Tooltip
+- Para `side="right"`: o `<SidebarInset>` deve vir ANTES do `<Sidebar>` no DOM (o gap reserva espaço no flow order)
+- Header no collapsed mode: ícone com `shrink-0`, texto com `group-data-[collapsible=icon]:hidden`, wrapper com `group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0`
+- 18 stories incluindo 7 stories de elementos isolados
+
+### Sheet
+
+Mesmo pattern do Modal — Dialog do Base UI (Backdrop + Popup + Portal):
+- Variant `side` (right/left/top/bottom) com slide-in/slide-out animations
+- CompoundVariant `bordered` pra header (border-b) e footer (border-t)
+- Compound structure: `Sheet.Header.Title`, `Sheet.Header.Description`, `Sheet.Body`, `Sheet.Footer`
+
+### Layout primitives
+
+- **Box**: tv() com variants pra padding, bg, rounded, width, minHeight, position, overflow, textAlign, grow
+- **Flex**: direction, justify, align, gap, wrap, inline, minHeight, block
+- **Grid**: compound (Grid + Grid.Item), cols 1-12, span 1-12 ou 'full'
+- **Container**: maxWidth, centered (default true), textAlign
+- **Layout**: compound com Header, Main, Content, Footer + LayoutContext (withSidebar)
+
 ### Highlights por componente
 
 - **Input**: `className` desestruturado separado do `...props`, aplicado via `field({ className })` — resolve o bug de className sendo sobrescrito pelo spread
@@ -152,16 +179,8 @@ Componente standalone (`src/components/calendar/`) wrapping `react-day-picker` v
 - **Badge**: `cursor-pointer` condicional quando tem `onClick`
 - **Popover**: aceita `className` pra override do popup (usado pelo DateRangeInput com `w-auto`)
 
-### Stories
-
-Todos os componentes implementados têm stories com variants significativos. Destaques:
-- **Modal**: 5 stories (Default com Form, Bordered, Simple, ScrollableContent, NoFooter)
-- **Form**: 7 stories (Default, WithError, WithRequiredLabel, WithFieldSet, CompleteForm, WithMultipleErrors, WithOptionalFields)
-- **Pagination**: 3 stories (Offset, Cursor, CursorWithoutRowsPerPage)
-- **Calendar**: 10 stories (Default, Controlled, Uncontrolled, Range, RangeControlled, WithMinMax, WithExcludeDate, Sizes, FullWidth, NoTodayHighlight)
-- **Table**: 11 stories (Default, WithSelection, WithSorting, WithPagination, WithCustomCells, WithRowClick, WithColumnWidths, WithHiddenColumns, Complete, Empty, Loading)
-
 ### Pendências conhecidas
 
-- **C-4 a C-7**: 23 componentes ainda stubs
-- **Button**: não aceita `className` nem `ref` — Calendar usa `ButtonPrimitive` diretamente por isso
+- **C-5 a C-7**: 17 componentes ainda stubs
+- **Button**: não aceita `className` nem `ref` — Calendar e Sidebar usam `ButtonPrimitive` diretamente por isso
+- **Skeleton**: stub — Sidebar usa divs com `animate-pulse` como fallback
