@@ -129,7 +129,7 @@ function Input({
       {hasRight && (
         <span
           className={section({
-            className: 'right-0 justify-center',
+            className: 'pointer-events-auto right-0 justify-center',
           })}
           data-testid="input-section-right"
           style={{ width: rightSectionWidth }}

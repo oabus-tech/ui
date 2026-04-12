@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, X } from 'lucide-react'
 import { useState } from 'react'
 
 import { Calendar } from '@/components/calendar'
@@ -35,6 +35,14 @@ function DateInput({
 
   const displayValue = selectedDate ? format(selectedDate, 'dd/MM/yyyy') : ''
 
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!isControlled) {
+      setInternalDate(null)
+    }
+    onChange?.(null)
+  }
+
   return (
     <Popover
       align="start"
@@ -58,6 +66,16 @@ function DateInput({
         onClick={() => !disabled && setOpen(true)}
         placeholder={placeholder}
         readOnly
+        rightSection={
+          <button
+            className={`cursor-pointer text-muted-foreground hover:text-foreground ${selectedDate && !disabled ? 'visible' : 'invisible'}`}
+            onClick={handleClear}
+            tabIndex={selectedDate && !disabled ? 0 : -1}
+            type="button"
+          >
+            <X className="size-4" />
+          </button>
+        }
         size={size}
         value={displayValue}
       />
