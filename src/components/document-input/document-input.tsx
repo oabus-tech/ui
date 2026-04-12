@@ -1,33 +1,12 @@
-import { Menu } from '@base-ui/react/menu'
-import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
-import { tv } from 'tailwind-variants'
 
+import { DropdownMenu } from '@/components/dropdown-menu'
 import { MaskInput } from '@/components/mask-input'
 
 import type { DocumentInputProps, DocumentType } from './document-input.types'
+import { Button } from '../button'
 
-const documentInput = tv({
-  slots: {
-    item: [
-      'document-input-item relative flex cursor-default items-center rounded-md px-2 py-1',
-      'select-none text-sm outline-none focus:bg-accent focus:text-accent-foreground',
-      'data-disabled:pointer-events-none data-disabled:opacity-50',
-    ],
-    popup: [
-      'document-input-popup z-50 min-w-[120px] origin-(--transform-origin) overflow-hidden',
-      'rounded-lg bg-popover p-1 shadow-md ring-1 ring-foreground/10',
-      'data-open:fade-in-0 data-open:zoom-in-95 duration-100 data-open:animate-in',
-      'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',
-    ],
-    trigger: [
-      'document-input-trigger flex h-full items-center gap-1 rounded-l-lg border-input border-r',
-      'select-none bg-transparent px-2 font-medium text-sm outline-none transition-colors',
-      'pointer-events-auto hover:bg-muted focus-visible:ring-0',
-      'disabled:cursor-not-allowed disabled:opacity-50',
-    ],
-  },
-})
+const LEFT_SECTION_WIDTH = 60
 
 const MASKS: Record<Exclude<DocumentType, 'any'>, string> = {
   cnpj: '00.000.000/0000-00',
@@ -53,8 +32,6 @@ function DocumentInput({
   size,
   ...props
 }: DocumentInputProps) {
-  const { trigger, popup, item } = documentInput()
-
   const [internalType, setInternalType] = useState<
     Exclude<DocumentType, 'any'>
   >(
@@ -87,40 +64,37 @@ function DocumentInput({
 
   const leftSection =
     variant === 'any' ? (
-      <Menu.Root>
-        <Menu.Trigger
-          className={trigger()}
-          data-testid="document-input-trigger"
-          disabled={disabled}
+      <DropdownMenu>
+        <DropdownMenu.Trigger asChild>
+          <Button
+          variant="ghost"
+            data-testid="document-input-trigger"
+            disabled={disabled}
+            type="button"
+          >
+            {LABELS[internalType]}
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          sideOffset={4}
+          width={100}
         >
-          {LABELS[internalType]}
-          <ChevronDown size={12} />
-        </Menu.Trigger>
-        <Menu.Portal>
-          <Menu.Positioner className="isolate z-50">
-            <Menu.Popup
-              className={popup()}
-              data-testid="document-input-popup"
+          {(
+            [
+              'cpf',
+              'cnpj',
+            ] as const
+          ).map((type) => (
+            <DropdownMenu.CheckboxItem
+              checked={internalType === type}
+              key={type}
+              onCheckedChange={() => handleTypeChange(type)}
             >
-              {(
-                [
-                  'cpf',
-                  'cnpj',
-                ] as const
-              ).map((type) => (
-                <Menu.Item
-                  className={item()}
-                  data-testid="document-input-item"
-                  key={type}
-                  onClick={() => handleTypeChange(type)}
-                >
-                  {LABELS[type]}
-                </Menu.Item>
-              ))}
-            </Menu.Popup>
-          </Menu.Positioner>
-        </Menu.Portal>
-      </Menu.Root>
+              {LABELS[type]}
+            </DropdownMenu.CheckboxItem>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu>
     ) : undefined
 
   return (
@@ -129,6 +103,7 @@ function DocumentInput({
       defaultValue={defaultValue?.number ?? undefined}
       disabled={disabled}
       leftSection={leftSection}
+      leftSectionWidth={variant === 'any' ? LEFT_SECTION_WIDTH : undefined}
       mask={mask}
       onChange={handleChange}
       placeholder={props.placeholder ?? PLACEHOLDERS[activeType]}

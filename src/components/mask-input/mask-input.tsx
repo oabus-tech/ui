@@ -2,7 +2,7 @@ import { IMaskInput } from 'react-imask'
 
 import { Loader } from '@/components/loader'
 
-import { inputShared } from '../input/input.shared'
+import { DEFAULT_SECTION_WIDTH, inputShared } from '../input/input.shared'
 import type { MaskInputProps } from './mask-input.types'
 
 function MaskInput({
@@ -11,7 +11,9 @@ function MaskInput({
   value,
   defaultValue,
   leftSection,
+  leftSectionWidth = DEFAULT_SECTION_WIDTH,
   rightSection,
+  rightSectionWidth = DEFAULT_SECTION_WIDTH,
   loading,
   rootClassName,
   className,
@@ -22,11 +24,7 @@ function MaskInput({
   const hasLeft = Boolean(leftSection)
   const hasRight = Boolean(effectiveRight)
 
-  const { root, field, section } = inputShared({
-    hasLeft,
-    hasRight,
-    size,
-  })
+  const { root, field, section } = inputShared({ size })
 
   const maskOptions = Array.isArray(mask)
     ? mask.map((m) => ({
@@ -44,9 +42,10 @@ function MaskInput({
       {hasLeft && (
         <span
           className={section({
-            className: 'left-2.5',
+            className: 'pointer-events-auto left-0 justify-center',
           })}
           data-testid="mask-input-section-left"
+          style={{ width: leftSectionWidth }}
         >
           {leftSection}
         </span>
@@ -60,14 +59,19 @@ function MaskInput({
         defaultValue={defaultValue ?? undefined}
         mask={maskOptions as string}
         onAccept={(val: string) => onChange?.(val === '' ? null : val)}
+        style={{
+          ...(hasLeft ? { paddingLeft: leftSectionWidth } : {}),
+          ...(hasRight ? { paddingRight: rightSectionWidth } : {}),
+        }}
         value={value ?? ''}
       />
       {hasRight && (
         <span
           className={section({
-            className: 'right-2.5',
+            className: 'right-0 justify-center',
           })}
           data-testid="mask-input-section-right"
+          style={{ width: rightSectionWidth }}
         >
           {effectiveRight}
         </span>
