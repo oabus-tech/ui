@@ -1,26 +1,15 @@
 import { useState } from 'react'
 import { IMaskInput } from 'react-imask'
-import { tv } from 'tailwind-variants'
 
 import { DropdownMenu } from '@/components/dropdown-menu'
-import { inputShared } from '@/components/input/input.shared'
+import {
+  DEFAULT_SECTION_WIDTH,
+  inputShared,
+} from '@/components/input/input.shared'
 
 import type { Currency, CurrencyInputProps } from './currency-input.types'
 
-const currencyInput = tv({
-  extend: inputShared,
-  slots: {
-    field: 'currency-input-field',
-    root: 'currency-input-root',
-    section: 'currency-input-section',
-    variantTrigger: [
-      'currency-input-variant-trigger flex items-center gap-1 font-medium text-sm',
-      'pointer-events-auto outline-none',
-      'hover:text-foreground focus-visible:ring-0',
-      'disabled:cursor-not-allowed disabled:opacity-50',
-    ],
-  },
-})
+const RIGHT_SECTION_WIDTH = 52
 
 type CurrencyConfig = {
   symbol: string
@@ -83,11 +72,7 @@ function CurrencyInput({
   const config = CURRENCY_CONFIGS[activeCurrency]
 
   const hasRight = variant === 'any'
-  const { root, field, section, variantTrigger } = currencyInput({
-    hasLeft: true,
-    hasRight,
-    size,
-  })
+  const { root, field, section } = inputShared({ size })
 
   return (
     <div
@@ -96,9 +81,10 @@ function CurrencyInput({
     >
       <span
         className={section({
-          className: 'left-2.5',
+          className: 'left-0 justify-center',
         })}
         data-testid="currency-input-section-left"
+        style={{ width: DEFAULT_SECTION_WIDTH }}
       >
         {config.symbol}
       </span>
@@ -118,6 +104,10 @@ function CurrencyInput({
         placeholder={placeholder}
         radix={config.radix}
         scale={2}
+        style={{
+          paddingLeft: DEFAULT_SECTION_WIDTH,
+          ...(hasRight ? { paddingRight: RIGHT_SECTION_WIDTH } : {}),
+        }}
         thousandsSeparator={config.thousandsSeparator}
         value={
           value !== null && value !== undefined
@@ -128,14 +118,15 @@ function CurrencyInput({
       {variant === 'any' && (
         <span
           className={section({
-            className: 'right-2.5',
+            className: 'pointer-events-auto right-0 justify-center',
           })}
           data-testid="currency-input-section-right"
+          style={{ width: RIGHT_SECTION_WIDTH }}
         >
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
               <button
-                className={variantTrigger()}
+                className="text-sm font-medium outline-none hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 data-testid="currency-input-variant-trigger"
                 disabled={disabled}
                 type="button"
@@ -154,12 +145,13 @@ function CurrencyInput({
                   'eur',
                 ] as Currency[]
               ).map((c) => (
-                <DropdownMenu.Item
+                <DropdownMenu.CheckboxItem
                   key={c}
-                  onClick={() => setInternalCurrency(c)}
+                  checked={internalCurrency === c}
+                  onCheckedChange={() => setInternalCurrency(c)}
                 >
                   {CURRENCY_CONFIGS[c].label}
-                </DropdownMenu.Item>
+                </DropdownMenu.CheckboxItem>
               ))}
             </DropdownMenu.Content>
           </DropdownMenu>

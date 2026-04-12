@@ -1,16 +1,7 @@
 import { tv } from 'tailwind-variants'
 
-/**
- * Shared base styles for Input-like components.
- * Extend this in components that render a standalone bordered input field
- * (Input, MaskInput, CurrencyInput, etc.).
- *
- * Usage:
- *   const myInput = tv({
- *     extend: inputShared,
- *     slots: { root: 'my-root', field: 'my-field', section: 'my-section' },
- *   })
- */
+export const DEFAULT_SECTION_WIDTH = 36
+
 export const inputShared = tv({
   defaultVariants: {
     size: 'md',

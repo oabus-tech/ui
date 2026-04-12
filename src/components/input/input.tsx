@@ -3,9 +3,8 @@ import { tv } from 'tailwind-variants'
 
 import { Loader } from '@/components/loader'
 
+import { DEFAULT_SECTION_WIDTH } from './input.shared'
 import type { InputProps } from './input.types'
-
-const DEFAULT_SECTION_WIDTH = 36
 
 const input = tv({
   defaultVariants: {
