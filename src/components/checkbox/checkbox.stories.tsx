@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 
 import { Checkbox } from './checkbox'
 
@@ -60,51 +61,55 @@ export const Large: Story = {
 }
 
 export const Group: Story = {
-  render: () => (
-    <Checkbox.Group
-      items={[
-        {
-          label: 'React',
-          value: 'react',
-        },
-        {
-          label: 'Vue',
-          value: 'vue',
-        },
-        {
-          disabled: true,
-          label: 'Svelte',
-          value: 'svelte',
-        },
-      ]}
-      onChange={() => {}}
-      value={[
-        'react',
-      ]}
-    />
-  ),
+  render: () => {
+    const [value, setValue] = useState(['react'])
+    return (
+      <Checkbox.Group
+        items={[
+          {
+            label: 'React',
+            value: 'react',
+          },
+          {
+            label: 'Vue',
+            value: 'vue',
+          },
+          {
+            disabled: true,
+            label: 'Svelte',
+            value: 'svelte',
+          },
+        ]}
+        onChange={setValue}
+        value={value}
+      />
+    )
+  },
 }
 
 export const HorizontalGroup: Story = {
-  render: () => (
-    <Checkbox.Group
-      items={[
-        {
-          label: 'Option A',
-          value: 'a',
-        },
-        {
-          label: 'Option B',
-          value: 'b',
-        },
-        {
-          label: 'Option C',
-          value: 'c',
-        },
-      ]}
-      onChange={() => {}}
-      value={[]}
-      variant="horizontal"
-    />
-  ),
+  render: () => {
+    const [value, setValue] = useState<string[]>([])
+    return (
+      <Checkbox.Group
+        items={[
+          {
+            label: 'Option A',
+            value: 'a',
+          },
+          {
+            label: 'Option B',
+            value: 'b',
+          },
+          {
+            label: 'Option C',
+            value: 'c',
+          },
+        ]}
+        onChange={setValue}
+        value={value}
+        variant="horizontal"
+      />
+    )
+  },
 }

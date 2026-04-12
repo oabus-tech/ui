@@ -74,7 +74,7 @@ function Badge({
 
   return (
     <span
-      className={root()}
+      className={root({ className: onClick ? 'cursor-pointer' : undefined })}
       data-testid="badge"
       onClick={onClick}
     >

@@ -24,12 +24,18 @@ const switchStyles = tv({
       'data-checked:translate-x-[calc(100%-2px)] data-unchecked:translate-x-0',
       'dark:data-checked:bg-primary-foreground dark:data-unchecked:bg-foreground',
     ],
-    wrapper: 'switch-wrapper flex items-start gap-3',
+    wrapper: 'switch-wrapper flex cursor-pointer items-center gap-3',
   },
   variants: {
     bordered: {
       true: {
         wrapper: 'rounded-lg border border-input px-3 py-2.5',
+      },
+    },
+    hasDescription: {
+      true: {
+        root: 'mt-px',
+        wrapper: 'items-start',
       },
     },
     size: {
@@ -60,6 +66,7 @@ function Switch({
   disabled,
   onCheckedChange,
 }: SwitchProps) {
+  const hasDescription = Boolean(description)
   const {
     wrapper,
     root,
@@ -68,6 +75,7 @@ function Switch({
     description: descCls,
   } = switchStyles({
     bordered,
+    hasDescription,
     size,
   })
 
@@ -76,7 +84,7 @@ function Switch({
   const hasContent = Boolean(labelText || description)
 
   return (
-    <div
+    <label
       className={wrapper()}
       data-testid="switch-wrapper"
     >
@@ -151,7 +159,7 @@ function Switch({
           )}
         </div>
       )}
-    </div>
+    </label>
   )
 }
 

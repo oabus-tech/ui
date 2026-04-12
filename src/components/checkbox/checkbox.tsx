@@ -19,12 +19,18 @@ const checkbox = tv({
       'dark:bg-input/30 dark:data-checked:bg-primary',
     ],
     indicator: 'checkbox-indicator grid place-content-center text-current',
-    root: 'checkbox-root flex items-start gap-2',
+    root: 'checkbox-root flex cursor-pointer items-center gap-2',
   },
   variants: {
     bordered: {
       true: {
-        root: 'w-full cursor-pointer select-none rounded-md border p-3 hover:bg-muted/50 has-disabled:cursor-not-allowed has-disabled:opacity-50',
+        root: 'w-full select-none rounded-md border p-3 hover:bg-muted/50 has-disabled:cursor-not-allowed has-disabled:opacity-50',
+      },
+    },
+    hasDescription: {
+      true: {
+        box: 'mt-px',
+        root: 'items-start',
       },
     },
     size: {
@@ -68,13 +74,15 @@ function CheckboxRoot({
   value,
   onChange,
 }: CheckboxProps) {
+  const hasDescription = Boolean(description)
   const { root, box, indicator } = checkbox({
     bordered,
+    hasDescription,
     size,
   })
 
   return (
-    <div
+    <label
       className={root()}
       data-testid="checkbox-root"
     >
@@ -99,14 +107,16 @@ function CheckboxRoot({
       {(label || description) && (
         <div className="flex flex-col gap-0.5">
           {label && (
-            <span className="font-medium text-sm leading-none">{label}</span>
+            <span className="cursor-pointer font-medium text-sm leading-none">
+              {label}
+            </span>
           )}
           {description && (
             <span className="text-muted-foreground text-xs">{description}</span>
           )}
         </div>
       )}
-    </div>
+    </label>
   )
 }
 

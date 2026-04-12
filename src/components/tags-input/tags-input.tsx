@@ -5,6 +5,7 @@ import { tv } from 'tailwind-variants'
 import { Badge } from '@/components/badge'
 
 import type { TagsInputProps } from './tags-input.types'
+import { Button } from '../button'
 
 const tagsInput = tv({
   slots: {
@@ -93,19 +94,15 @@ function TagsInput({
         <Badge
           key={`${tag}-${i}`}
           variant="secondary"
+          onClick={(e) => {
+            e.stopPropagation()
+            removeTag(i)
+          }}
         >
-          {tag}
-          <button
-            className={removeBtn()}
-            data-testid="tags-input-remove"
-            onClick={(e) => {
-              e.stopPropagation()
-              removeTag(i)
-            }}
-            type="button"
-          >
-            <X size={10} />
-          </button>
+          <span className="flex items-center gap-1">
+            {tag}
+            <X size={12} />
+          </span>
         </Badge>
       ))}
       <input
