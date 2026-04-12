@@ -426,6 +426,26 @@ Após cada componente confirme: `✅ <nome>.tsx — Tipo A/B — refatorado.`
 
 ---
 
+## Aprendizados de implementação
+
+### DayPicker / Calendar
+
+- **NÃO passar `modifiers: { today: true }`** — rdp trata `true` como Matcher que combina com TODOS os dias. Resultado: todos os dias ficam com highlight de "today". O correto: não passar nada quando `highlightToday=true` (rdp usa default), passar `{ today: false }` quando quer desabilitar.
+- **ButtonPrimitive em vez de Button wrapper** — nosso Button não aceita `className` nem `data-*` attrs arbitrários. Para componentes que precisam de controle total sobre classes e atributos (como CalendarDayButton), usar `ButtonPrimitive` do `@base-ui/react/button` diretamente.
+- **Spread antes do className** — quando um componente recebe `className` via props e precisa mergear com classes internas, o `{...props}` deve vir ANTES do `className` no JSX, senão o spread sobrescreve.
+- **getDefaultClassNames()** do rdp retorna apenas nomes de classe rdp (`rdp-day`, `rdp-root`, etc.) sem estilos Tailwind. O merge via `cn()` é seguro e necessário pra rdp funcionar internamente.
+
+### Input className
+
+- `className` no Input precisa ser desestruturado separadamente do `...props` e aplicado via `field({ className })`. Se ficar dentro do rest props, o spread `{...props}` no `<input>` sobrescreve o className que já foi montado.
+
+### Section width
+
+- Não usar abstração (helper function) pra section styles — inline direto é mais claro. Cada componente sabe seu width.
+- `pointer-events-auto` obrigatório em ambas sections (left e right) do Input pra elementos interativos ficarem clicáveis.
+
+---
+
 ## Verificação final
 
 1. Confirme que `tailwind-variants` está em `package.json`
