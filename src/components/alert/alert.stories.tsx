@@ -63,7 +63,10 @@ export const WithAction: Story = {
         A new version is available. Update now to get the latest features.
       </Alert.Description>
       <Alert.Action>
-        <Button size="sm" variant="outline">
+        <Button
+          size="sm"
+          variant="outline"
+        >
           Update
         </Button>
       </Alert.Action>
@@ -87,7 +90,10 @@ export const Closable: Story = {
 
 export const ClosableDestructive: Story = {
   render: () => (
-    <Alert closable variant="destructive">
+    <Alert
+      closable
+      variant="destructive"
+    >
       <Alert.Icon>
         <AlertCircle />
       </Alert.Icon>
