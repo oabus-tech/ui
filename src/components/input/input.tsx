@@ -5,6 +5,7 @@ import { Loader } from '@/components/loader'
 
 import { DEFAULT_SECTION_WIDTH } from './input.shared'
 import type { InputProps } from './input.types'
+import { cn } from '@/support/utils'
 
 const input = tv({
   defaultVariants: {
@@ -51,6 +52,7 @@ function Input({
   loading,
   debounce,
   rootClassName,
+  className,
   onChange,
   type = 'text',
   ...props
@@ -90,11 +92,11 @@ function Input({
   const controlledProps =
     value !== undefined
       ? {
-          value: value ?? '',
-        }
+        value: value ?? '',
+      }
       : {
-          defaultValue: defaultValue ?? undefined,
-        }
+        defaultValue: defaultValue ?? undefined,
+      }
 
   return (
     <div
@@ -115,7 +117,6 @@ function Input({
         </span>
       )}
       <input
-        className={field()}
         data-slot="input"
         data-testid="input-field"
         onChange={handleChange}
@@ -123,6 +124,7 @@ function Input({
         type={type}
         {...controlledProps}
         {...props}
+        className={cn(field({ className }), className ?? '')}
       />
       {hasRight && (
         <span
