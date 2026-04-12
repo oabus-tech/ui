@@ -26,6 +26,7 @@ export type SliderOrientation = 'horizontal' | 'vertical'
 export type SliderSize = 'sm' | 'md' | 'lg'
 
 type BaseSliderProps = {
+  disabled?: boolean // prevents interaction
   orientation: SliderOrientation // track direction (required)
   size?: SliderSize // visual size of track and thumb
 }
