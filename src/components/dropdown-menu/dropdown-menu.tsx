@@ -1,7 +1,7 @@
-import { Menu } from '@base-ui/react/menu'
-import { CheckIcon } from 'lucide-react'
-import { isValidElement, type PropsWithChildren } from 'react'
-import { tv } from 'tailwind-variants'
+import { Menu } from "@base-ui/react/menu";
+import { CheckIcon, ChevronRightIcon } from "lucide-react";
+import { isValidElement, type PropsWithChildren } from "react";
+import { tv } from "tailwind-variants";
 
 import type {
   DropdownMenuCheckboxItemProps,
@@ -11,72 +11,65 @@ import type {
   DropdownMenuProps,
   DropdownMenuRadioGroupProps,
   DropdownMenuRadioItemProps,
+  DropdownMenuSubContentProps,
+  DropdownMenuSubProps,
+  DropdownMenuSubTriggerProps,
   DropdownMenuTriggerProps,
-} from './dropdown-menu.types'
-import { cn } from '@/support/utils'
+} from "./dropdown-menu.types";
 
-const dropdownMenu = tv({
-  slots: {
-    popup: [
-      'dropdown-menu-popup w-40 z-50 max-h-(--available-height) w-(--anchor-width) min-w-32 origin-(--transform-origin)',
-      'overflow-x-hidden overflow-y-auto rounded-lg bg-popover p-1 text-popover-foreground',
-      'shadow-md ring-1 ring-foreground/10 duration-100 outline-none',
-      'data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2',
-      'data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-      'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
-      'data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-95',
-    ],
-    item: [
-      "dropdown-menu-item group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none",
-      "focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground",
-      "data-inset:pl-7",
-      "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20",
-      "data-disabled:pointer-events-none data-disabled:opacity-50",
-      "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive",
-    ],
-    checkboxItem: [
-      "dropdown-menu-checkbox-item relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none",
-      "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground",
-      "data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50",
-      "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-    ],
-    radioItem: [
-      "dropdown-menu-radio-item relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none",
-      "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground",
-      "data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50",
-      "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-    ],
-    indicator:
-      'dropdown-menu-indicator pointer-events-none absolute right-2 flex items-center justify-center',
-    label:
-      'dropdown-menu-label px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7',
-    separator: 'dropdown-menu-separator -mx-1 my-1 h-px bg-border',
-    shortcut:
-      'dropdown-menu-shortcut ml-auto text-xs tracking-widest text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground',
+const styles = tv({
+  defaultVariants: {
+    variant: "default",
   },
-})
-
-const {
-  popup,
-  item,
-  checkboxItem,
-  radioItem,
-  indicator,
-  label,
-  separator,
-  shortcut,
-} = dropdownMenu()
+  slots: {
+    checkboxItem:
+      'relative flex cursor-default select-none items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+    indicator:
+      "pointer-events-none absolute right-2 flex items-center justify-center",
+    item: 'group/dropdown-menu-item relative flex cursor-default select-none items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+    label: "px-1.5 py-1 font-medium text-muted-foreground text-xs",
+    popup:
+      "data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--available-height) w-(--anchor-width) min-w-32 origin-(--transform-origin) overflow-y-auto overflow-x-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md outline-none ring-1 ring-foreground/10 duration-100 data-closed:animate-out data-open:animate-in data-closed:overflow-hidden",
+    positioner: "isolate z-50 outline-none",
+    radioItem:
+      'relative flex cursor-default select-none items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+    separator: "-mx-1 my-1 h-px bg-border",
+    shortcut:
+      "ml-auto text-muted-foreground text-xs tracking-widest group-focus/dropdown-menu-item:text-accent-foreground",
+    subPopup:
+      "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--available-height) w-auto min-w-24 origin-(--transform-origin) overflow-y-auto overflow-x-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md outline-none ring-1 ring-foreground/10 duration-100 data-closed:animate-out data-open:animate-in",
+    subTrigger:
+      'flex cursor-default select-none items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+    subTriggerIcon: "ml-auto size-4",
+  },
+  variants: {
+    inset: {
+      true: {
+        label: "pl-7",
+        subTrigger: "pl-7",
+      },
+    },
+    variant: {
+      default: {
+        item: "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground",
+      },
+      destructive: {
+        item: "text-destructive focus:bg-destructive/10 focus:text-destructive dark:focus:bg-destructive/20 [&_svg]:text-destructive",
+      },
+    },
+  },
+});
 
 function DropdownMenuRoot({
-  open,
-  onOpenChange,
   children,
+  onOpenChange,
+  open,
 }: PropsWithChildren<DropdownMenuProps>) {
   return (
     <Menu.Root onOpenChange={onOpenChange} open={open}>
       {children}
     </Menu.Root>
-  )
+  );
 }
 
 function DropdownMenuTrigger({
@@ -84,153 +77,189 @@ function DropdownMenuTrigger({
   children,
 }: PropsWithChildren<DropdownMenuTriggerProps>) {
   if (asChild && isValidElement(children)) {
-    return <Menu.Trigger render={children} />
+    return <Menu.Trigger render={children} />;
   }
-  return <Menu.Trigger>{children}</Menu.Trigger>
+  return <Menu.Trigger>{children}</Menu.Trigger>;
 }
 
 function DropdownMenuContent({
-  width,
-  side = 'bottom',
-  align = 'start',
-  sideOffset = 4,
+  align = "start",
   children,
+  side = "bottom",
+  sideOffset = 4,
+  width,
 }: PropsWithChildren<DropdownMenuContentProps>) {
+  const s = styles();
   return (
     <Menu.Portal>
       <Menu.Positioner
         align={align}
-        className="isolate z-50 outline-none"
+        className={s.positioner()}
         side={side}
         sideOffset={sideOffset}
       >
         <Menu.Popup
-          className={popup()}
-          data-testid="dropdown-menu-popup"
-          style={width ? { width } : undefined}
+          className={s.popup()}
+          style={
+            width
+              ? {
+                  width,
+                }
+              : undefined
+          }
         >
           {children}
         </Menu.Popup>
       </Menu.Positioner>
     </Menu.Portal>
-  )
+  );
 }
 
 function DropdownMenuItem({
-  variant = 'default',
+  asChild,
+  children,
   disabled,
   onClick,
-  children,
+  variant = "default",
 }: PropsWithChildren<DropdownMenuItemProps>) {
+  const s = styles({
+    variant,
+  });
+
+  if (asChild && isValidElement(children)) {
+    return (
+      <Menu.Item
+        className={s.item()}
+        disabled={disabled}
+        onClick={onClick}
+        render={children}
+      />
+    );
+  }
+
   return (
-    <Menu.Item
-      className={item()}
-      data-testid="dropdown-menu-item"
-      data-variant={variant}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <Menu.Item className={s.item()} disabled={disabled} onClick={onClick}>
       {children}
     </Menu.Item>
-  )
+  );
 }
 
 function DropdownMenuCheckboxItem({
   checked,
+  children,
   disabled,
   onCheckedChange,
-  children,
 }: PropsWithChildren<DropdownMenuCheckboxItemProps>) {
+  const s = styles();
   return (
     <Menu.CheckboxItem
       checked={checked}
-      className={checkboxItem()}
-      data-testid="dropdown-menu-checkbox-item"
+      className={s.checkboxItem()}
       disabled={disabled}
       onCheckedChange={onCheckedChange}
     >
-      <span className={indicator()} data-testid="dropdown-menu-indicator">
+      <span className={s.indicator()}>
         <Menu.CheckboxItemIndicator>
           <CheckIcon />
         </Menu.CheckboxItemIndicator>
       </span>
       {children}
     </Menu.CheckboxItem>
-  )
+  );
 }
 
 function DropdownMenuRadioGroup({
-  value,
-  onValueChange,
   children,
+  onValueChange,
+  value,
 }: PropsWithChildren<DropdownMenuRadioGroupProps>) {
   return (
-    <Menu.RadioGroup
-      data-testid="dropdown-menu-radio-group"
-      onValueChange={onValueChange}
-      value={value}
-    >
+    <Menu.RadioGroup onValueChange={onValueChange} value={value}>
       {children}
     </Menu.RadioGroup>
-  )
+  );
 }
 
 function DropdownMenuRadioItem({
-  value,
-  disabled,
   children,
+  disabled,
+  value,
 }: PropsWithChildren<DropdownMenuRadioItemProps>) {
+  const s = styles();
   return (
-    <Menu.RadioItem
-      className={radioItem()}
-      data-testid="dropdown-menu-radio-item"
-      disabled={disabled}
-      value={value}
-    >
-      <span className={indicator()} data-testid="dropdown-menu-indicator">
+    <Menu.RadioItem className={s.radioItem()} disabled={disabled} value={value}>
+      <span className={s.indicator()}>
         <Menu.RadioItemIndicator>
           <CheckIcon />
         </Menu.RadioItemIndicator>
       </span>
       {children}
     </Menu.RadioItem>
-  )
+  );
 }
 
 function DropdownMenuLabel({
-  inset,
   children,
+  inset,
 }: PropsWithChildren<DropdownMenuLabelProps>) {
-  return (
-    <Menu.GroupLabel
-      className={label()}
-      data-inset={inset || undefined}
-      data-testid="dropdown-menu-label"
-    >
-      {children}
-    </Menu.GroupLabel>
-  )
+  const s = styles({
+    inset,
+  });
+  return <Menu.GroupLabel className={s.label()}>{children}</Menu.GroupLabel>;
 }
 
 function DropdownMenuSeparator() {
-  return (
-    <Menu.Separator
-      className={separator()}
-      data-testid="dropdown-menu-separator"
-    />
-  )
+  const s = styles();
+  return <Menu.Separator className={s.separator()} />;
 }
 
 function DropdownMenuShortcut({ children }: PropsWithChildren) {
-  return (
-    <span className={shortcut()} data-testid="dropdown-menu-shortcut">
-      {children}
-    </span>
-  )
+  const s = styles();
+  return <span className={s.shortcut()}>{children}</span>;
 }
 
 function DropdownMenuGroup({ children }: PropsWithChildren) {
-  return <Menu.Group data-testid="dropdown-menu-group">{children}</Menu.Group>
+  return <Menu.Group>{children}</Menu.Group>;
+}
+
+function DropdownMenuSub({
+  children,
+}: PropsWithChildren<DropdownMenuSubProps>) {
+  return <Menu.SubmenuRoot>{children}</Menu.SubmenuRoot>;
+}
+
+function DropdownMenuSubTrigger({
+  children,
+  inset,
+}: PropsWithChildren<DropdownMenuSubTriggerProps>) {
+  const s = styles({
+    inset,
+  });
+  return (
+    <Menu.SubmenuTrigger className={s.subTrigger()}>
+      {children}
+      <ChevronRightIcon className={s.subTriggerIcon()} />
+    </Menu.SubmenuTrigger>
+  );
+}
+
+function DropdownMenuSubContent({
+  children,
+}: PropsWithChildren<DropdownMenuSubContentProps>) {
+  const s = styles();
+  return (
+    <Menu.Portal>
+      <Menu.Positioner
+        align="start"
+        alignOffset={-3}
+        className={s.positioner()}
+        side="right"
+        sideOffset={0}
+      >
+        <Menu.Popup className={s.subPopup()}>{children}</Menu.Popup>
+      </Menu.Positioner>
+    </Menu.Portal>
+  );
 }
 
 const DropdownMenu = Object.assign(DropdownMenuRoot, {
@@ -244,6 +273,6 @@ const DropdownMenu = Object.assign(DropdownMenuRoot, {
   Separator: DropdownMenuSeparator,
   Shortcut: DropdownMenuShortcut,
   Trigger: DropdownMenuTrigger,
-})
+});
 
-export { DropdownMenu }
+export { DropdownMenu };

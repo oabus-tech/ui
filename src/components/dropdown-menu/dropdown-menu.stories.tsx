@@ -30,7 +30,7 @@ export const Default: Story = {
       <DropdownMenu.Trigger asChild>
         <Button variant="outline">Open Menu</Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <DropdownMenu.Content width={200}>
         <DropdownMenu.Group>
           <DropdownMenu.Label>My Account</DropdownMenu.Label>
         </DropdownMenu.Group>
@@ -48,7 +48,7 @@ export const Default: Story = {
           <DropdownMenu.Shortcut>⌘S</DropdownMenu.Shortcut>
         </DropdownMenu.Item>
         <DropdownMenu.Item>
-          <Keyboard /> Keyboard Shortcuts 
+          <Keyboard /> Keyboard Shortcuts
           <DropdownMenu.Shortcut>⌘K</DropdownMenu.Shortcut>
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
