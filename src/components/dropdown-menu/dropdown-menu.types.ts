@@ -9,7 +9,6 @@
  * - Items: clickable actions with optional icon and destructive variant (red text)
  * - CheckboxItem: toggleable with check indicator
  * - RadioGroup + RadioItem: single-select within group with dot indicator
- * - Sub-menus: hover/click SubTrigger opens SubContent (ChevronRight icon)
  * - Shortcut: right-aligned keyboard shortcut text
  * - Label: non-interactive section header (inset variant for alignment)
  * - Separator: horizontal divider between groups
