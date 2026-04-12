@@ -1,7 +1,6 @@
-import type { PropsWithChildren } from 'react'
-
 import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type {
@@ -12,34 +11,34 @@ import type {
 } from './accordion.types'
 
 const accordion = tv({
+  defaultVariants: {
+    bordered: false,
+  },
   slots: {
-    root: 'accordion-root flex w-full flex-col',
-    item: 'accordion-item',
+    contentInner:
+      'accordion-content-inner h-(--accordion-panel-height) pt-0 pb-2.5 data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4',
     header: 'accordion-header flex',
+    item: 'accordion-item',
+    panel:
+      'accordion-panel overflow-hidden text-sm data-closed:animate-accordion-up data-open:animate-accordion-down',
+    root: 'accordion-root flex w-full flex-col',
     trigger:
       'accordion-trigger group/accordion-trigger relative flex flex-1 cursor-pointer items-start justify-between rounded-lg border border-transparent py-2.5 text-left font-medium text-sm outline-none transition-all hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-disabled:pointer-events-none aria-disabled:opacity-50',
     triggerIconDown:
       'accordion-trigger-icon pointer-events-none ml-auto size-4 shrink-0 text-muted-foreground group-aria-expanded/accordion-trigger:hidden',
     triggerIconUp:
       'accordion-trigger-icon pointer-events-none ml-auto hidden size-4 shrink-0 text-muted-foreground group-aria-expanded/accordion-trigger:inline',
-    panel:
-      'accordion-panel overflow-hidden text-sm data-closed:animate-accordion-up data-open:animate-accordion-down',
-    contentInner:
-      'accordion-content-inner h-(--accordion-panel-height) pt-0 pb-2.5 data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4',
   },
   variants: {
     bordered: {
-      true: {
-        root: 'rounded-lg border',
-        item: 'border-b px-3 last:border-b-0',
-      },
       false: {
         item: 'not-last:border-b',
       },
+      true: {
+        item: 'border-b px-3 last:border-b-0',
+        root: 'rounded-lg border',
+      },
     },
-  },
-  defaultVariants: {
-    bordered: false,
   },
 })
 
@@ -49,19 +48,25 @@ function AccordionRoot({
   children,
   ...props
 }: PropsWithChildren<AccordionProps>) {
-  const { root } = accordion({ bordered })
+  const { root } = accordion({
+    bordered,
+  })
 
   const multiple = type === 'multiple'
 
   const handleValueChange = (newValue: unknown[]) => {
     if (type === 'single') {
-      ;(props as { onChange?: (v: string) => void }).onChange?.(
-        (newValue as string[])[0],
-      )
+      ;(
+        props as {
+          onChange?: (v: string) => void
+        }
+      ).onChange?.((newValue as string[])[0])
     } else {
-      ;(props as { onChange?: (v: string[]) => void }).onChange?.(
-        newValue as string[],
-      )
+      ;(
+        props as {
+          onChange?: (v: string[]) => void
+        }
+      ).onChange?.(newValue as string[])
     }
   }
 
@@ -69,7 +74,9 @@ function AccordionRoot({
     type === 'single'
       ? props.value !== undefined
         ? props.value
-          ? [props.value]
+          ? [
+              props.value,
+            ]
           : []
         : undefined
       : props.value
@@ -78,19 +85,21 @@ function AccordionRoot({
     type === 'single'
       ? props.defaultValue !== undefined
         ? props.defaultValue
-          ? [props.defaultValue]
+          ? [
+              props.defaultValue,
+            ]
           : []
         : undefined
       : props.defaultValue
 
   return (
     <AccordionPrimitive.Root
-      data-testid="accordion-root"
       className={root()}
-      multiple={multiple}
-      value={value as string[]}
+      data-testid="accordion-root"
       defaultValue={defaultValue as string[]}
+      multiple={multiple}
       onValueChange={handleValueChange}
+      value={value as string[]}
     >
       {children}
     </AccordionPrimitive.Root>
@@ -106,10 +115,10 @@ function AccordionItem({
 
   return (
     <AccordionPrimitive.Item
-      data-testid="accordion-item"
       className={item()}
-      value={value}
+      data-testid="accordion-item"
       disabled={disabled}
+      value={value}
     >
       {children}
     </AccordionPrimitive.Item>
@@ -124,8 +133,8 @@ function AccordionTrigger({
   return (
     <AccordionPrimitive.Header className={header()}>
       <AccordionPrimitive.Trigger
-        data-testid="accordion-trigger"
         className={trigger()}
+        data-testid="accordion-trigger"
       >
         {children}
         <ChevronDown className={triggerIconDown()} />
@@ -142,10 +151,13 @@ function AccordionContent({
 
   return (
     <AccordionPrimitive.Panel
-      data-testid="accordion-panel"
       className={panel()}
+      data-testid="accordion-panel"
     >
-      <div data-testid="accordion-content-inner" className={contentInner()}>
+      <div
+        className={contentInner()}
+        data-testid="accordion-content-inner"
+      >
         {children}
       </div>
     </AccordionPrimitive.Panel>

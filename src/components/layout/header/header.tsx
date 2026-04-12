@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import type { LayoutHeaderProps } from './header.types'
@@ -32,7 +31,11 @@ function LayoutHeader({
 }: PropsWithChildren<LayoutHeaderProps>) {
   return (
     <header
-      className={styles({ bordered, size, sticky })}
+      className={styles({
+        bordered,
+        size,
+        sticky,
+      })}
       data-testid="layout-header"
     >
       {children}

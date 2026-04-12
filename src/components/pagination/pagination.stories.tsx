@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react-vite'
-import { useState } from 'react'  
+import { useState } from 'react'
 
 import { Pagination } from './pagination'
 
@@ -33,9 +33,9 @@ export const Cursor = {
     const [rowsPerPage, setRowsPerPage] = useState(20)
     return (
       <Pagination
-        mode="cursor"
         hasNextPage={page < 4}
         hasPreviousPage={page > 0}
+        mode="cursor"
         onNextPage={() => setPage((p) => p + 1)}
         onPreviousPage={() => setPage((p) => p - 1)}
         onRowsPerPageChange={setRowsPerPage}
@@ -50,9 +50,9 @@ export const CursorWithoutRowsPerPage = {
     const [page, setPage] = useState(0)
     return (
       <Pagination
-        mode="cursor"
         hasNextPage={page < 4}
         hasPreviousPage={page > 0}
+        mode="cursor"
         onNextPage={() => setPage((p) => p + 1)}
         onPreviousPage={() => setPage((p) => p - 1)}
         rowsPerPage={10}

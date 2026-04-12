@@ -40,7 +40,10 @@ function DateRangeInput({
   const selectedRange = isControlled ? value : internalRange
 
   const handleSelect = (
-    range: { from?: Date; to?: Date } | null,
+    range: {
+      from?: Date
+      to?: Date
+    } | null,
   ) => {
     if (!isControlled) {
       setInternalRange(range)

@@ -21,9 +21,7 @@ export const Default: Story = {
 export const Centered: Story = {
   args: {
     centered: true,
-    children: (
-      <div className="rounded bg-muted p-4">Centered container</div>
-    ),
+    children: <div className="rounded bg-muted p-4">Centered container</div>,
     maxWidth: 'md',
   },
 }
@@ -41,9 +39,7 @@ export const WithMaxWidth: Story = {
 
 export const FullWidth: Story = {
   args: {
-    children: (
-      <div className="rounded bg-muted p-4">Full width container</div>
-    ),
+    children: <div className="rounded bg-muted p-4">Full width container</div>,
     maxWidth: 'full',
   },
 }

@@ -13,6 +13,15 @@ import type {
 } from './modal.types'
 
 const styles = tv({
+  compoundVariants: [
+    {
+      bordered: true,
+      class: {
+        footer: 'border-t pt-4',
+        header: 'border-b pb-4',
+      },
+    },
+  ],
   slots: {
     backdrop: [
       'modal-backdrop fixed inset-0 isolate z-50 bg-black/50',
@@ -38,15 +47,6 @@ const styles = tv({
       true: {},
     },
   },
-  compoundVariants: [
-    {
-      bordered: true,
-      class: {
-        footer: 'border-t pt-4',
-        header: 'border-b pb-4',
-      },
-    },
-  ],
 })
 
 function ModalRoot({
@@ -81,7 +81,9 @@ function ModalHeader({
   closable,
   bordered,
 }: PropsWithChildren<ModalHeaderProps>) {
-  const { header, headerContent } = styles({ bordered })
+  const { header, headerContent } = styles({
+    bordered,
+  })
   return (
     <div
       className={header()}
@@ -146,7 +148,9 @@ function ModalFooter({
   children,
   bordered,
 }: PropsWithChildren<ModalFooterProps>) {
-  const { footer } = styles({ bordered })
+  const { footer } = styles({
+    bordered,
+  })
   return (
     <div
       className={footer()}

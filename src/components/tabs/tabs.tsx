@@ -1,6 +1,5 @@
-import type { PropsWithChildren } from 'react'
-
 import { Tabs as TabsPrimitive } from '@base-ui/react/tabs'
+import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type {
@@ -11,32 +10,32 @@ import type {
 } from './tabs.types'
 
 const tabs = tv({
+  defaultVariants: {
+    orientation: 'horizontal',
+  },
   slots: {
-    root: 'tabs-root flex gap-2',
-    list: 'tabs-list inline-flex w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground',
-    trigger:
-      'tabs-trigger relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-transparent px-1.5 py-0.5 font-medium text-foreground/60 text-sm transition-all hover:text-foreground focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-active:bg-background data-active:text-foreground data-active:shadow-sm dark:text-muted-foreground dark:hover:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground [&_svg:not([class*=size-])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
     content: 'tabs-content flex-1 text-sm outline-none',
+    list: 'tabs-list inline-flex w-fit items-center justify-center rounded-lg bg-muted p-[3px] text-muted-foreground',
+    root: 'tabs-root flex gap-2',
+    trigger:
+      'tabs-trigger relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-transparent px-1.5 py-0.5 font-medium text-foreground/60 text-sm transition-all hover:text-foreground focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-active:bg-background data-active:text-foreground data-active:shadow-sm dark:text-muted-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground dark:hover:text-foreground [&_svg:not([class*=size-])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   },
   variants: {
+    justified: {
+      true: {
+        list: 'w-full',
+      },
+    },
     orientation: {
       horizontal: {
-        root: 'flex-col',
         list: 'h-8',
+        root: 'flex-col',
       },
       vertical: {
         list: 'h-fit flex-col',
         trigger: 'w-full justify-start',
       },
     },
-    justified: {
-      true: {
-        list: 'w-full',
-      },
-    },
-  },
-  defaultVariants: {
-    orientation: 'horizontal',
   },
 })
 
@@ -47,32 +46,33 @@ function TabsRoot({
   onChange,
   children,
 }: PropsWithChildren<TabsProps>) {
-  const { root } = tabs({ orientation })
+  const { root } = tabs({
+    orientation,
+  })
 
   return (
     <TabsPrimitive.Root
-      data-testid="tabs-root"
       className={root()}
-      orientation={orientation}
-      value={value}
+      data-testid="tabs-root"
       defaultValue={defaultValue}
       onValueChange={onChange ? (v) => onChange(v as string) : undefined}
+      orientation={orientation}
+      value={value}
     >
       {children}
     </TabsPrimitive.Root>
   )
 }
 
-function TabsList({
-  justified,
-  children,
-}: PropsWithChildren<TabsListProps>) {
-  const { list } = tabs({ justified })
+function TabsList({ justified, children }: PropsWithChildren<TabsListProps>) {
+  const { list } = tabs({
+    justified,
+  })
 
   return (
     <TabsPrimitive.List
-      data-testid="tabs-list"
       className={list()}
+      data-testid="tabs-list"
     >
       {children}
     </TabsPrimitive.List>
@@ -88,8 +88,8 @@ function TabsTrigger({
 
   return (
     <TabsPrimitive.Tab
-      data-testid="tabs-trigger"
       className={trigger()}
+      data-testid="tabs-trigger"
       value={value}
     >
       {icon}
@@ -98,16 +98,13 @@ function TabsTrigger({
   )
 }
 
-function TabsContent({
-  value,
-  children,
-}: PropsWithChildren<TabsContentProps>) {
+function TabsContent({ value, children }: PropsWithChildren<TabsContentProps>) {
   const { content } = tabs()
 
   return (
     <TabsPrimitive.Panel
-      data-testid="tabs-content"
       className={content()}
+      data-testid="tabs-content"
       value={value}
     >
       {children}

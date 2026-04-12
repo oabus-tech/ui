@@ -7,7 +7,14 @@ const skeleton = tv({
 })
 
 function Skeleton({ className }: SkeletonProps) {
-  return <div data-testid="skeleton" className={skeleton({ className })} />
+  return (
+    <div
+      className={skeleton({
+        className,
+      })}
+      data-testid="skeleton"
+    />
+  )
 }
 
 export { Skeleton }

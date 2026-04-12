@@ -2,10 +2,10 @@ import { useCallback, useRef } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Loader } from '@/components/loader'
+import { cn } from '@/support/utils'
 
 import { DEFAULT_SECTION_WIDTH } from './input.shared'
 import type { InputProps } from './input.types'
-import { cn } from '@/support/utils'
 
 const input = tv({
   defaultVariants: {
@@ -82,21 +82,31 @@ function Input({
   const hasLeft = Boolean(leftSection)
   const hasRight = Boolean(effectiveRight)
 
-  const { root, field, section } = input({ size })
+  const { root, field, section } = input({
+    size,
+  })
 
   const fieldStyle: React.CSSProperties = {
-    ...(hasLeft ? { paddingLeft: leftSectionWidth } : {}),
-    ...(hasRight ? { paddingRight: rightSectionWidth } : {}),
+    ...(hasLeft
+      ? {
+          paddingLeft: leftSectionWidth,
+        }
+      : {}),
+    ...(hasRight
+      ? {
+          paddingRight: rightSectionWidth,
+        }
+      : {}),
   }
 
   const controlledProps =
     value !== undefined
       ? {
-        value: value ?? '',
-      }
+          value: value ?? '',
+        }
       : {
-        defaultValue: defaultValue ?? undefined,
-      }
+          defaultValue: defaultValue ?? undefined,
+        }
 
   return (
     <div
@@ -111,7 +121,9 @@ function Input({
             className: 'left-0 justify-center',
           })}
           data-testid="input-section-left"
-          style={{ width: leftSectionWidth }}
+          style={{
+            width: leftSectionWidth,
+          }}
         >
           {leftSection}
         </span>
@@ -124,7 +136,12 @@ function Input({
         type={type}
         {...controlledProps}
         {...props}
-        className={cn(field({ className }), className ?? '')}
+        className={cn(
+          field({
+            className,
+          }),
+          className ?? '',
+        )}
       />
       {hasRight && (
         <span
@@ -132,7 +149,9 @@ function Input({
             className: 'pointer-events-auto right-0 justify-center',
           })}
           data-testid="input-section-right"
-          style={{ width: rightSectionWidth }}
+          style={{
+            width: rightSectionWidth,
+          }}
         >
           {effectiveRight}
         </span>

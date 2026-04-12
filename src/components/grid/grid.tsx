@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import type { GridItemProps, GridProps } from './grid.types'
@@ -59,7 +58,13 @@ const itemStyles = tv({
 
 function GridRoot({ children, cols, gap }: PropsWithChildren<GridProps>) {
   return (
-    <div className={rootStyles({ cols, gap })} data-testid="grid-root">
+    <div
+      className={rootStyles({
+        cols,
+        gap,
+      })}
+      data-testid="grid-root"
+    >
       {children}
     </div>
   )
@@ -67,7 +72,12 @@ function GridRoot({ children, cols, gap }: PropsWithChildren<GridProps>) {
 
 function GridItem({ children, span }: PropsWithChildren<GridItemProps>) {
   return (
-    <div className={itemStyles({ span })} data-testid="grid-item">
+    <div
+      className={itemStyles({
+        span,
+      })}
+      data-testid="grid-item"
+    >
       {children}
     </div>
   )

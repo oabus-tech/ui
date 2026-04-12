@@ -30,9 +30,15 @@ const numberInput = tv({
   },
   variants: {
     size: {
-      lg: { group: 'h-11' },
-      md: { group: 'h-10' },
-      sm: { group: 'h-9' },
+      lg: {
+        group: 'h-11',
+      },
+      md: {
+        group: 'h-10',
+      },
+      sm: {
+        group: 'h-9',
+      },
     },
   },
 })
@@ -46,7 +52,9 @@ function NumberInput({
   disabled,
   placeholder,
 }: NumberInputProps) {
-  const { root, group, field, btn } = numberInput({ size })
+  const { root, group, field, btn } = numberInput({
+    size,
+  })
 
   return (
     <div
@@ -65,7 +73,9 @@ function NumberInput({
           data-testid="number-input-group"
         >
           <NumberField.Decrement
-            className={btn({ className: 'border-r' })}
+            className={btn({
+              className: 'border-r',
+            })}
             data-testid="number-input-decrement"
           >
             <Minus size={14} />
@@ -76,7 +86,9 @@ function NumberInput({
             placeholder={placeholder}
           />
           <NumberField.Increment
-            className={btn({ className: 'border-l' })}
+            className={btn({
+              className: 'border-l',
+            })}
             data-testid="number-input-increment"
           >
             <Plus size={14} />

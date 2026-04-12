@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Card } from './card'
 
 const meta = {
-  title: 'Feedback/Card',
   component: Card,
+  title: 'Feedback/Card',
 } satisfies Meta<typeof Card>
 
 export default meta
@@ -35,7 +35,10 @@ export const WithFooter: Story = {
         <p>Content area with form fields or other content.</p>
       </Card.Content>
       <Card.Footer>
-        <button className="text-sm font-medium" type="button">
+        <button
+          className="font-medium text-sm"
+          type="button"
+        >
           Save changes
         </button>
       </Card.Footer>
@@ -54,7 +57,10 @@ export const Bordered: Story = {
         <p>Main content area.</p>
       </Card.Content>
       <Card.Footer bordered>
-        <button className="text-sm font-medium" type="button">
+        <button
+          className="font-medium text-sm"
+          type="button"
+        >
           Action
         </button>
       </Card.Footer>

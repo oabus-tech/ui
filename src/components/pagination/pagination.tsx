@@ -7,10 +7,22 @@ import { Select } from '@/components/select'
 import type { PaginationProps } from './pagination.types'
 
 const ROWS_OPTIONS = [
-  { label: '10', value: 10 },
-  { label: '20', value: 20 },
-  { label: '50', value: 50 },
-  { label: '100', value: 100 },
+  {
+    label: '10',
+    value: 10,
+  },
+  {
+    label: '20',
+    value: 20,
+  },
+  {
+    label: '50',
+    value: 50,
+  },
+  {
+    label: '100',
+    value: 100,
+  },
 ]
 
 const styles = tv({
@@ -35,10 +47,17 @@ const { root, info, rowsPerPage, pageBtn, pageBtnActive, ellipsis } = styles()
 
 function getVisiblePages(page: number, totalPages: number): (number | '...')[] {
   if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1)
+    return Array.from(
+      {
+        length: totalPages,
+      },
+      (_, i) => i + 1,
+    )
   }
 
-  const pages: (number | '...')[] = [1]
+  const pages: (number | '...')[] = [
+    1,
+  ]
 
   if (page > 3) {
     pages.push('...')
@@ -87,14 +106,18 @@ function Pagination(props: PaginationProps) {
             mode="single"
             onChange={(v) => onRowsPerPageChange(v as number)}
             optionLabel="label"
-            optionValue="value"
             options={ROWS_OPTIONS}
+            optionValue="value"
             size="sm"
             value={rpp}
           />
         </div>
         <div className="flex items-center gap-1">
-          <span className={info({ className: 'mr-2' })}>
+          <span
+            className={info({
+              className: 'mr-2',
+            })}
+          >
             {from}-{to} of {total}
           </span>
           <Button
@@ -164,8 +187,8 @@ function Pagination(props: PaginationProps) {
             mode="single"
             onChange={(v) => onRowsPerPageChange(v as number)}
             optionLabel="label"
-            optionValue="value"
             options={ROWS_OPTIONS}
+            optionValue="value"
             size="sm"
             value={rpp}
           />

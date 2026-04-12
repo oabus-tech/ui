@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Accordion } from './accordion'
 
 const meta = {
-  title: 'Feedback/Accordion',
   component: Accordion,
+  title: 'Feedback/Accordion',
 } satisfies Meta<typeof Accordion>
 
 export default meta
@@ -12,7 +12,10 @@ type Story = StoryObj<typeof meta>
 
 export const Single = {
   render: () => (
-    <Accordion type="single" collapsible>
+    <Accordion
+      collapsible
+      type="single"
+    >
       <Accordion.Item value="item-1">
         <Accordion.Trigger>Is it accessible?</Accordion.Trigger>
         <Accordion.Content>
@@ -48,15 +51,11 @@ export const Multiple = {
       </Accordion.Item>
       <Accordion.Item value="item-2">
         <Accordion.Trigger>Second section</Accordion.Trigger>
-        <Accordion.Content>
-          Content for the second section.
-        </Accordion.Content>
+        <Accordion.Content>Content for the second section.</Accordion.Content>
       </Accordion.Item>
       <Accordion.Item value="item-3">
         <Accordion.Trigger>Third section</Accordion.Trigger>
-        <Accordion.Content>
-          Content for the third section.
-        </Accordion.Content>
+        <Accordion.Content>Content for the third section.</Accordion.Content>
       </Accordion.Item>
     </Accordion>
   ),
@@ -64,7 +63,11 @@ export const Multiple = {
 
 export const Bordered = {
   render: () => (
-    <Accordion type="single" collapsible bordered>
+    <Accordion
+      bordered
+      collapsible
+      type="single"
+    >
       <Accordion.Item value="item-1">
         <Accordion.Trigger>Bordered item 1</Accordion.Trigger>
         <Accordion.Content>
@@ -83,7 +86,10 @@ export const Bordered = {
 
 export const DefaultOpen = {
   render: () => (
-    <Accordion type="single" defaultValue="item-2">
+    <Accordion
+      defaultValue="item-2"
+      type="single"
+    >
       <Accordion.Item value="item-1">
         <Accordion.Trigger>First</Accordion.Trigger>
         <Accordion.Content>First content.</Accordion.Content>
@@ -98,12 +104,18 @@ export const DefaultOpen = {
 
 export const Disabled = {
   render: () => (
-    <Accordion type="single" collapsible>
+    <Accordion
+      collapsible
+      type="single"
+    >
       <Accordion.Item value="item-1">
         <Accordion.Trigger>Enabled item</Accordion.Trigger>
         <Accordion.Content>This item can be toggled.</Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item value="item-2" disabled>
+      <Accordion.Item
+        disabled
+        value="item-2"
+      >
         <Accordion.Trigger>Disabled item</Accordion.Trigger>
         <Accordion.Content>This content is hidden.</Accordion.Content>
       </Accordion.Item>

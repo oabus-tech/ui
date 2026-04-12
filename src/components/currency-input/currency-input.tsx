@@ -72,7 +72,9 @@ function CurrencyInput({
   const config = CURRENCY_CONFIGS[activeCurrency]
 
   const hasRight = variant === 'any'
-  const { root, field, section } = inputShared({ size })
+  const { root, field, section } = inputShared({
+    size,
+  })
 
   return (
     <div
@@ -84,7 +86,9 @@ function CurrencyInput({
           className: 'left-0 justify-center',
         })}
         data-testid="currency-input-section-left"
-        style={{ width: DEFAULT_SECTION_WIDTH }}
+        style={{
+          width: DEFAULT_SECTION_WIDTH,
+        }}
       >
         {config.symbol}
       </span>
@@ -106,7 +110,11 @@ function CurrencyInput({
         scale={2}
         style={{
           paddingLeft: DEFAULT_SECTION_WIDTH,
-          ...(hasRight ? { paddingRight: RIGHT_SECTION_WIDTH } : {}),
+          ...(hasRight
+            ? {
+                paddingRight: RIGHT_SECTION_WIDTH,
+              }
+            : {}),
         }}
         thousandsSeparator={config.thousandsSeparator}
         value={
@@ -121,12 +129,14 @@ function CurrencyInput({
             className: 'pointer-events-auto right-0 justify-center',
           })}
           data-testid="currency-input-section-right"
-          style={{ width: RIGHT_SECTION_WIDTH }}
+          style={{
+            width: RIGHT_SECTION_WIDTH,
+          }}
         >
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
               <button
-                className="text-sm font-medium outline-none hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                className="font-medium text-sm outline-none hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 data-testid="currency-input-variant-trigger"
                 disabled={disabled}
                 type="button"
@@ -146,8 +156,8 @@ function CurrencyInput({
                 ] as Currency[]
               ).map((c) => (
                 <DropdownMenu.CheckboxItem
-                  key={c}
                   checked={internalCurrency === c}
+                  key={c}
                   onCheckedChange={() => setInternalCurrency(c)}
                 >
                   {CURRENCY_CONFIGS[c].label}

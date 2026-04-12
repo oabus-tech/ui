@@ -1,18 +1,17 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import type { TypographyProps } from './typography.types'
 
 const typography = tv({
   base: 'typography',
+  defaultVariants: {
+    size: 'base',
+    variant: 'default',
+    weight: 'normal',
+  },
   variants: {
     size: {
-      xs: 'text-xs',
-      sm: 'text-sm',
-      base: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -21,30 +20,30 @@ const typography = tv({
       '7xl': 'text-7xl',
       '8xl': 'text-8xl',
       '9xl': 'text-9xl',
+      base: 'text-base',
+      lg: 'text-lg',
+      sm: 'text-sm',
+      xl: 'text-xl',
+      xs: 'text-xs',
+    },
+    truncate: {
+      true: 'truncate',
     },
     variant: {
       default: 'text-foreground',
       muted: 'text-muted-foreground',
     },
     weight: {
-      thin: 'font-thin',
-      extralight: 'font-extralight',
-      light: 'font-light',
-      normal: 'font-normal',
-      medium: 'font-medium',
-      semibold: 'font-semibold',
+      black: 'font-black',
       bold: 'font-bold',
       extrabold: 'font-extrabold',
-      black: 'font-black',
+      extralight: 'font-extralight',
+      light: 'font-light',
+      medium: 'font-medium',
+      normal: 'font-normal',
+      semibold: 'font-semibold',
+      thin: 'font-thin',
     },
-    truncate: {
-      true: 'truncate',
-    },
-  },
-  defaultVariants: {
-    size: 'base',
-    variant: 'default',
-    weight: 'normal',
   },
 })
 
@@ -58,8 +57,13 @@ function Typography({
 }: PropsWithChildren<TypographyProps>) {
   return (
     <Component
+      className={typography({
+        size,
+        truncate,
+        variant,
+        weight,
+      })}
       data-testid="typography"
-      className={typography({ size, variant, weight, truncate })}
     >
       {children}
     </Component>

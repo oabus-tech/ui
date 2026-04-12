@@ -7,7 +7,7 @@ import type { PopoverProps } from './popover.types'
 const popover = tv({
   slots: {
     popup: [
-      'w-fit min-w-40 popover-popup z-50 rounded-lg',
+      'popover-popup z-50 w-fit min-w-40 rounded-lg',
       'bg-popover p-4 text-popover-foreground text-sm',
       'shadow-md outline-hidden ring-1 ring-foreground/10',
       'origin-(--transform-origin)',

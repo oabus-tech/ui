@@ -4,7 +4,7 @@ import { tv } from 'tailwind-variants'
 import type { FlexProps } from './flex.types'
 
 export const styles = tv({
-  base: 'flex-root flex',
+  base: 'flex flex-root',
   defaultVariants: {
     align: 'stretch',
     direction: 'row',

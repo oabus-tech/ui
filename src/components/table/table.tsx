@@ -18,8 +18,7 @@ const styles = tv({
     header: '[&_tr]:border-b',
     root: 'table-root flex flex-col gap-4',
     row: 'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
-    sortButton:
-      'inline-flex cursor-pointer items-center gap-1 select-none',
+    sortButton: 'inline-flex cursor-pointer select-none items-center gap-1',
     table: 'w-full caption-bottom text-sm',
   },
 })
@@ -85,7 +84,10 @@ function Table<T>({
 
   const handleSelectRow = (key: string, checked: boolean) => {
     const next = checked
-      ? [...selectedKeys, key]
+      ? [
+          ...selectedKeys,
+          key,
+        ]
       : selectedKeys.filter((k) => k !== key)
     handleSelectionChange(next)
   }
@@ -129,7 +131,11 @@ function Table<T>({
           <thead className={header()}>
             <tr className={row()}>
               {selection === 'multiple' && (
-                <th className={head({ className: 'w-10' })}>
+                <th
+                  className={head({
+                    className: 'w-10',
+                  })}
+                >
                   <Checkbox
                     checked={allSelected}
                     onChange={handleSelectAll}
@@ -142,7 +148,13 @@ function Table<T>({
                     className: getAlignClass(col.align),
                   })}
                   key={col.key}
-                  style={col.width ? { width: col.width } : undefined}
+                  style={
+                    col.width
+                      ? {
+                          width: col.width,
+                        }
+                      : undefined
+                  }
                 >
                   {col.sorter ? (
                     <span
@@ -191,12 +203,14 @@ function Table<T>({
                     onClick={() => onRowClick?.(item)}
                   >
                     {selection === 'multiple' && (
-                      <td className={cell({ className: 'w-10' })}>
+                      <td
+                        className={cell({
+                          className: 'w-10',
+                        })}
+                      >
                         <Checkbox
                           checked={isSelected}
-                          onChange={(checked) =>
-                            handleSelectRow(key, checked)
-                          }
+                          onChange={(checked) => handleSelectRow(key, checked)}
                         />
                       </td>
                     )}
@@ -207,14 +221,16 @@ function Table<T>({
                         })}
                         key={col.key}
                         style={
-                          col.width ? { width: col.width } : undefined
+                          col.width
+                            ? {
+                                width: col.width,
+                              }
+                            : undefined
                         }
                       >
                         {col.selector
                           ? col.selector(item, index)
-                          : (
-                              item[col.key as keyof T] as React.ReactNode
-                            )}
+                          : (item[col.key as keyof T] as React.ReactNode)}
                       </td>
                     ))}
                   </tr>

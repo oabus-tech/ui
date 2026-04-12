@@ -6,11 +6,11 @@ import {
 } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import {
-  type DateRange as RDPDateRange,
   type DayButtonProps,
   DayPicker,
-  type Matcher,
   getDefaultClassNames,
+  type Matcher,
+  type DateRange as RDPDateRange,
 } from 'react-day-picker'
 import { tv } from 'tailwind-variants'
 
@@ -26,14 +26,14 @@ const styles = tv({
     dayButton: [
       // base button (from shadcn Button output)
       'group/button shrink-0 items-center justify-center rounded-lg border-transparent bg-clip-padding',
-      'whitespace-nowrap text-sm outline-none transition-all select-none',
+      'select-none whitespace-nowrap text-sm outline-none transition-all',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
       'active:not-aria-[haspopup]:translate-y-px',
       'disabled:pointer-events-none disabled:opacity-50',
       'hover:bg-muted hover:text-foreground',
       'aria-expanded:bg-muted aria-expanded:text-foreground',
       'dark:hover:bg-muted/50',
-      '[&_svg]:pointer-events-none [&_svg:not([class*=size-])]:size-4 [&_svg]:shrink-0',
+      '[&_svg:not([class*=size-])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
       // day button overrides (from shadcn CalendarDayButton)
       'relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size)',
       'flex-col gap-1 border-0 font-normal leading-none',
@@ -52,12 +52,20 @@ const styles = tv({
   },
   variants: {
     fullWidth: {
-      true: { root: 'w-full' },
+      true: {
+        root: 'w-full',
+      },
     },
     size: {
-      lg: { root: '[--cell-size:--spacing(9)]' },
-      md: { root: '[--cell-size:--spacing(7)]' },
-      sm: { root: '[--cell-size:--spacing(6)]' },
+      lg: {
+        root: '[--cell-size:--spacing(9)]',
+      },
+      md: {
+        root: '[--cell-size:--spacing(7)]',
+      },
+      sm: {
+        root: '[--cell-size:--spacing(6)]',
+      },
     },
   },
 })
@@ -143,16 +151,32 @@ function CalendarChevron({
   className,
   orientation,
   ...props
-}: { className?: string; orientation?: string } & React.SVGProps<
-  SVGSVGElement
->) {
+}: {
+  className?: string
+  orientation?: string
+} & React.SVGProps<SVGSVGElement>) {
   if (orientation === 'left') {
-    return <ChevronLeftIcon className={cn('size-4', className)} {...props} />
+    return (
+      <ChevronLeftIcon
+        className={cn('size-4', className)}
+        {...props}
+      />
+    )
   }
   if (orientation === 'right') {
-    return <ChevronRightIcon className={cn('size-4', className)} {...props} />
+    return (
+      <ChevronRightIcon
+        className={cn('size-4', className)}
+        {...props}
+      />
+    )
   }
-  return <ChevronDownIcon className={cn('size-4', className)} {...props} />
+  return (
+    <ChevronDownIcon
+      className={cn('size-4', className)}
+      {...props}
+    />
+  )
 }
 
 function CalendarDayButton({
@@ -162,14 +186,19 @@ function CalendarDayButton({
   dayButtonClass,
   defaultDayClass,
   ...props
-}: DayButtonProps & { dayButtonClass: string; defaultDayClass: string }) {
+}: DayButtonProps & {
+  dayButtonClass: string
+  defaultDayClass: string
+}) {
   const ref = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (modifiers.focused) {
       ref.current?.focus()
     }
-  }, [modifiers.focused])
+  }, [
+    modifiers.focused,
+  ])
 
   return (
     <ButtonPrimitive
@@ -210,14 +239,21 @@ function Calendar(props: CalendarProps) {
     onDateChange,
   } = props
 
-  const { dayButton, root } = styles({ fullWidth, size })
+  const { dayButton, root } = styles({
+    fullWidth,
+    size,
+  })
 
   const disabledMatchers: Matcher[] = []
   if (minDate) {
-    disabledMatchers.push({ before: minDate })
+    disabledMatchers.push({
+      before: minDate,
+    })
   }
   if (maxDate) {
-    disabledMatchers.push({ after: maxDate })
+    disabledMatchers.push({
+      after: maxDate,
+    })
   }
   if (excludeDate) {
     disabledMatchers.push(excludeDate)
@@ -229,7 +265,9 @@ function Calendar(props: CalendarProps) {
   const defaultDayClass = getDefaultClassNames().day
 
   const sharedProps = {
-    className: root({ className }),
+    className: root({
+      className,
+    }),
     classNames,
     components: {
       Chevron: CalendarChevron,
@@ -243,7 +281,9 @@ function Calendar(props: CalendarProps) {
       Root: ({
         rootRef,
         ...rootProps
-      }: { rootRef?: React.Ref<HTMLDivElement> } & React.HTMLAttributes<HTMLDivElement>) => (
+      }: {
+        rootRef?: React.Ref<HTMLDivElement>
+      } & React.HTMLAttributes<HTMLDivElement>) => (
         <div
           {...rootProps}
           className={cn(rootProps.className)}
@@ -256,7 +296,13 @@ function Calendar(props: CalendarProps) {
     disabled: disabledMatchers.length > 0 ? disabledMatchers : undefined,
     endMonth: maxDate,
     locale,
-    ...(highlightToday ? {} : { modifiers: { today: false as const } }),
+    ...(highlightToday
+      ? {}
+      : {
+          modifiers: {
+            today: false as const,
+          },
+        }),
     month,
     numberOfMonths,
     onMonthChange,
@@ -280,10 +326,22 @@ function Calendar(props: CalendarProps) {
       {...sharedProps}
       mode="range"
       onSelect={(range: RDPDateRange | undefined) => {
-        onDateChange?.(range ? { from: range.from, to: range.to } : null)
+        onDateChange?.(
+          range
+            ? {
+                from: range.from,
+                to: range.to,
+              }
+            : null,
+        )
       }}
       selected={
-        selected ? { from: selected.from, to: selected.to } : undefined
+        selected
+          ? {
+              from: selected.from,
+              to: selected.to,
+            }
+          : undefined
       }
     />
   )

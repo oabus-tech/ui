@@ -61,11 +61,19 @@ export const WithWrap: Story = {
   args: {
     children: (
       <>
-        {Array.from({ length: 10 }, (_, i) => (
-          <div className="rounded bg-muted p-4" key={i}>
-            Item {i + 1}
-          </div>
-        ))}
+        {Array.from(
+          {
+            length: 10,
+          },
+          (_, i) => (
+            <div
+              className="rounded bg-muted p-4"
+              key={i}
+            >
+              Item {i + 1}
+            </div>
+          ),
+        )}
       </>
     ),
     gap: 'sm',

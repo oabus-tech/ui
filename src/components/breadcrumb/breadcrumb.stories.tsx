@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Breadcrumb } from './breadcrumb'
 
 const meta = {
-  title: 'Feedback/Breadcrumb',
   component: Breadcrumb,
+  title: 'Feedback/Breadcrumb',
 } satisfies Meta<typeof Breadcrumb>
 
 export default meta

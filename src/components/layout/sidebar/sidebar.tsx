@@ -1,14 +1,14 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { PanelLeftIcon } from 'lucide-react'
 import {
+  type CSSProperties,
   createContext,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-  type CSSProperties,
-  type PropsWithChildren,
 } from 'react'
 import { tv } from 'tailwind-variants'
 
@@ -142,8 +142,7 @@ const menuButtonStyles = tv({
       sm: 'h-7 text-xs',
     },
     variant: {
-      default:
-        'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+      default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
       outline:
         'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
     },
@@ -202,14 +201,19 @@ function SidebarProvider({
       }
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
     },
-    [setOpenProp, open],
+    [
+      setOpenProp,
+      open,
+    ],
   )
 
   const toggleSidebar = useCallback(() => {
-    return isMobile
-      ? setOpenMobile((open) => !open)
-      : setOpen((open) => !open)
-  }, [isMobile, setOpen, setOpenMobile])
+    return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open)
+  }, [
+    isMobile,
+    setOpen,
+    setOpenMobile,
+  ])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -223,7 +227,9 @@ function SidebarProvider({
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [toggleSidebar])
+  }, [
+    toggleSidebar,
+  ])
 
   const state = open ? 'expanded' : 'collapsed'
 
@@ -237,7 +243,15 @@ function SidebarProvider({
       state,
       toggleSidebar,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
+    [
+      state,
+      open,
+      setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
+      toggleSidebar,
+    ],
   )
 
   return (
@@ -294,7 +308,9 @@ function SidebarMain({
             data-testid="sidebar-mobile-backdrop"
           />
           <Dialog.Popup
-            className={mobilePopupStyles({ side })}
+            className={mobilePopupStyles({
+              side,
+            })}
             data-mobile="true"
             data-sidebar="sidebar"
             data-slot="sidebar"
@@ -323,12 +339,16 @@ function SidebarMain({
       data-variant={variant}
     >
       <div
-        className={sidebarGapStyles({ variant })}
+        className={sidebarGapStyles({
+          variant,
+        })}
         data-slot="sidebar-gap"
         data-testid="sidebar-gap"
       />
       <div
-        className={sidebarContainerStyles({ variant })}
+        className={sidebarContainerStyles({
+          variant,
+        })}
         data-side={side}
         data-slot="sidebar-container"
         data-testid="sidebar-container"
@@ -622,7 +642,10 @@ function SidebarMenuButton({
 
   const button = (
     <button
-      className={menuButtonStyles({ size, variant })}
+      className={menuButtonStyles({
+        size,
+        variant,
+      })}
       data-active={isActive || undefined}
       data-sidebar="menu-button"
       data-size={size}
@@ -801,8 +824,7 @@ function SidebarMenuSubButton({
         'disabled:pointer-events-none disabled:opacity-50',
         'aria-disabled:pointer-events-none aria-disabled:opacity-50',
         size === 'sm' ? 'text-xs' : 'text-sm',
-        isActive &&
-          'bg-sidebar-accent text-sidebar-accent-foreground',
+        isActive && 'bg-sidebar-accent text-sidebar-accent-foreground',
         '[&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground',
       )}
       data-active={isActive || undefined}

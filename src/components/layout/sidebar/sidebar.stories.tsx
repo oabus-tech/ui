@@ -39,9 +39,7 @@ function PageContent({ title = 'Page Content' }: { title?: string }) {
     <Sidebar.Inset>
       <header className="flex h-12 items-center gap-2 border-b px-4">
         <Sidebar.Trigger />
-        <span className="font-medium text-sm">
-          Sidebar is {state}
-        </span>
+        <span className="font-medium text-sm">Sidebar is {state}</span>
       </header>
       <div className="flex-1 p-6">
         <h2 className="font-semibold text-lg">{title}</h2>
@@ -64,7 +62,9 @@ function SampleSidebarContent() {
           </div>
           <div className="flex min-w-0 flex-col group-data-[collapsible=icon]:hidden">
             <span className="truncate font-semibold text-sm">OABus</span>
-            <span className="truncate text-muted-foreground text-xs">Workspace</span>
+            <span className="truncate text-muted-foreground text-xs">
+              Workspace
+            </span>
           </div>
         </div>
       </Sidebar.Header>
@@ -378,19 +378,21 @@ export const WithMenuActions: Story = {
             </Sidebar.Group.Action>
             <Sidebar.Group.Content>
               <Sidebar.Menu>
-                {['Project Alpha', 'Project Beta', 'Project Gamma'].map(
-                  (name) => (
-                    <Sidebar.Menu.Item key={name}>
-                      <Sidebar.Menu.Button>
-                        <Frame />
-                        <span>{name}</span>
-                      </Sidebar.Menu.Button>
-                      <Sidebar.Menu.Action showOnHover>
-                        <Trash2 className="size-4" />
-                      </Sidebar.Menu.Action>
-                    </Sidebar.Menu.Item>
-                  ),
-                )}
+                {[
+                  'Project Alpha',
+                  'Project Beta',
+                  'Project Gamma',
+                ].map((name) => (
+                  <Sidebar.Menu.Item key={name}>
+                    <Sidebar.Menu.Button>
+                      <Frame />
+                      <span>{name}</span>
+                    </Sidebar.Menu.Button>
+                    <Sidebar.Menu.Action showOnHover>
+                      <Trash2 className="size-4" />
+                    </Sidebar.Menu.Action>
+                  </Sidebar.Menu.Item>
+                ))}
               </Sidebar.Menu>
             </Sidebar.Group.Content>
           </Sidebar.Group>
@@ -419,7 +421,9 @@ export const WithSkeleton: Story = {
             <Sidebar.Group.Label>Navigation</Sidebar.Group.Label>
             <Sidebar.Group.Content>
               <Sidebar.Menu>
-                {Array.from({ length: 5 }).map((_, i) => (
+                {Array.from({
+                  length: 5,
+                }).map((_, i) => (
                   <Sidebar.Menu.Item key={i}>
                     <Sidebar.Menu.Skeleton showIcon />
                   </Sidebar.Menu.Item>
@@ -432,7 +436,9 @@ export const WithSkeleton: Story = {
             <Sidebar.Group.Label>Projects</Sidebar.Group.Label>
             <Sidebar.Group.Content>
               <Sidebar.Menu>
-                {Array.from({ length: 3 }).map((_, i) => (
+                {Array.from({
+                  length: 3,
+                }).map((_, i) => (
                   <Sidebar.Menu.Item key={i}>
                     <Sidebar.Menu.Skeleton />
                   </Sidebar.Menu.Item>
@@ -515,12 +521,30 @@ export const SmallButtons: Story = {
             <Sidebar.Group.Content>
               <Sidebar.Menu>
                 {[
-                  { icon: SquareTerminal, label: 'Dashboard' },
-                  { icon: Bot, label: 'Models' },
-                  { icon: BookOpen, label: 'Docs' },
-                  { icon: Settings2, label: 'Settings' },
-                  { icon: Frame, label: 'Projects' },
-                  { icon: PieChart, label: 'Analytics' },
+                  {
+                    icon: SquareTerminal,
+                    label: 'Dashboard',
+                  },
+                  {
+                    icon: Bot,
+                    label: 'Models',
+                  },
+                  {
+                    icon: BookOpen,
+                    label: 'Docs',
+                  },
+                  {
+                    icon: Settings2,
+                    label: 'Settings',
+                  },
+                  {
+                    icon: Frame,
+                    label: 'Projects',
+                  },
+                  {
+                    icon: PieChart,
+                    label: 'Analytics',
+                  },
                 ].map(({ icon: Icon, label }) => (
                   <Sidebar.Menu.Item key={label}>
                     <Sidebar.Menu.Button size="sm">
@@ -768,7 +792,12 @@ export const ElementMenuAction = {
           </Sidebar.Group.Action>
           <Sidebar.Group.Content>
             <Sidebar.Menu>
-              {['Alpha', 'Beta', 'Gamma', 'Delta'].map((name) => (
+              {[
+                'Alpha',
+                'Beta',
+                'Gamma',
+                'Delta',
+              ].map((name) => (
                 <Sidebar.Menu.Item key={name}>
                   <Sidebar.Menu.Button>
                     <Frame />
@@ -845,7 +874,9 @@ export const ElementSkeleton = {
           <Sidebar.Group.Label>With Icon</Sidebar.Group.Label>
           <Sidebar.Group.Content>
             <Sidebar.Menu>
-              {Array.from({ length: 4 }).map((_, i) => (
+              {Array.from({
+                length: 4,
+              }).map((_, i) => (
                 <Sidebar.Menu.Item key={i}>
                   <Sidebar.Menu.Skeleton showIcon />
                 </Sidebar.Menu.Item>
@@ -858,7 +889,9 @@ export const ElementSkeleton = {
           <Sidebar.Group.Label>Without Icon</Sidebar.Group.Label>
           <Sidebar.Group.Content>
             <Sidebar.Menu>
-              {Array.from({ length: 3 }).map((_, i) => (
+              {Array.from({
+                length: 3,
+              }).map((_, i) => (
                 <Sidebar.Menu.Item key={i}>
                   <Sidebar.Menu.Skeleton />
                 </Sidebar.Menu.Item>

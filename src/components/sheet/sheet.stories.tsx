@@ -36,13 +36,19 @@ export const Default: Story = {
           <Sheet.Body>
             <Form>
               <Form.Field
-                label={{ content: 'Full name', required: true }}
+                label={{
+                  content: 'Full name',
+                  required: true,
+                }}
                 name="name"
               >
                 <Input placeholder="John Doe" />
               </Form.Field>
               <Form.Field
-                label={{ content: 'Email', required: true }}
+                label={{
+                  content: 'Email',
+                  required: true,
+                }}
                 name="email"
               >
                 <Input placeholder="john@example.com" />
@@ -55,12 +61,21 @@ export const Default: Story = {
                 <Select
                   mode="single"
                   optionLabel="label"
-                  optionValue="value"
                   options={[
-                    { label: 'Admin', value: 'admin' },
-                    { label: 'Editor', value: 'editor' },
-                    { label: 'Viewer', value: 'viewer' },
+                    {
+                      label: 'Admin',
+                      value: 'admin',
+                    },
+                    {
+                      label: 'Editor',
+                      value: 'editor',
+                    },
+                    {
+                      label: 'Viewer',
+                      value: 'viewer',
+                    },
                   ]}
+                  optionValue="value"
                   placeholder="Select a role"
                 />
               </Form.Field>
@@ -103,7 +118,12 @@ export const LeftSide: Story = {
           </Sheet.Header>
           <Sheet.Body>
             <div className="flex flex-col gap-2">
-              {['Dashboard', 'Settings', 'Profile', 'Help'].map((item) => (
+              {[
+                'Dashboard',
+                'Settings',
+                'Profile',
+                'Help',
+              ].map((item) => (
                 <p
                   className="rounded-md p-2 text-sm hover:bg-muted"
                   key={item}
@@ -174,7 +194,12 @@ export const Bottom: Story = {
           </Sheet.Header>
           <Sheet.Body>
             <div className="flex flex-col gap-2 pb-4">
-              {['Share', 'Copy link', 'Edit', 'Delete'].map((action) => (
+              {[
+                'Share',
+                'Copy link',
+                'Edit',
+                'Delete',
+              ].map((action) => (
                 <Button
                   key={action}
                   variant="ghost"

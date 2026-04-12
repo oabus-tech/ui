@@ -27,8 +27,16 @@ export type CalendarSingleProps = CalendarBaseProps & {
 
 export type CalendarRangeProps = CalendarBaseProps & {
   mode: 'range'
-  onDateChange?: (range: { from?: Date; to?: Date } | null) => void
-  selected?: { from?: Date; to?: Date } | null
+  onDateChange?: (
+    range: {
+      from?: Date
+      to?: Date
+    } | null,
+  ) => void
+  selected?: {
+    from?: Date
+    to?: Date
+  } | null
 }
 
 export type CalendarProps = CalendarRangeProps | CalendarSingleProps

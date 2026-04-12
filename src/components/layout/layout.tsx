@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import { LayoutContent } from './content'
@@ -18,8 +17,15 @@ function LayoutRoot({
   withSidebar = false,
 }: PropsWithChildren<LayoutProps>) {
   return (
-    <LayoutContext.Provider value={{ withSidebar }}>
-      <div className={styles()} data-testid="layout-root">
+    <LayoutContext.Provider
+      value={{
+        withSidebar,
+      }}
+    >
+      <div
+        className={styles()}
+        data-testid="layout-root"
+      >
         {children}
       </div>
     </LayoutContext.Provider>

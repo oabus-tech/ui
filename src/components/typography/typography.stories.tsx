@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Typography } from './typography'
 
 const meta = {
-  title: 'Feedback/Typography',
   component: Typography,
+  title: 'Feedback/Typography',
 } satisfies Meta<typeof Typography>
 
 export default meta
@@ -18,26 +18,26 @@ export const Default: Story = {
 
 export const Heading: Story = {
   args: {
+    children: 'Page Title',
     component: 'h1',
     size: '3xl',
     weight: 'bold',
-    children: 'Page Title',
   },
 }
 
 export const Muted: Story = {
   args: {
-    variant: 'muted',
-    size: 'sm',
     children: 'Secondary description text',
+    size: 'sm',
+    variant: 'muted',
   },
 }
 
 export const Truncated: Story = {
   args: {
-    truncate: true,
     children:
       'This is a very long text that should be truncated with an ellipsis when it overflows its container boundary',
+    truncate: true,
   },
   decorators: [
     (Story) => (

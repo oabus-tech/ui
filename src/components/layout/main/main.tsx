@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 const styles = tv({
@@ -8,7 +7,10 @@ const styles = tv({
 
 function LayoutMain({ children }: PropsWithChildren) {
   return (
-    <main className={styles()} data-testid="layout-main">
+    <main
+      className={styles()}
+      data-testid="layout-main"
+    >
       {children}
     </main>
   )

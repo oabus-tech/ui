@@ -99,15 +99,21 @@ export const CompleteForm: Story = {
     <Form>
       <Form.FieldSet legend="Personal Information">
         <Form.Field
-          label={{ content: 'Full name', required: true }}
+          label={{
+            content: 'Full name',
+            required: true,
+          }}
           name="name"
         >
           <Input placeholder="John Doe" />
         </Form.Field>
         <Form.Field
-          label={{ content: 'Email', required: true }}
-          name="email"
           description="We'll use this for account recovery."
+          label={{
+            content: 'Email',
+            required: true,
+          }}
+          name="email"
         >
           <Input placeholder="john@example.com" />
         </Form.Field>
@@ -118,7 +124,10 @@ export const CompleteForm: Story = {
           <PhoneInput />
         </Form.Field>
         <Form.Field
-          label={{ content: 'Password', required: true }}
+          label={{
+            content: 'Password',
+            required: true,
+          }}
           name="password"
         >
           <PasswordInput placeholder="Min. 8 characters" />
@@ -126,26 +135,35 @@ export const CompleteForm: Story = {
       </Form.FieldSet>
       <Form.FieldSet legend="Preferences">
         <Form.Field
+          description="Determines what the user can access."
           label="Role"
           name="role"
-          description="Determines what the user can access."
         >
           <Select
             mode="single"
             optionLabel="label"
-            optionValue="value"
             options={[
-              { label: 'Admin', value: 'admin' },
-              { label: 'Editor', value: 'editor' },
-              { label: 'Viewer', value: 'viewer' },
+              {
+                label: 'Admin',
+                value: 'admin',
+              },
+              {
+                label: 'Editor',
+                value: 'editor',
+              },
+              {
+                label: 'Viewer',
+                value: 'viewer',
+              },
             ]}
+            optionValue="value"
             placeholder="Select a role"
           />
         </Form.Field>
         <Form.Field
+          description="Brief description for your profile."
           label="Bio"
           name="bio"
-          description="Brief description for your profile."
         >
           <Textarea placeholder="Tell us about yourself..." />
         </Form.Field>
@@ -165,7 +183,10 @@ export const WithMultipleErrors: Story = {
     <Form>
       <Form.Field
         error="Name is required."
-        label={{ content: 'Full name', required: true }}
+        label={{
+          content: 'Full name',
+          required: true,
+        }}
         name="name"
       >
         <Input
@@ -175,7 +196,10 @@ export const WithMultipleErrors: Story = {
       </Form.Field>
       <Form.Field
         error="Please enter a valid email address."
-        label={{ content: 'Email', required: true }}
+        label={{
+          content: 'Email',
+          required: true,
+        }}
         name="email"
       >
         <Input
@@ -184,7 +208,10 @@ export const WithMultipleErrors: Story = {
         />
       </Form.Field>
       <Form.Field
-        label={{ content: 'Password', required: true }}
+        label={{
+          content: 'Password',
+          required: true,
+        }}
         name="password"
       >
         <PasswordInput placeholder="Min. 8 characters" />
@@ -197,13 +224,19 @@ export const WithOptionalFields: Story = {
   render: () => (
     <Form>
       <Form.Field
-        label={{ content: 'Email', required: true }}
+        label={{
+          content: 'Email',
+          required: true,
+        }}
         name="email"
       >
         <Input placeholder="john@example.com" />
       </Form.Field>
       <Form.Field
-        label={{ content: 'Nickname', optional: true }}
+        label={{
+          content: 'Nickname',
+          optional: true,
+        }}
         name="nickname"
       >
         <Input placeholder="johnny" />

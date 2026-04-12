@@ -48,7 +48,10 @@ export const ThreeColumns: Story = {
 
 export const WithGap: Story = {
   render: () => (
-    <Grid cols={3} gap="md">
+    <Grid
+      cols={3}
+      gap="md"
+    >
       <Grid.Item>
         <Box>Item 1</Box>
       </Grid.Item>
@@ -73,7 +76,10 @@ export const WithGap: Story = {
 
 export const WithSpan: Story = {
   render: () => (
-    <Grid cols={4} gap="md">
+    <Grid
+      cols={4}
+      gap="md"
+    >
       <Grid.Item span={2}>
         <Box>Span 2</Box>
       </Grid.Item>
@@ -92,7 +98,10 @@ export const WithSpan: Story = {
 
 export const ResponsiveLike: Story = {
   render: () => (
-    <Grid cols={6} gap="lg">
+    <Grid
+      cols={6}
+      gap="lg"
+    >
       <Grid.Item span={6}>
         <Box>Full Width Header</Box>
       </Grid.Item>

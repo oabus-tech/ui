@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar } from './avatar'
 
 const meta = {
-  title: 'Feedback/Avatar',
   component: Avatar,
+  title: 'Feedback/Avatar',
 } satisfies Meta<typeof Avatar>
 
 export default meta
@@ -12,8 +12,8 @@ type Story = StoryObj<typeof meta>
 
 export const WithImage: Story = {
   args: {
-    src: 'https://i.pravatar.cc/150?u=1',
     alt: 'User avatar',
+    src: 'https://i.pravatar.cc/150?u=1',
   },
 }
 
@@ -26,24 +26,24 @@ export const Fallback: Story = {
 
 export const Small: Story = {
   args: {
-    src: 'https://i.pravatar.cc/150?u=2',
     alt: 'Small avatar',
     size: 'sm',
+    src: 'https://i.pravatar.cc/150?u=2',
   },
 }
 
 export const Large: Story = {
   args: {
-    src: 'https://i.pravatar.cc/150?u=3',
     alt: 'Large avatar',
     size: 'lg',
+    src: 'https://i.pravatar.cc/150?u=3',
   },
 }
 
 export const Square: Story = {
   args: {
-    src: 'https://i.pravatar.cc/150?u=4',
     alt: 'Square avatar',
+    src: 'https://i.pravatar.cc/150?u=4',
     variant: 'square',
   },
 }
@@ -51,17 +51,29 @@ export const Square: Story = {
 export const SquareFallback: Story = {
   args: {
     alt: 'Ana Silva',
-    variant: 'square',
     children: 'AS',
+    variant: 'square',
   },
 }
 
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      <Avatar src="https://i.pravatar.cc/150?u=5" alt="Small" size="sm" />
-      <Avatar src="https://i.pravatar.cc/150?u=5" alt="Medium" size="md" />
-      <Avatar src="https://i.pravatar.cc/150?u=5" alt="Large" size="lg" />
+      <Avatar
+        alt="Small"
+        size="sm"
+        src="https://i.pravatar.cc/150?u=5"
+      />
+      <Avatar
+        alt="Medium"
+        size="md"
+        src="https://i.pravatar.cc/150?u=5"
+      />
+      <Avatar
+        alt="Large"
+        size="lg"
+        src="https://i.pravatar.cc/150?u=5"
+      />
     </div>
   ),
 }

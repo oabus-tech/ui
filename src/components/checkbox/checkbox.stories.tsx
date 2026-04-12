@@ -62,7 +62,9 @@ export const Large: Story = {
 
 export const Group: Story = {
   render: () => {
-    const [value, setValue] = useState(['react'])
+    const [value, setValue] = useState([
+      'react',
+    ])
     return (
       <Checkbox.Group
         items={[

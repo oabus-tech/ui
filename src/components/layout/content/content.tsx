@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import type { LayoutContentProps } from './content.types'
@@ -42,7 +41,10 @@ function LayoutContent({
   paddingVertical,
 }: PropsWithChildren<LayoutContentProps>) {
   return (
-    <div className={outerStyles()} data-testid="layout-content">
+    <div
+      className={outerStyles()}
+      data-testid="layout-content"
+    >
       <div
         className={innerStyles({
           maxWidth,

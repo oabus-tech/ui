@@ -4,8 +4,8 @@ import { Settings, User } from 'lucide-react'
 import { Tabs } from './tabs'
 
 const meta = {
-  title: 'Feedback/Tabs',
   component: Tabs,
+  title: 'Feedback/Tabs',
 } satisfies Meta<typeof Tabs>
 
 export default meta
@@ -36,10 +36,16 @@ export const WithIcons: Story = {
   render: () => (
     <Tabs defaultValue="profile">
       <Tabs.List>
-        <Tabs.Trigger value="profile" icon={<User />}>
+        <Tabs.Trigger
+          icon={<User />}
+          value="profile"
+        >
           Profile
         </Tabs.Trigger>
-        <Tabs.Trigger value="settings" icon={<Settings />}>
+        <Tabs.Trigger
+          icon={<Settings />}
+          value="settings"
+        >
           Settings
         </Tabs.Trigger>
       </Tabs.List>
@@ -76,7 +82,10 @@ export const Justified: Story = {
 
 export const Vertical: Story = {
   render: () => (
-    <Tabs defaultValue="general" orientation="vertical">
+    <Tabs
+      defaultValue="general"
+      orientation="vertical"
+    >
       <Tabs.List>
         <Tabs.Trigger value="general">General</Tabs.Trigger>
         <Tabs.Trigger value="security">Security</Tabs.Trigger>

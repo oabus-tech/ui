@@ -12,6 +12,15 @@ import type {
 } from './sheet.types'
 
 const styles = tv({
+  compoundVariants: [
+    {
+      bordered: true,
+      class: {
+        footer: 'border-t pt-4',
+        header: 'border-b pb-4',
+      },
+    },
+  ],
   defaultVariants: {
     side: 'right',
   },
@@ -29,7 +38,7 @@ const styles = tv({
     popup: [
       'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
       'duration-200 ease-in-out',
-      'data-open:animate-in data-closed:animate-out',
+      'data-closed:animate-out data-open:animate-in',
     ],
     title: 'sheet-title font-heading font-medium text-base leading-none',
   },
@@ -64,15 +73,6 @@ const styles = tv({
       },
     },
   },
-  compoundVariants: [
-    {
-      bordered: true,
-      class: {
-        footer: 'border-t pt-4',
-        header: 'border-b pb-4',
-      },
-    },
-  ],
 })
 
 function SheetRoot({
@@ -81,7 +81,9 @@ function SheetRoot({
   onChange,
   children,
 }: PropsWithChildren<SheetProps>) {
-  const { backdrop, popup } = styles({ side })
+  const { backdrop, popup } = styles({
+    side,
+  })
 
   return (
     <Dialog.Root
@@ -110,7 +112,9 @@ function SheetHeader({
   closable,
   bordered,
 }: PropsWithChildren<SheetHeaderProps>) {
-  const { header, headerContent } = styles({ bordered })
+  const { header, headerContent } = styles({
+    bordered,
+  })
 
   return (
     <div
@@ -179,7 +183,9 @@ function SheetFooter({
   children,
   bordered,
 }: PropsWithChildren<SheetFooterProps>) {
-  const { footer } = styles({ bordered })
+  const { footer } = styles({
+    bordered,
+  })
 
   return (
     <div

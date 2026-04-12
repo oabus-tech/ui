@@ -24,7 +24,9 @@ function MaskInput({
   const hasLeft = Boolean(leftSection)
   const hasRight = Boolean(effectiveRight)
 
-  const { root, field, section } = inputShared({ size })
+  const { root, field, section } = inputShared({
+    size,
+  })
 
   const maskOptions = Array.isArray(mask)
     ? mask.map((m) => ({
@@ -45,7 +47,9 @@ function MaskInput({
             className: 'pointer-events-auto left-0 justify-center',
           })}
           data-testid="mask-input-section-left"
-          style={{ width: leftSectionWidth }}
+          style={{
+            width: leftSectionWidth,
+          }}
         >
           {leftSection}
         </span>
@@ -60,8 +64,16 @@ function MaskInput({
         mask={maskOptions as string}
         onAccept={(val: string) => onChange?.(val === '' ? null : val)}
         style={{
-          ...(hasLeft ? { paddingLeft: leftSectionWidth } : {}),
-          ...(hasRight ? { paddingRight: rightSectionWidth } : {}),
+          ...(hasLeft
+            ? {
+                paddingLeft: leftSectionWidth,
+              }
+            : {}),
+          ...(hasRight
+            ? {
+                paddingRight: rightSectionWidth,
+              }
+            : {}),
         }}
         value={value ?? ''}
       />
@@ -71,7 +83,9 @@ function MaskInput({
             className: 'right-0 justify-center',
           })}
           data-testid="mask-input-section-right"
-          style={{ width: rightSectionWidth }}
+          style={{
+            width: rightSectionWidth,
+          }}
         >
           {effectiveRight}
         </span>

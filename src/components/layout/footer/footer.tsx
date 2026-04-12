@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-
 import { tv } from 'tailwind-variants'
 
 import type { LayoutFooterProps } from './footer.types'
@@ -32,7 +31,11 @@ function LayoutFooter({
 }: PropsWithChildren<LayoutFooterProps>) {
   return (
     <footer
-      className={styles({ bordered, size, sticky })}
+      className={styles({
+        bordered,
+        size,
+        sticky,
+      })}
       data-testid="layout-footer"
     >
       {children}

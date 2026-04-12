@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { DropdownMenu } from '@/components/dropdown-menu'
 import { MaskInput } from '@/components/mask-input'
 
-import type { DocumentInputProps, DocumentType } from './document-input.types'
 import { Button } from '../button'
+import type { DocumentInputProps, DocumentType } from './document-input.types'
 
 const LEFT_SECTION_WIDTH = 60
 
@@ -67,10 +67,10 @@ function DocumentInput({
       <DropdownMenu>
         <DropdownMenu.Trigger asChild>
           <Button
-          variant="ghost"
             data-testid="document-input-trigger"
             disabled={disabled}
             type="button"
+            variant="ghost"
           >
             {LABELS[internalType]}
           </Button>

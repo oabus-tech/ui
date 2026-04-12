@@ -16,20 +16,85 @@ type User = {
 }
 
 const users: User[] = [
-  { age: 28, email: 'alice@example.com', id: '1', name: 'Alice Johnson', role: 'Admin', status: 'active' },
-  { age: 34, email: 'bob@example.com', id: '2', name: 'Bob Smith', role: 'Editor', status: 'active' },
-  { age: 22, email: 'carol@example.com', id: '3', name: 'Carol White', role: 'Viewer', status: 'inactive' },
-  { age: 45, email: 'dave@example.com', id: '4', name: 'Dave Brown', role: 'Admin', status: 'active' },
-  { age: 31, email: 'eve@example.com', id: '5', name: 'Eve Davis', role: 'Editor', status: 'inactive' },
-  { age: 27, email: 'frank@example.com', id: '6', name: 'Frank Miller', role: 'Viewer', status: 'active' },
-  { age: 39, email: 'grace@example.com', id: '7', name: 'Grace Lee', role: 'Admin', status: 'active' },
-  { age: 26, email: 'henry@example.com', id: '8', name: 'Henry Wilson', role: 'Editor', status: 'inactive' },
+  {
+    age: 28,
+    email: 'alice@example.com',
+    id: '1',
+    name: 'Alice Johnson',
+    role: 'Admin',
+    status: 'active',
+  },
+  {
+    age: 34,
+    email: 'bob@example.com',
+    id: '2',
+    name: 'Bob Smith',
+    role: 'Editor',
+    status: 'active',
+  },
+  {
+    age: 22,
+    email: 'carol@example.com',
+    id: '3',
+    name: 'Carol White',
+    role: 'Viewer',
+    status: 'inactive',
+  },
+  {
+    age: 45,
+    email: 'dave@example.com',
+    id: '4',
+    name: 'Dave Brown',
+    role: 'Admin',
+    status: 'active',
+  },
+  {
+    age: 31,
+    email: 'eve@example.com',
+    id: '5',
+    name: 'Eve Davis',
+    role: 'Editor',
+    status: 'inactive',
+  },
+  {
+    age: 27,
+    email: 'frank@example.com',
+    id: '6',
+    name: 'Frank Miller',
+    role: 'Viewer',
+    status: 'active',
+  },
+  {
+    age: 39,
+    email: 'grace@example.com',
+    id: '7',
+    name: 'Grace Lee',
+    role: 'Admin',
+    status: 'active',
+  },
+  {
+    age: 26,
+    email: 'henry@example.com',
+    id: '8',
+    name: 'Henry Wilson',
+    role: 'Editor',
+    status: 'inactive',
+  },
 ]
 
 const columns: TableColumns<User> = [
-  { key: 'name', label: 'Name' },
-  { key: 'email', label: 'Email' },
-  { key: 'role', label: 'Role' },
+  {
+    key: 'name',
+    label: 'Name',
+  },
+  {
+    key: 'email',
+    label: 'Email',
+  },
+  {
+    key: 'role',
+    label: 'Role',
+  },
 ]
 
 const meta = {
@@ -74,10 +139,25 @@ export const WithSorting = {
     const [sort, setSort] = useState<string | undefined>()
 
     const sortableColumns: TableColumns<User> = [
-      { key: 'name', label: 'Name', sorter: true },
-      { key: 'email', label: 'Email' },
-      { align: 'center', key: 'age', label: 'Age', sorter: true },
-      { key: 'role', label: 'Role' },
+      {
+        key: 'name',
+        label: 'Name',
+        sorter: true,
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
+      {
+        align: 'center',
+        key: 'age',
+        label: 'Age',
+        sorter: true,
+      },
+      {
+        key: 'role',
+        label: 'Role',
+      },
     ]
 
     return (
@@ -131,8 +211,14 @@ export const WithPagination = {
 export const WithCustomCells = {
   render: () => {
     const customColumns: TableColumns<User> = [
-      { key: 'name', label: 'Name' },
-      { key: 'email', label: 'Email' },
+      {
+        key: 'name',
+        label: 'Name',
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
       {
         key: 'status',
         label: 'Status',
@@ -146,11 +232,12 @@ export const WithCustomCells = {
         align: 'center',
         key: 'age',
         label: 'Age',
-        selector: (row) => (
-          <span className="font-mono">{row.age}</span>
-        ),
+        selector: (row) => <span className="font-mono">{row.age}</span>,
       },
-      { key: 'role', label: 'Role' },
+      {
+        key: 'role',
+        label: 'Role',
+      },
     ]
 
     return (
@@ -186,10 +273,27 @@ export const WithRowClick = {
 export const WithColumnWidths = {
   render: () => {
     const widthColumns: TableColumns<User> = [
-      { key: 'name', label: 'Name', width: 200 },
-      { key: 'email', label: 'Email' },
-      { align: 'center', key: 'age', label: 'Age', width: 80 },
-      { align: 'right', key: 'role', label: 'Role', width: 120 },
+      {
+        key: 'name',
+        label: 'Name',
+        width: 200,
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
+      {
+        align: 'center',
+        key: 'age',
+        label: 'Age',
+        width: 80,
+      },
+      {
+        align: 'right',
+        key: 'role',
+        label: 'Role',
+        width: 120,
+      },
     ]
 
     return (
@@ -205,11 +309,28 @@ export const WithColumnWidths = {
 export const WithHiddenColumns = {
   render: () => {
     const hiddenColumns: TableColumns<User> = [
-      { key: 'name', label: 'Name' },
-      { key: 'email', label: 'Email' },
-      { hide: true, key: 'age', label: 'Age' },
-      { key: 'role', label: 'Role' },
-      { hide: true, key: 'status', label: 'Status' },
+      {
+        key: 'name',
+        label: 'Name',
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
+      {
+        hide: true,
+        key: 'age',
+        label: 'Age',
+      },
+      {
+        key: 'role',
+        label: 'Role',
+      },
+      {
+        hide: true,
+        key: 'status',
+        label: 'Status',
+      },
     ]
 
     return (
@@ -229,7 +350,9 @@ export const Complete = {
     const [sort, setSort] = useState<string | undefined>()
     const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
-    const sorted = [...users].sort((a, b) => {
+    const sorted = [
+      ...users,
+    ].sort((a, b) => {
       if (!sort) return 0
       const desc = sort.startsWith('-')
       const key = (desc ? sort.slice(1) : sort) as keyof User
@@ -246,9 +369,22 @@ export const Complete = {
     )
 
     const completeColumns: TableColumns<User> = [
-      { key: 'name', label: 'Name', sorter: true },
-      { key: 'email', label: 'Email' },
-      { align: 'center', key: 'age', label: 'Age', sorter: true, width: 80 },
+      {
+        key: 'name',
+        label: 'Name',
+        sorter: true,
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
+      {
+        align: 'center',
+        key: 'age',
+        label: 'Age',
+        sorter: true,
+        width: 80,
+      },
       {
         key: 'status',
         label: 'Status',
@@ -259,7 +395,11 @@ export const Complete = {
         ),
         sorter: true,
       },
-      { key: 'role', label: 'Role', sorter: true },
+      {
+        key: 'role',
+        label: 'Role',
+        sorter: true,
+      },
     ]
 
     return (

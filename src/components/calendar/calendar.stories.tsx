@@ -11,9 +11,7 @@ const meta = {
 export default meta
 
 export const Default = {
-  render: () => (
-    <Calendar mode="single" />
-  ),
+  render: () => <Calendar mode="single" />,
 }
 
 export const Controlled = {
@@ -73,7 +71,10 @@ export const RangeControlled = {
     const [range, setRange] = useState<{
       from?: Date
       to?: Date
-    } | null>({ from: today, to: nextWeek })
+    } | null>({
+      from: today,
+      to: nextWeek,
+    })
     return (
       <Calendar
         mode="range"

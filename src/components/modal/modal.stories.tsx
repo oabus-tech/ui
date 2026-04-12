@@ -35,28 +35,43 @@ export const Default: Story = {
           <Modal.Body>
             <Form>
               <Form.Field
-                label={{ content: 'Full name', required: true }}
+                label={{
+                  content: 'Full name',
+                  required: true,
+                }}
               >
                 <Input placeholder="John Doe" />
               </Form.Field>
               <Form.Field
-                label={{ content: 'Email', required: true }}
+                label={{
+                  content: 'Email',
+                  required: true,
+                }}
               >
                 <Input placeholder="john@example.com" />
               </Form.Field>
               <Form.Field
-                label="Role"
                 description="This determines the user's permissions."
+                label="Role"
               >
                 <Select
                   mode="single"
                   optionLabel="label"
-                  optionValue="value"
                   options={[
-                    { label: 'Admin', value: 'admin' },
-                    { label: 'Editor', value: 'editor' },
-                    { label: 'Viewer', value: 'viewer' },
+                    {
+                      label: 'Admin',
+                      value: 'admin',
+                    },
+                    {
+                      label: 'Editor',
+                      value: 'editor',
+                    },
+                    {
+                      label: 'Viewer',
+                      value: 'viewer',
+                    },
                   ]}
+                  optionValue="value"
                   placeholder="Select a role"
                 />
               </Form.Field>
@@ -175,14 +190,19 @@ export const ScrollableContent: Story = {
           </Modal.Header>
           <Modal.Body>
             <div className="flex flex-col gap-4 text-muted-foreground text-sm">
-              {Array.from({ length: 20 }, (_, i) => (
-                <p key={i}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              ))}
+              {Array.from(
+                {
+                  length: 20,
+                },
+                (_, i) => (
+                  <p key={i}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </p>
+                ),
+              )}
             </div>
           </Modal.Body>
           <Modal.Footer bordered>
