@@ -1,0 +1,191 @@
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
+
+import { Button } from '@/components/button'
+import { Form } from '@/components/form'
+import { Input } from '@/components/input'
+import { Select } from '@/components/select'
+import { Switch } from '@/components/switch'
+
+import { Sheet } from './sheet'
+
+const meta = {
+  component: Sheet,
+  title: 'Components/Sheet',
+} satisfies Meta<typeof Sheet>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+        >
+          <Sheet.Header closable>
+            <Sheet.Header.Title>Edit Profile</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Make changes to your profile here.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <Form>
+              <Form.Field
+                label={{ content: 'Full name', required: true }}
+                name="name"
+              >
+                <Input placeholder="John Doe" />
+              </Form.Field>
+              <Form.Field
+                label={{ content: 'Email', required: true }}
+                name="email"
+              >
+                <Input placeholder="john@example.com" />
+              </Form.Field>
+              <Form.Field
+                description="This determines the user's permissions."
+                label="Role"
+                name="role"
+              >
+                <Select
+                  mode="single"
+                  optionLabel="label"
+                  optionValue="value"
+                  options={[
+                    { label: 'Admin', value: 'admin' },
+                    { label: 'Editor', value: 'editor' },
+                    { label: 'Viewer', value: 'viewer' },
+                  ]}
+                  placeholder="Select a role"
+                />
+              </Form.Field>
+              <Form.Field name="notifications">
+                <Switch label="Email notifications" />
+              </Form.Field>
+            </Form>
+          </Sheet.Body>
+          <Sheet.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
+export const LeftSide: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Left Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          side="left"
+        >
+          <Sheet.Header
+            bordered
+            closable
+          >
+            <Sheet.Header.Title>Navigation</Sheet.Header.Title>
+          </Sheet.Header>
+          <Sheet.Body>
+            <div className="flex flex-col gap-2">
+              {['Dashboard', 'Settings', 'Profile', 'Help'].map((item) => (
+                <p
+                  className="rounded-md p-2 text-sm hover:bg-muted"
+                  key={item}
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
+          </Sheet.Body>
+        </Sheet>
+      </>
+    )
+  },
+}
+
+export const Bordered: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Bordered Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+        >
+          <Sheet.Header
+            bordered
+            closable
+          >
+            <Sheet.Header.Title>Filters</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Adjust your search filters.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <p className="text-muted-foreground text-sm">
+              Filter controls go here.
+            </p>
+          </Sheet.Body>
+          <Sheet.Footer bordered>
+            <Button onClick={() => setOpen(false)}>Apply</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Reset
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
+export const Bottom: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Bottom Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          side="bottom"
+        >
+          <Sheet.Header closable>
+            <Sheet.Header.Title>Actions</Sheet.Header.Title>
+          </Sheet.Header>
+          <Sheet.Body>
+            <div className="flex flex-col gap-2 pb-4">
+              {['Share', 'Copy link', 'Edit', 'Delete'].map((action) => (
+                <Button
+                  key={action}
+                  variant="ghost"
+                >
+                  {action}
+                </Button>
+              ))}
+            </div>
+          </Sheet.Body>
+        </Sheet>
+      </>
+    )
+  },
+}
