@@ -13,7 +13,6 @@ type Story = StoryObj<typeof meta>
 export const Single: Story = {
   args: {
     defaultValue: 0,
-    mode: 'single',
     step: 1,
   },
 }
@@ -21,19 +20,7 @@ export const Single: Story = {
 export const WithStep: Story = {
   args: {
     defaultValue: 50,
-    mode: 'single',
     step: 10,
-  },
-}
-
-export const Range: Story = {
-  args: {
-    defaultValue: {
-      from: 10,
-      to: 100,
-    },
-    mode: 'range',
-    placeholder: 'Select range',
   },
 }
 
@@ -41,6 +28,5 @@ export const Disabled: Story = {
   args: {
     defaultValue: 5,
     disabled: true,
-    mode: 'single',
   },
 }

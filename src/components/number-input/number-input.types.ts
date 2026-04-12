@@ -21,37 +21,14 @@
  * Dependencies: Input component, @radix-ui/react-popover, lucide-react (Minus, Plus)
  */
 
-import type { InputProps } from '@/components/input/input.types'
+import type { InputSize } from '@/components/input/input.types'
 
-export type NumberInputMode = 'single' | 'range'
-
-export type NumberInputSingleValue = number
-
-export type NumberInputRangeValue = {
-  from?: number // range start
-  to?: number // range end
+export type NumberInputProps = {
+  value?: number
+  defaultValue?: number
+  onChange?: (value: number) => void
+  step?: number
+  size?: InputSize
+  disabled?: boolean
+  placeholder?: string
 }
-
-type BaseNumberInputProps = Omit<
-  InputProps,
-  'value' | 'defaultValue' | 'onChange'
-> & {
-  step?: number // increment/decrement step value
-}
-
-type SingleNumberInputProps = {
-  mode: 'single' // single number input
-  value?: NumberInputSingleValue // controlled value
-  defaultValue?: NumberInputSingleValue // uncontrolled initial value
-  onChange?: (value: NumberInputSingleValue) => void // fires on change
-}
-
-type RangeNumberInputProps = {
-  mode: 'range' // from/to range input
-  value?: NumberInputRangeValue // controlled range
-  defaultValue?: NumberInputRangeValue // uncontrolled initial range
-  onChange?: (value: NumberInputRangeValue) => void // fires on change
-}
-
-export type NumberInputProps = BaseNumberInputProps &
-  (SingleNumberInputProps | RangeNumberInputProps)
