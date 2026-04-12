@@ -150,12 +150,18 @@ function SingleSelect<T, I = string, O = I>({
   const [query, setQuery] = useState('')
   const sentinelRef = useRef<HTMLDivElement>(null)
 
-  const currentKey =
-    value !== undefined && value !== null ? toKey(value as O) : ''
+  const isControlled = value !== undefined
   const defaultKey =
     defaultValue !== undefined && defaultValue !== null
       ? toKey(defaultValue as O)
       : undefined
+  const [internalKey, setInternalKey] = useState<string>(defaultKey ?? '')
+
+  const currentKey = isControlled
+    ? value !== null
+      ? toKey(value as O)
+      : ''
+    : internalKey
 
   const filteredOptions =
     searchable && query
@@ -226,31 +232,36 @@ function SingleSelect<T, I = string, O = I>({
     <SelectPrimitive.Root
       defaultValue={defaultKey}
       onValueChange={(key: string | null) => {
+        if (!isControlled) {
+          setInternalKey(key ?? '')
+        }
         const option = key
           ? options.find((o) => toKey(getValue(o, optionValue)) === key)
           : undefined
         onChange?.(option ? getValue(option, optionValue) : null)
       }}
-      value={currentKey || undefined}
+      value={isControlled ? currentKey || undefined : undefined}
     >
       <SelectPrimitive.Trigger
         className={trigger()}
-        data-placeholder={!currentKey && !defaultKey ? '' : undefined}
         data-testid="select-trigger"
         disabled={disabled || loading}
       >
         {leftSection && <span className="shrink-0">{leftSection}</span>}
-        <SelectPrimitive.Value
+        <span
           className={triggerValue()}
           data-testid="select-value"
-          placeholder={placeholder}
         >
-          {selectedOption
-            ? renderValue
-              ? renderValue(selectedOption)
-              : getLabel(selectedOption, optionLabel)
-            : null}
-        </SelectPrimitive.Value>
+          {selectedOption ? (
+            renderValue ? (
+              renderValue(selectedOption)
+            ) : (
+              getLabel(selectedOption, optionLabel)
+            )
+          ) : (
+            <span className="text-muted-foreground">{placeholder}</span>
+          )}
+        </span>
         {loading ? (
           <Loader size="sm" />
         ) : rightSection ? (

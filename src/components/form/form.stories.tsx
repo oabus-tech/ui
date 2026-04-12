@@ -26,10 +26,7 @@ export const Default: Story = {
         label="Email"
         name="email"
       >
-        <Input
-          placeholder="john@example.com"
-          type="email"
-        />
+        <Input placeholder="john@example.com" />
       </Form.Field>
     </Form>
   ),
@@ -46,7 +43,6 @@ export const WithError: Story = {
         <Input
           aria-invalid
           placeholder="john@example.com"
-          type="email"
         />
       </Form.Field>
     </Form>
