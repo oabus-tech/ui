@@ -4,7 +4,6 @@ import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Button } from '@/components/button'
-import { cn } from '@/support/utils'
 
 import type {
   ModalBodyProps,
@@ -13,7 +12,7 @@ import type {
   ModalProps,
 } from './modal.types'
 
-const modal = tv({
+const styles = tv({
   slots: {
     backdrop: [
       'modal-backdrop fixed inset-0 isolate z-50 bg-black/50',
@@ -35,35 +34,27 @@ const modal = tv({
     title: 'modal-title font-heading font-medium text-base leading-none',
   },
   variants: {
-    footerBordered: {
-      true: {
-        footer: 'border-t pt-4',
-      },
-    },
-    headerBordered: {
-      true: {
-        header: 'border-b',
-      },
+    bordered: {
+      true: {},
     },
   },
+  compoundVariants: [
+    {
+      bordered: true,
+      class: {
+        footer: 'border-t pt-4',
+        header: 'border-b pb-4',
+      },
+    },
+  ],
 })
-
-const {
-  backdrop,
-  popup,
-  headerContent,
-  title,
-  description,
-  body,
-  footer,
-  header,
-} = modal()
 
 function ModalRoot({
   open,
   onChange,
   children,
 }: PropsWithChildren<ModalProps>) {
+  const { backdrop, popup } = styles()
   return (
     <Dialog.Root
       onOpenChange={onChange}
@@ -90,14 +81,10 @@ function ModalHeader({
   closable,
   bordered,
 }: PropsWithChildren<ModalHeaderProps>) {
+  const { header, headerContent } = styles({ bordered })
   return (
     <div
-      className={cn(
-        header(),
-        modal({
-          headerBordered: bordered,
-        }),
-      )}
+      className={header()}
       data-testid="modal-header"
     >
       <div className={headerContent()}>{children}</div>
@@ -120,6 +107,7 @@ function ModalHeader({
 }
 
 function ModalHeaderTitle({ children }: PropsWithChildren) {
+  const { title } = styles()
   return (
     <Dialog.Title
       className={title()}
@@ -131,6 +119,7 @@ function ModalHeaderTitle({ children }: PropsWithChildren) {
 }
 
 function ModalHeaderDescription({ children }: PropsWithChildren) {
+  const { description } = styles()
   return (
     <Dialog.Description
       className={description()}
@@ -142,6 +131,7 @@ function ModalHeaderDescription({ children }: PropsWithChildren) {
 }
 
 function ModalBody({ children }: PropsWithChildren<ModalBodyProps>) {
+  const { body } = styles()
   return (
     <div
       className={body()}
@@ -156,14 +146,10 @@ function ModalFooter({
   children,
   bordered,
 }: PropsWithChildren<ModalFooterProps>) {
+  const { footer } = styles({ bordered })
   return (
     <div
-      className={cn(
-        footer(),
-        modal({
-          footerBordered: bordered,
-        }),
-      )}
+      className={footer()}
       data-testid="modal-footer"
     >
       {children}
