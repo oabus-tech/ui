@@ -76,7 +76,9 @@ function Slot({
 }
 
 function OTPInput({
-  pattern = [6],
+  pattern = [
+    6,
+  ],
   size,
   value,
   defaultValue,
@@ -84,10 +86,14 @@ function OTPInput({
 }: OTPInputProps) {
   const maxLength = useMemo(
     () => pattern.reduce((sum, n) => sum + n, 0),
-    [pattern],
+    [
+      pattern,
+    ],
   )
 
-  const { root, group, slot, separator, caret } = otpInput({ size })
+  const { root, group, slot, separator, caret } = otpInput({
+    size,
+  })
 
   const handleChange = (val: string) => {
     onChange?.(val === '' ? null : val)
@@ -95,8 +101,12 @@ function OTPInput({
 
   const controlledProps =
     value !== undefined
-      ? { value: value ?? '' }
-      : { defaultValue: defaultValue ?? undefined }
+      ? {
+          value: value ?? '',
+        }
+      : {
+          defaultValue: defaultValue ?? undefined,
+        }
 
   return (
     <OTPInputPrimitive
@@ -118,14 +128,19 @@ function OTPInput({
                 className={group()}
                 data-testid="otp-input-group"
               >
-                {Array.from({ length: count }, (_, i) => (
-                  <Slot
-                    caretClass={caret()}
-                    key={startIndex + i}
-                    slotClass={slot()}
-                    slotData={renderProps.slots[startIndex + i]}
-                  />
-                ))}
+                {Array.from(
+                  {
+                    length: count,
+                  },
+                  (_, i) => (
+                    <Slot
+                      caretClass={caret()}
+                      key={startIndex + i}
+                      slotClass={slot()}
+                      slotData={renderProps.slots[startIndex + i]}
+                    />
+                  ),
+                )}
               </div>
               {groupIndex < pattern.length - 1 && (
                 <div

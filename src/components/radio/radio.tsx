@@ -105,7 +105,9 @@ function RadioGroup({
 }: RadioGroupProps) {
   return (
     <RadioGroupPrimitive
-      className={radioGroup({ variant })}
+      className={radioGroup({
+        variant,
+      })}
       data-testid="radio-group"
       defaultValue={defaultValue}
       disabled={disabled}

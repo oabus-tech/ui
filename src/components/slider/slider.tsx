@@ -49,12 +49,16 @@ function Slider(props: SliderProps) {
 
   const isSingle = mode === 'single'
 
-  const { control, indicator, root, thumb, track } = sliderStyles({ size })
+  const { control, indicator, root, thumb, track } = sliderStyles({
+    size,
+  })
 
   if (isSingle) {
     const { value, defaultValue, onValueChange } = props as Extract<
       SliderProps,
-      { mode: 'single' }
+      {
+        mode: 'single'
+      }
     >
 
     return (
@@ -94,7 +98,9 @@ function Slider(props: SliderProps) {
 
   const { value, defaultValue, onValueChange } = props as Extract<
     SliderProps,
-    { mode: 'range' }
+    {
+      mode: 'range'
+    }
   >
 
   return (
@@ -108,7 +114,12 @@ function Slider(props: SliderProps) {
       onValueChange={
         onValueChange
           ? (val: readonly number[]) =>
-              onValueChange(val as unknown as [number, number])
+              onValueChange(
+                val as unknown as [
+                  number,
+                  number,
+                ],
+              )
           : undefined
       }
       orientation={orientation}

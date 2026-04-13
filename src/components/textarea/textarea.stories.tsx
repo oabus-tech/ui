@@ -122,9 +122,18 @@ export const WithMaxLengthUncontrolled: Story = {
 export const AllSizes: Story = {
   render: () => (
     <div className="flex w-full max-w-md flex-col gap-4">
-      <Textarea placeholder="Small" size="sm" />
-      <Textarea placeholder="Medium (default)" size="md" />
-      <Textarea placeholder="Large" size="lg" />
+      <Textarea
+        placeholder="Small"
+        size="sm"
+      />
+      <Textarea
+        placeholder="Medium (default)"
+        size="md"
+      />
+      <Textarea
+        placeholder="Large"
+        size="lg"
+      />
     </div>
   ),
 }

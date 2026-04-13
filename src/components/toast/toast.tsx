@@ -17,19 +17,32 @@ const toastStyles = tv({
     cancelButton: 'toast-cancel-button',
     closeButton: 'toast-close-button',
     content: 'toast-content',
-    description: 'toast-description !font-medium !text-sm !text-muted-foreground',
+    description:
+      'toast-description !font-medium !text-sm !text-muted-foreground',
     icon: 'toast-icon',
     title: 'toast-title font-medium text-sm',
     toast: 'toast-item',
   },
   variants: {
     variant: {
-      default: { toast: 'toast-default' },
-      error: { toast: 'toast-error !border-l-4 !border-l-destructive' },
-      info: { toast: 'toast-info !border-l-4 !border-l-blue-500' },
-      loading: { toast: 'toast-loading' },
-      success: { toast: 'toast-success !border-l-4 !border-l-emerald-500' },
-      warning: { toast: 'toast-warning !border-l-4 !border-l-amber-500' },
+      default: {
+        toast: 'toast-default',
+      },
+      error: {
+        toast: 'toast-error !border-l-4 !border-l-destructive',
+      },
+      info: {
+        toast: 'toast-info !border-l-4 !border-l-blue-500',
+      },
+      loading: {
+        toast: 'toast-loading',
+      },
+      success: {
+        toast: 'toast-success !border-l-4 !border-l-emerald-500',
+      },
+      warning: {
+        toast: 'toast-warning !border-l-4 !border-l-amber-500',
+      },
     },
   },
 })
@@ -39,12 +52,24 @@ const toastRoot = tv({
 })
 
 // Pre-compute classNames for each variant
-const baseSlots = toastStyles({ variant: 'default' })
-const errorSlots = toastStyles({ variant: 'error' })
-const infoSlots = toastStyles({ variant: 'info' })
-const loadingSlots = toastStyles({ variant: 'loading' })
-const successSlots = toastStyles({ variant: 'success' })
-const warningSlots = toastStyles({ variant: 'warning' })
+const baseSlots = toastStyles({
+  variant: 'default',
+})
+const errorSlots = toastStyles({
+  variant: 'error',
+})
+const infoSlots = toastStyles({
+  variant: 'info',
+})
+const loadingSlots = toastStyles({
+  variant: 'loading',
+})
+const successSlots = toastStyles({
+  variant: 'success',
+})
+const warningSlots = toastStyles({
+  variant: 'warning',
+})
 
 function Toast({ position = 'bottom-right', theme = 'system' }: ToastProps) {
   return (

@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button onClick={() => toast('This is a default toast message')}>
         Default Toast
@@ -25,7 +25,7 @@ export const Default: Story = {
 
 export const Success: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() => toast.success('Operation completed successfully')}
@@ -39,7 +39,7 @@ export const Success: Story = {
 
 export const Error: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() => toast.error('Something went wrong')}
@@ -53,7 +53,7 @@ export const Error: Story = {
 
 export const Warning: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() => toast.warning('Please check your input')}
@@ -67,7 +67,7 @@ export const Warning: Story = {
 
 export const Info: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() => toast.info('Here is some information')}
@@ -81,12 +81,18 @@ export const Info: Story = {
 
 export const Loading: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() => {
           const id = toast.loading('Loading data...')
-          setTimeout(() => toast.success('Done!', { id }), 2000)
+          setTimeout(
+            () =>
+              toast.success('Done!', {
+                id,
+              }),
+            2000,
+          )
         }}
         variant="outline"
       >
@@ -98,7 +104,7 @@ export const Loading: Story = {
 
 export const WithDescription: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() =>
@@ -115,7 +121,7 @@ export const WithDescription: Story = {
 
 export const WithAction: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() =>
@@ -137,7 +143,10 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
       <Toast />
-      <Button onClick={() => toast('Default message')} variant="outline">
+      <Button
+        onClick={() => toast('Default message')}
+        variant="outline"
+      >
         Default
       </Button>
       <Button
@@ -146,7 +155,10 @@ export const AllVariants: Story = {
       >
         Success
       </Button>
-      <Button onClick={() => toast.error('Error message')} variant="outline">
+      <Button
+        onClick={() => toast.error('Error message')}
+        variant="outline"
+      >
         Error
       </Button>
       <Button
@@ -155,7 +167,10 @@ export const AllVariants: Story = {
       >
         Warning
       </Button>
-      <Button onClick={() => toast.info('Info message')} variant="outline">
+      <Button
+        onClick={() => toast.info('Info message')}
+        variant="outline"
+      >
         Info
       </Button>
       <Button
@@ -170,18 +185,15 @@ export const AllVariants: Story = {
 
 export const WithPromise: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() =>
-          toast.promise(
-            new Promise((resolve) => setTimeout(resolve, 2000)),
-            {
-              error: 'Failed to save',
-              loading: 'Saving...',
-              success: 'Saved successfully!',
-            },
-          )
+          toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
+            error: 'Failed to save',
+            loading: 'Saving...',
+            success: 'Saved successfully!',
+          })
         }
       >
         Toast with Promise
@@ -192,11 +204,14 @@ export const WithPromise: Story = {
 
 export const CustomDuration: Story = {
   render: () => (
-    <div >
+    <div>
       <Toast />
       <Button
         onClick={() =>
-          toast.info('This stays for 10 seconds', { duration: 10000, description: 'This is a description' })
+          toast.info('This stays for 10 seconds', {
+            description: 'This is a description',
+            duration: 10000,
+          })
         }
       >
         Long Duration (10s)
