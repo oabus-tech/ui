@@ -13,12 +13,24 @@
  * - Multiple toasts stack with grouping
  *
  * Implementation:
- * - Render <ToastContainer /> (Sonner Toaster) once at app root
+ * - Render <Toast /> once at app root
  * - Trigger via toast("Message") or toast.success/error/warning/info/loading("Message")
- * - <Toast /> renders the Sonner provider with custom styling
  * - toast.success("Saved!", { description: "Your changes were saved." })
  *
  * Dependencies: sonner library
  */
 
-export type ToastProps = {}
+export type ToastPosition =
+  | 'bottom-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'top-center'
+  | 'top-left'
+  | 'top-right'
+
+export type ToastTheme = 'dark' | 'light' | 'system'
+
+export type ToastProps = {
+  position?: ToastPosition
+  theme?: ToastTheme
+}
