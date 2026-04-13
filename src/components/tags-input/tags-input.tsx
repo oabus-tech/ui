@@ -4,7 +4,6 @@ import { tv } from 'tailwind-variants'
 
 import { Badge } from '@/components/badge'
 
-import { Button } from '../button'
 import type { TagsInputProps } from './tags-input.types'
 
 const tagsInput = tv({
@@ -38,7 +37,7 @@ function TagsInput({
   const isControlled = controlledValue !== undefined
   const tags = isControlled ? controlledValue : internalValue
   const inputRef = useRef<HTMLInputElement>(null)
-  const { root, field, removeBtn } = tagsInput()
+  const { root, field } = tagsInput()
 
   const updateTags = (next: string[]) => {
     if (!isControlled) {

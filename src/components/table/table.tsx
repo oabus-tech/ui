@@ -93,7 +93,9 @@ function Table<T>({
   }
 
   const handleSort = (columnKey: string) => {
-    if (!onSortChange) return
+    if (!onSortChange) {
+      return
+    }
 
     if (sort === columnKey) {
       onSortChange(`-${columnKey}`)
@@ -115,8 +117,12 @@ function Table<T>({
   }
 
   const getAlignClass = (align?: 'left' | 'center' | 'right') => {
-    if (align === 'center') return 'text-center'
-    if (align === 'right') return 'text-right'
+    if (align === 'center') {
+      return 'text-center'
+    }
+    if (align === 'right') {
+      return 'text-right'
+    }
     return 'text-left'
   }
 
@@ -157,20 +163,14 @@ function Table<T>({
                   }
                 >
                   {col.sorter ? (
-                    <span
+                    <button
                       className={sortButton()}
                       onClick={() => handleSort(col.key)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          handleSort(col.key)
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
+                      type="button"
                     >
                       {col.label}
                       {getSortIcon(col.key)}
-                    </span>
+                    </button>
                   ) : (
                     col.label
                   )}

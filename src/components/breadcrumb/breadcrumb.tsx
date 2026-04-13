@@ -85,10 +85,8 @@ function BreadcrumbPage({ children }: PropsWithChildren) {
   return (
     <span
       aria-current="page"
-      aria-disabled="true"
       className={page()}
       data-testid="breadcrumb-page"
-      role="link"
     >
       {children}
     </span>

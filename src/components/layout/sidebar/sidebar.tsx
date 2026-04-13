@@ -199,6 +199,7 @@ function SidebarProvider({
       } else {
         _setOpen(openState)
       }
+      // biome-ignore lint/suspicious/noDocumentCookie: cookie used for SSR sidebar state persistence
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
     },
     [
@@ -212,7 +213,6 @@ function SidebarProvider({
   }, [
     isMobile,
     setOpen,
-    setOpenMobile,
   ])
 
   useEffect(() => {
@@ -249,7 +249,6 @@ function SidebarProvider({
       setOpen,
       isMobile,
       openMobile,
-      setOpenMobile,
       toggleSidebar,
     ],
   )
@@ -813,6 +812,7 @@ function SidebarMenuSubButton({
   children,
 }: PropsWithChildren<SidebarMenuSubButtonProps>) {
   return (
+    // biome-ignore lint/a11y/useValidAnchor: href is provided by consumers via children or asChild pattern
     <a
       className={cn(
         'sidebar-menu-sub-button flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2',

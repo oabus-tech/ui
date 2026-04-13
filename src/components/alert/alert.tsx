@@ -89,7 +89,9 @@ function AlertRoot({
     onClose,
   ])
 
-  if (!visible) return null
+  if (!visible) {
+    return null
+  }
 
   return (
     <AlertContext.Provider value={slots}>

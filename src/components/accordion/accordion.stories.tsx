@@ -10,7 +10,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Single = {
+export const Single: Story = {
   render: () => (
     <Accordion
       collapsible
@@ -40,7 +40,7 @@ export const Single = {
   ),
 }
 
-export const Multiple = {
+export const Multiple: Story = {
   render: () => (
     <Accordion type="multiple">
       <Accordion.Item value="item-1">
@@ -61,7 +61,7 @@ export const Multiple = {
   ),
 }
 
-export const Bordered = {
+export const Bordered: Story = {
   render: () => (
     <Accordion
       bordered
@@ -84,7 +84,7 @@ export const Bordered = {
   ),
 }
 
-export const DefaultOpen = {
+export const DefaultOpen: Story = {
   render: () => (
     <Accordion
       defaultValue="item-2"
@@ -102,7 +102,7 @@ export const DefaultOpen = {
   ),
 }
 
-export const Disabled = {
+export const Disabled: Story = {
   render: () => (
     <Accordion
       collapsible

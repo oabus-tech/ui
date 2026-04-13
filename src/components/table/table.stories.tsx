@@ -353,7 +353,9 @@ export const Complete = {
     const sorted = [
       ...users,
     ].sort((a, b) => {
-      if (!sort) return 0
+      if (!sort) {
+        return 0
+      }
       const desc = sort.startsWith('-')
       const key = (desc ? sort.slice(1) : sort) as keyof User
       const av = a[key]
