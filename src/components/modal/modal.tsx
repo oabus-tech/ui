@@ -18,7 +18,7 @@ const styles = tv({
       bordered: true,
       class: {
         footer: 'border-t pt-4',
-        header: 'border-b pb-4',
+        header: 'border-b pb-2',
       },
     },
   ],
@@ -28,7 +28,7 @@ const styles = tv({
       'data-open:fade-in-0 duration-100 data-open:animate-in',
       'data-closed:fade-out-0 data-closed:animate-out',
     ],
-    body: 'modal-body flex-1 overflow-auto p-4 pt-0',
+    body: 'modal-body flex-1 overflow-auto p-4 pt-2',
     description: 'modal-description text-muted-foreground text-sm',
     footer: 'modal-footer flex flex-row-reverse gap-2 p-4 pt-0',
     header: 'modal-header flex items-start justify-between gap-2 p-4',

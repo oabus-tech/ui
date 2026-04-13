@@ -17,7 +17,7 @@ const styles = tv({
       bordered: true,
       class: {
         footer: 'border-t pt-4',
-        header: 'border-b pb-4',
+        header: 'border-b pb-2',
       },
     },
   ],
@@ -30,7 +30,7 @@ const styles = tv({
       'data-open:fade-in-0 duration-150 data-open:animate-in',
       'data-closed:fade-out-0 data-closed:animate-out',
     ],
-    body: 'sheet-body flex-1 overflow-y-auto p-4 pt-0',
+    body: 'sheet-body flex-1 overflow-y-auto p-4 pt-2',
     description: 'sheet-description text-muted-foreground text-sm',
     footer: 'sheet-footer flex flex-row-reverse gap-2 p-4 pt-0',
     header: 'sheet-header flex items-start justify-between gap-2 p-4',
