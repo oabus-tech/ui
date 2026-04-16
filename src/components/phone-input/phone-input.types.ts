@@ -1,3 +1,5 @@
+import type * as RPNInput from 'react-phone-number-input'
+
 import type { InputProps } from '@/components/input/input.types'
 
 export type PhoneValue = {
@@ -19,4 +21,5 @@ export type PhoneInputProps = Omit<
   value?: PhoneValue | null
   defaultValue?: PhoneValue | null
   onChange?: (value: PhoneValue | null) => void
+  defaultCountry?: RPNInput.Country
 }

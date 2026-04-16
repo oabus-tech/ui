@@ -3,10 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PhoneInput } from './phone-input'
 
 const meta = {
-  args: {
-    placeholder: 'Enter your phone number',
-    size: 'md',
-  },
   component: PhoneInput,
   title: 'Form/PhoneInput',
 } satisfies Meta<typeof PhoneInput>
@@ -14,27 +10,58 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-
-export const Disabled: Story = {
-  args: {},
-}
-
-export const UncontrolledEmpty: Story = {
+export const Default: Story = {
   args: {
-    defaultValue: undefined,
+    defaultCountry: 'BR',
     onChange: (e) => {
-      console.log({
-        e,
-      })
+      console.log({e})
     },
+    placeholder: 'Enter your phone number',
+    size: 'md',
   },
 }
 
-export const UncontrolledWithDefault: Story = {
-  args: {},
+export const Sizes: Story = {
+  args: {
+    defaultCountry: 'BR',
+  },
+  render: (args) => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}
+    >
+      <PhoneInput
+        {...args}
+        placeholder="Small"
+        size="sm"
+      />
+      <PhoneInput
+        {...args}
+        placeholder="Medium"
+        size="md"
+      />
+      <PhoneInput
+        {...args}
+        placeholder="Large"
+        size="lg"
+      />
+    </div>
+  ),
 }
 
-export const UncontrolledDisabled: Story = {
-  args: {},
+export const Disabled: Story = {
+  args: {
+    defaultCountry: 'BR',
+    disabled: true,
+  },
+}
+
+export const Loading: Story = {
+  args: {
+    defaultCountry: 'BR',
+    loading: true,
+  },
 }
