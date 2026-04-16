@@ -242,7 +242,7 @@ const structureStyles = tv({
       'group-data-[collapsible=icon]:hidden',
     ],
     menuSubItem: 'group/menu-sub-item relative',
-    separator: 'mx-2 w-auto bg-sidebar-border',
+    separator: 'w-auto bg-sidebar-border',
   },
 })
 
