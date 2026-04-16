@@ -92,13 +92,13 @@ const mobileSidebarStyles = tv({
   slots: {
     backdrop: [
       'fixed inset-0 z-50 bg-black/50',
-      'data-open:fade-in-0 duration-150 data-open:animate-in',
-      'data-closed:fade-out-0 data-closed:animate-out',
+      'data-open:fade-in-0 duration-200 data-open:animate-in',
+      'data-closed:fade-out-0 data-closed:animate-out data-closed:fill-mode-forwards',
     ],
     popup: [
       'fixed inset-y-0 z-50 flex h-full flex-col bg-sidebar text-sidebar-foreground',
       'w-(--sidebar-width) duration-200 ease-in-out',
-      'data-closed:animate-out data-open:animate-in',
+      'data-closed:animate-out data-open:animate-in data-closed:fill-mode-forwards',
     ],
   },
   variants: {
