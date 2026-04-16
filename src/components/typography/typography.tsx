@@ -27,7 +27,7 @@ const typography = tv({
       xs: 'text-xs',
     },
     truncate: {
-      true: 'truncate',
+      true: 'inline-block max-w-full truncate',
     },
     variant: {
       default: 'text-foreground',

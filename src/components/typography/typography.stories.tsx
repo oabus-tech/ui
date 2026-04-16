@@ -41,7 +41,7 @@ export const Truncated: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[200px]">
+      <div className="w-[200px] min-w-0">
         <Story />
       </div>
     ),

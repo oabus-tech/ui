@@ -7,101 +7,99 @@ import {
   CreditCard,
   Home,
   LifeBuoy,
-  LogOut,
   Settings,
-  Users,
+  Users
 } from 'lucide-react'
 import { useState } from 'react'
 
-import { Avatar } from '@/components/avatar'
-import { Button } from '@/components/button'
+import { Avatar } from "@/components/avatar";
 
-import { Sidebar } from './sidebar'
+import { Sidebar } from "./sidebar";
 
 const meta = {
   component: Sidebar,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
-  title: 'Layout/Sidebar',
-} satisfies Meta<typeof Sidebar>
+  title: "Layout/Sidebar",
+} satisfies Meta<typeof Sidebar>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 // ─── Shared nav data ──────────────────────────────────────────────────────────
 
 const navMain = [
   {
     active: true,
-    href: '#',
+    href: "#",
     icon: Home,
-    label: 'Dashboard',
+    label: "Dashboard",
   },
   {
-    href: '#',
+    href: "#",
     icon: BarChart2,
-    label: 'Analytics',
+    label: "Analytics",
   },
   {
-    badge: '3',
-    href: '#',
+    badge: "3",
+    href: "#",
     icon: Bell,
-    label: 'Notifications',
+    label: "Notifications",
   },
-]
+];
 
 const navSettings = [
   {
     children: [
       {
-        href: '#',
-        label: 'General',
+        href: "#",
+        label: "General",
       },
       {
-        href: '#',
-        label: 'Security',
+        href: "#",
+        label: "Security",
       },
       {
-        href: '#',
-        label: 'Appearance',
+        href: "#",
+        label: "Appearance",
       },
     ],
     icon: Settings,
-    label: 'Settings',
+    label: "Settings",
   },
   {
     children: [
       {
-        href: '#',
-        label: 'Members',
+        href: "#",
+        label: "Members",
       },
       {
-        href: '#',
-        label: 'Roles',
+        href: "#",
+        label: "Roles",
       },
       {
-        href: '#',
-        label: 'Invites',
+        href: "#",
+        label: "Invites",
       },
     ],
     icon: Users,
-    label: 'Team',
+    label: "Team",
   },
-]
+];
 
 const navSecondary = [
   {
-    href: '#',
+    href: "#",
     icon: BookOpen,
-    label: 'Docs',
+    label: "Docs",
   },
   {
-    href: '#',
+    href: "#",
     icon: LifeBuoy,
-    label: 'Support',
+    label: "Support",
   },
-]
+];
 
 // ─── Story: Full sidebar (collapsed + submenus) ───────────────────────────────
 
@@ -114,17 +112,13 @@ const navSecondary = [
  */
 export const Default: Story = {
   render: () => {
-    const [settingsOpen, setSettingsOpen] = useState(true)
-    const [teamOpen, setTeamOpen] = useState(false)
+    const [settingsOpen, setSettingsOpen] = useState(true);
+    const [teamOpen, setTeamOpen] = useState(false);
 
     return (
       <Sidebar.Provider defaultOpen>
         {/* ── Sidebar ── */}
-        <Sidebar
-          collapsible="icon"
-          side="left"
-          variant="sidebar"
-        >
+        <Sidebar collapsible="icon" side="left" variant="sidebar">
           {/* Header */}
           <Sidebar.Header>
             <div className="flex items-center gap-2 px-1 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
@@ -176,9 +170,9 @@ export const Default: Story = {
                 <Sidebar.Menu>
                   {navSettings.map((item) => {
                     const isOpen =
-                      item.label === 'Settings' ? settingsOpen : teamOpen
+                      item.label === "Settings" ? settingsOpen : teamOpen;
                     const setOpen =
-                      item.label === 'Settings' ? setSettingsOpen : setTeamOpen
+                      item.label === "Settings" ? setSettingsOpen : setTeamOpen;
 
                     return (
                       <Sidebar.Menu.Item key={item.label}>
@@ -207,7 +201,7 @@ export const Default: Story = {
                           </Sidebar.Menu.Collapsible.Content>
                         </Sidebar.Menu.Collapsible>
                       </Sidebar.Menu.Item>
-                    )
+                    );
                   })}
                 </Sidebar.Menu>
               </Sidebar.Group.Content>
@@ -272,42 +266,9 @@ export const Default: Story = {
 
         {/* ── Main content ── */}
         <Sidebar.Inset>
-          <header className="flex h-16 shrink-0 items-center gap-2 px-4">
-            <Sidebar.Trigger />
-            <span className="font-medium text-sm">Dashboard</span>
-            <div className="ml-auto flex items-center gap-2">
-              <Button
-                size="sm"
-                variant="ghost"
-              >
-                <Bell />
-                <span>Notifications</span>
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-              >
-                <LogOut />
-                <span>Sign out</span>
-              </Button>
-            </div>
-          </header>
-
-          <main className="flex flex-1 flex-col gap-4 p-4">
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-              {Array.from({
-                length: 3,
-              }).map((_, i) => (
-                <div
-                  className="aspect-video rounded-xl bg-muted/50"
-                  key={i}
-                />
-              ))}
-            </div>
-            <div className="min-h-[60vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-          </main>
+          <Sidebar.Trigger />
         </Sidebar.Inset>
       </Sidebar.Provider>
-    )
+    );
   },
-}
+};
