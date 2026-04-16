@@ -17,9 +17,11 @@
  * Dependencies: @radix-ui/react-separator
  */
 
+import type React from 'react'
+
 export type SeparatorOrientation = 'horizontal' | 'vertical'
 
-export type SeparatorProps = {
+export type SeparatorProps = React.ComponentProps<'div'> & {
   orientation?: SeparatorOrientation // line direction
   decorative?: boolean // if true, not announced by screen readers
 }
