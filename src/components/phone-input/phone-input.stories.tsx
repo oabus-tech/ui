@@ -14,7 +14,9 @@ export const Default: Story = {
   args: {
     defaultCountry: 'BR',
     onChange: (e) => {
-      console.log({e})
+      console.log({
+        e,
+      })
     },
     placeholder: 'Enter your phone number',
     size: 'md',
