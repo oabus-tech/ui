@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { forwardRef, useCallback, useRef } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Loader } from '@/components/loader'
@@ -41,22 +41,25 @@ const input = tv({
   },
 })
 
-function Input({
-  size,
-  value,
-  defaultValue,
-  leftSection,
-  leftSectionWidth = DEFAULT_SECTION_WIDTH,
-  rightSection,
-  rightSectionWidth = DEFAULT_SECTION_WIDTH,
-  loading,
-  debounce,
-  rootClassName,
-  className,
-  onChange,
-  type = 'text',
-  ...props
-}: InputProps) {
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    size,
+    value,
+    defaultValue,
+    leftSection,
+    leftSectionWidth = DEFAULT_SECTION_WIDTH,
+    rightSection,
+    rightSectionWidth = DEFAULT_SECTION_WIDTH,
+    loading,
+    debounce,
+    rootClassName,
+    className,
+    onChange,
+    type = 'text',
+    ...props
+  },
+  ref,
+) {
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const handleChange = useCallback(
@@ -132,6 +135,7 @@ function Input({
         data-slot="input"
         data-testid="input-field"
         onChange={handleChange}
+        ref={ref}
         style={fieldStyle}
         type={type}
         {...controlledProps}
@@ -158,6 +162,6 @@ function Input({
       )}
     </div>
   )
-}
+})
 
 export { Input }
