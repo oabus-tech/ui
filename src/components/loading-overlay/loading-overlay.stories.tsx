@@ -4,14 +4,6 @@ import { LoadingOverlay } from './loading-overlay'
 
 const meta = {
   component: LoadingOverlay,
-  decorators: [
-    (Story) => (
-      <div className="relative h-40 w-full rounded-lg border border-dashed p-4">
-        <p className="text-muted-foreground text-sm">Content behind overlay</p>
-        <Story />
-      </div>
-    ),
-  ],
   title: 'Feedback/LoadingOverlay',
 } satisfies Meta<typeof LoadingOverlay>
 
