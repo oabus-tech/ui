@@ -1,6 +1,6 @@
 import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import type { PropsWithChildren } from 'react'
+import { createContext, type PropsWithChildren, useContext } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type {
@@ -9,6 +9,12 @@ import type {
   AccordionProps,
   AccordionTrigger as AccordionTriggerProps,
 } from './accordion.types'
+
+type AccordionContextValue = {
+  bordered?: boolean
+}
+
+const AccordionContext = createContext<AccordionContextValue>({})
 
 const accordion = tv({
   defaultVariants: {
@@ -93,16 +99,22 @@ function AccordionRoot({
       : props.defaultValue
 
   return (
-    <AccordionPrimitive.Root
-      className={root()}
-      data-testid="accordion-root"
-      defaultValue={defaultValue as string[]}
-      multiple={multiple}
-      onValueChange={handleValueChange}
-      value={value as string[]}
+    <AccordionContext.Provider
+      value={{
+        bordered,
+      }}
     >
-      {children}
-    </AccordionPrimitive.Root>
+      <AccordionPrimitive.Root
+        className={root()}
+        data-testid="accordion-root"
+        defaultValue={defaultValue as string[]}
+        multiple={multiple}
+        onValueChange={handleValueChange}
+        value={value as string[]}
+      >
+        {children}
+      </AccordionPrimitive.Root>
+    </AccordionContext.Provider>
   )
 }
 
@@ -111,7 +123,10 @@ function AccordionItem({
   disabled,
   children,
 }: PropsWithChildren<AccordionItemProps>) {
-  const { item } = accordion()
+  const { bordered } = useContext(AccordionContext)
+  const { item } = accordion({
+    bordered,
+  })
 
   return (
     <AccordionPrimitive.Item

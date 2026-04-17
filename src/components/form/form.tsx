@@ -112,7 +112,6 @@ function FormField({
   description,
   error,
   label,
-  labelFloating,
   name,
 }: PropsWithChildren<FormFieldProps>) {
   const invalid = !!error

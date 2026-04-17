@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite'
+import type { Meta } from '@storybook/react-vite'
 
 import { Accordion } from './accordion'
 
@@ -8,9 +8,8 @@ const meta = {
 } satisfies Meta<typeof Accordion>
 
 export default meta
-type Story = StoryObj<typeof meta>
 
-export const Single: Story = {
+export const Single = {
   render: () => (
     <Accordion
       collapsible
@@ -40,7 +39,7 @@ export const Single: Story = {
   ),
 }
 
-export const Multiple: Story = {
+export const Multiple = {
   render: () => (
     <Accordion type="multiple">
       <Accordion.Item value="item-1">
@@ -61,7 +60,7 @@ export const Multiple: Story = {
   ),
 }
 
-export const Bordered: Story = {
+export const Bordered = {
   render: () => (
     <Accordion
       bordered
@@ -84,7 +83,7 @@ export const Bordered: Story = {
   ),
 }
 
-export const DefaultOpen: Story = {
+export const DefaultOpen = {
   render: () => (
     <Accordion
       defaultValue="item-2"
@@ -102,7 +101,7 @@ export const DefaultOpen: Story = {
   ),
 }
 
-export const Disabled: Story = {
+export const Disabled = {
   render: () => (
     <Accordion
       collapsible
