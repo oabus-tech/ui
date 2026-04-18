@@ -1,31 +1,35 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
+  BadgeCheck,
   BarChart2,
   Bell,
-  BookOpen,
   ChevronDown,
+  ChevronsUpDown,
   CreditCard,
   Home,
-  LifeBuoy,
+  LogOut,
   Settings,
-  Users,
+  Sparkles,
+  Users
 } from 'lucide-react'
 import { useState } from 'react'
 
 import { Avatar } from '@/components/avatar'
+import { DropdownMenu } from '@/components/dropdown-menu'
 
+import { Layout } from './layout'
 import { Sidebar } from './sidebar'
 
 const meta = {
-  component: Sidebar,
   parameters: {
+    centeredLayout: false,
     layout: 'fullscreen',
   },
-  title: 'Layout/Sidebar',
-} satisfies Meta<typeof Sidebar>
+  title: 'Layout/Layout',
+} satisfies Meta
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj
 
 // ─── Shared nav data ──────────────────────────────────────────────────────────
 
@@ -78,52 +82,25 @@ const navSettings = [
         href: '#',
         label: 'Roles',
       },
-      {
-        href: '#',
-        label: 'Invites',
-      },
     ],
     icon: Users,
     label: 'Team',
   },
 ]
 
-const navSecondary = [
-  {
-    href: '#',
-    icon: BookOpen,
-    label: 'Docs',
-  },
-  {
-    href: '#',
-    icon: LifeBuoy,
-    label: 'Support',
-  },
-]
-
-// ─── Story: Full sidebar (collapsed + submenus) ───────────────────────────────
-
-/**
- * Full sidebar demo:
- * - Toggle between expanded and icon-collapsed mode using the trigger or ⌘B
- * - In icon mode, collapsible groups appear as popovers anchored to the icon
- * - Tooltips on plain buttons reveal labels in icon mode
- * - Sub-menus are always accessible via the collapsible pattern
- */
 export const Default: Story = {
+  name: 'Default',
   render: () => {
     const [settingsOpen, setSettingsOpen] = useState(true)
     const [teamOpen, setTeamOpen] = useState(false)
 
     return (
       <Sidebar.Provider defaultOpen>
-        {/* ── Sidebar ── */}
         <Sidebar
           collapsible="icon"
           side="left"
           variant="sidebar"
         >
-          {/* Header */}
           <Sidebar.Header>
             <div className="flex items-center gap-2 px-1 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
               <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground text-sm">
@@ -135,14 +112,11 @@ export const Default: Story = {
                   Enterprise
                 </span>
               </div>
-              <ChevronDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
             </div>
             <Sidebar.Separator />
           </Sidebar.Header>
 
-          {/* Content */}
           <Sidebar.Content>
-            {/* Primary nav */}
             <Sidebar.Group>
               <Sidebar.Group.Label>Navigation</Sidebar.Group.Label>
               <Sidebar.Group.Content>
@@ -167,7 +141,6 @@ export const Default: Story = {
 
             <Sidebar.Separator />
 
-            {/* Collapsible groups */}
             <Sidebar.Group>
               <Sidebar.Group.Label>Management</Sidebar.Group.Label>
               <Sidebar.Group.Content>
@@ -177,7 +150,6 @@ export const Default: Story = {
                       item.label === 'Settings' ? settingsOpen : teamOpen
                     const setOpen =
                       item.label === 'Settings' ? setSettingsOpen : setTeamOpen
-
                     return (
                       <Sidebar.Menu.Item key={item.label}>
                         <Sidebar.Menu.Collapsible
@@ -191,13 +163,12 @@ export const Default: Story = {
                             <item.icon />
                             <span>{item.label}</span>
                           </Sidebar.Menu.Collapsible.Trigger>
-
                           <Sidebar.Menu.Collapsible.Content>
                             <Sidebar.Menu.Sub>
                               {item.children.map((child) => (
                                 <Sidebar.Menu.Sub.Item key={child.label}>
                                   <Sidebar.Menu.Sub.Button href={child.href}>
-                                    <span>{child.label}</span>
+                                    {child.label}
                                   </Sidebar.Menu.Sub.Button>
                                 </Sidebar.Menu.Sub.Item>
                               ))}
@@ -210,57 +181,74 @@ export const Default: Story = {
                 </Sidebar.Menu>
               </Sidebar.Group.Content>
             </Sidebar.Group>
-
-            {/* Loading skeleton example */}
-            <Sidebar.Group>
-              <Sidebar.Group.Label>Loading state</Sidebar.Group.Label>
-              <Sidebar.Group.Content>
-                <Sidebar.Menu>
-                  {Array.from({
-                    length: 3,
-                  }).map((_, i) => (
-                    <Sidebar.Menu.Item key={i}>
-                      <Sidebar.Menu.Skeleton showIcon />
-                    </Sidebar.Menu.Item>
-                  ))}
-                </Sidebar.Menu>
-              </Sidebar.Group.Content>
-            </Sidebar.Group>
-
-            {/* Secondary nav pushed to bottom */}
-            <div className="mt-auto">
-              <Sidebar.Separator />
-              <Sidebar.Group>
-                <Sidebar.Group.Content>
-                  <Sidebar.Menu>
-                    {navSecondary.map((item) => (
-                      <Sidebar.Menu.Item key={item.label}>
-                        <Sidebar.Menu.Button tooltip={item.label}>
-                          <item.icon />
-                          <span>{item.label}</span>
-                        </Sidebar.Menu.Button>
-                      </Sidebar.Menu.Item>
-                    ))}
-                  </Sidebar.Menu>
-                </Sidebar.Group.Content>
-              </Sidebar.Group>
-            </div>
           </Sidebar.Content>
 
-          {/* Footer */}
           <Sidebar.Footer>
             <Sidebar.Menu>
               <Sidebar.Menu.Item>
-                <Sidebar.Menu.Button tooltip="Account options">
-                  <Avatar size="sm">RJ</Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Roberto Jr</span>
-                    <span className="truncate text-muted-foreground text-xs">
-                      rbjunior000@gmail.com
-                    </span>
-                  </div>
-                  <CreditCard className="ml-auto" />
-                </Sidebar.Menu.Button>
+                <DropdownMenu>
+                  <DropdownMenu.Trigger asChild>
+                    <Sidebar.Menu.Button
+                      size="lg"
+                      tooltip="Account options"
+                    >
+                      <Avatar size="sm">RJ</Avatar>
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-semibold">
+                          Roberto Jr
+                        </span>
+                        <span className="truncate text-muted-foreground text-xs">
+                          rbjunior000@gmail.com
+                        </span>
+                      </div>
+                      <ChevronsUpDown className="ml-auto size-4" />
+                    </Sidebar.Menu.Button>
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content
+                    align="end"
+                    side="right"
+                    sideOffset={4}
+                  >
+                    <div className="flex items-center gap-2 px-1.5 py-1.5 text-sm">
+                      <Avatar size="sm">RJ</Avatar>
+                      <div className="grid flex-1 text-left leading-tight">
+                        <span className="truncate font-semibold">
+                          Roberto Jr
+                        </span>
+                        <span className="truncate text-muted-foreground text-xs">
+                          rbjunior000@gmail.com
+                        </span>
+                      </div>
+                    </div>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Group>
+                      <DropdownMenu.Item>
+                        <Sparkles />
+                        Upgrade to Pro
+                      </DropdownMenu.Item>
+                    </DropdownMenu.Group>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Group>
+                      <DropdownMenu.Item>
+                        <BadgeCheck />
+                        Account
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item>
+                        <CreditCard />
+                        Billing
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item>
+                        <Bell />
+                        Notifications
+                      </DropdownMenu.Item>
+                    </DropdownMenu.Group>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Item variant="destructive">
+                      <LogOut />
+                      Sign out
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu>
               </Sidebar.Menu.Item>
             </Sidebar.Menu>
           </Sidebar.Footer>
@@ -268,9 +256,56 @@ export const Default: Story = {
           <Sidebar.Rail />
         </Sidebar>
 
-        {/* ── Main content ── */}
+        {/* Sidebar.Inset is already flex-col — Layout sub-components stack correctly inside it */}
         <Sidebar.Inset>
-          <Sidebar.Trigger />
+          <Layout.Header
+            bordered
+            sticky
+          >
+            <Sidebar.Trigger />
+            <span className="ml-2 font-semibold text-sm">OABus</span>
+            <div className="ml-auto flex items-center gap-2">
+              <Avatar size="sm">RJ</Avatar>
+            </div>
+          </Layout.Header>
+
+          <Layout.Main>
+            <Layout.Content
+              maxWidth="lg"
+              padding="md"
+            >
+              <h1 className="mb-2 font-semibold text-2xl">Dashboard</h1>
+              <p className="text-muted-foreground text-sm">
+                Header and footer live inside{' '}
+                <code className="text-xs">Sidebar.Inset</code> so they are never
+                covered by the sidebar. Toggle with{' '}
+                <kbd className="rounded border px-1 text-xs">⌘B</kbd> or the
+                trigger.
+              </p>
+              <div className="mt-6 grid grid-cols-3 gap-4">
+                {[
+                  'Revenue',
+                  'Users',
+                  'Sessions',
+                ].map((label) => (
+                  <div
+                    className="rounded-lg border p-4"
+                    key={label}
+                  >
+                    <p className="text-muted-foreground text-xs">{label}</p>
+                    <p className="mt-1 font-semibold text-2xl">—</p>
+                  </div>
+                ))}
+              </div>
+            </Layout.Content>
+          </Layout.Main>
+
+          <Layout.Footer
+            bordered
+            sticky
+          >
+            <span className="text-muted-foreground text-xs">© 2026 OABus</span>
+          </Layout.Footer>
         </Sidebar.Inset>
       </Sidebar.Provider>
     )

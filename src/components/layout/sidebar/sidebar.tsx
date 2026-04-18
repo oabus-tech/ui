@@ -32,6 +32,7 @@ import type {
   SidebarRailProps,
   SidebarTriggerProps,
 } from './sidebar.types'
+import { cn } from '@/support/utils'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -820,13 +821,13 @@ function SidebarMenuButton({
   // No tooltip or sidebar is not in collapsed icon mode → plain button
   if (!tooltip || state !== 'collapsed' || isMobile) {
     return (
-      <ButtonPrimitive
-        className={menuButtonStyles({
+      <button
+        className={cn(menuButtonStyles({
           className,
           isActive,
           size,
           variant,
-        })}
+        }))}
         data-active={isActive || undefined}
         data-sidebar="menu-button"
         data-size={size}
