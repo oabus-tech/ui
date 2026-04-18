@@ -16,8 +16,8 @@ const card = tv({
     content: 'card-content px-4',
     description: 'card-description text-muted-foreground text-sm',
     footer: 'card-footer flex items-center px-4',
-    header: 'card-header grid auto-rows-min items-start gap-1 px-4',
-    root: 'card-root flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground text-sm shadow-sm ring-1 ring-foreground/10',
+    header: 'card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-4',
+    root: 'card-root flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground text-sm shadow-sm ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0',
     separator: 'card-separator border-t',
     title: 'card-title font-heading font-medium text-base leading-snug',
   },
@@ -29,7 +29,7 @@ const card = tv({
     },
     footerBordered: {
       true: {
-        footer: 'border-t bg-muted/50 pt-4',
+        footer: 'rounded-b-xl border-t bg-muted/50 py-4',
       },
     },
     headerBordered: {
@@ -124,6 +124,7 @@ function CardFooter({
   return (
     <div
       className={footer()}
+      data-slot={bordered ? 'card-footer' : undefined}
       data-testid="card-footer"
     >
       {children}

@@ -8,14 +8,20 @@
  * - Form.Field wraps an input with label, description, and error display
  * - labelFloating enables floating label animation (label moves up on focus/fill)
  * - Error prop renders error message below the field with destructive styling
+ * - Form.FieldGroup groups multiple fields in a column layout (e.g. name + surname)
  * - Form.FieldSet groups related fields with a legend and optional tooltip
  * - Description appears as muted helper text below the input
  *
  * Implementation:
  * - Form renders <form> with onSubmit handler
  * - Field renders label (via Label component), children (the input), description, error
+ * - FieldGroup renders a <div> grouping multiple Form.Fields
  * - FieldSet renders <fieldset> with <legend> and Tooltip integration
  * - <Form onSubmit={handleSubmit}>
+ *     <Form.FieldGroup>
+ *       <Form.Field label="First name"><Input name="first_name" /></Form.Field>
+ *       <Form.Field label="Last name"><Input name="last_name" /></Form.Field>
+ *     </Form.FieldGroup>
  *     <Form.Field label="Email" error={errors.email} description="Your work email">
  *       <Input name="email" />
  *     </Form.Field>
@@ -54,6 +60,12 @@ export type FormFieldLabelProps = {
   optional?: boolean // shows optional text
   disabled?: boolean // applies disabled styling
   tooltip?: React.ReactNode // tooltip next to label
+}
+
+export type FormFieldGroupProps = {}
+
+export type FormFieldSeparatorProps = {
+  children?: React.ReactNode // optional label text shown centered on the separator
 }
 
 export type FormFieldSetTooltip = string | TooltipProps

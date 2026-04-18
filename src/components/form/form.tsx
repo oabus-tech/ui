@@ -1,33 +1,106 @@
+import { Separator } from '@base-ui/react/separator'
 import { Info } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Label } from '@/components/label'
+import type { TooltipProps } from '@/components/tooltip'
 import { Tooltip } from '@/components/tooltip'
 
-import type { FormFieldProps, FormFieldSetProps, FormProps } from './form.types'
+import type {
+  FormFieldGroupProps,
+  FormFieldProps,
+  FormFieldSeparatorProps,
+  FormFieldSetProps,
+  FormProps,
+} from './form.types'
 
-const form = tv({
+// ---------------------------------------------------------------------------
+// Styles
+// ---------------------------------------------------------------------------
+
+export const styles = tv({
+  defaultVariants: {
+    invalid: false,
+    legendVariant: 'legend',
+  },
   slots: {
-    field: 'form-field flex flex-col gap-1.5',
-    fieldDescription: 'form-field-description text-muted-foreground text-sm',
-    fieldError: 'form-field-error text-destructive text-sm',
-    fieldSet: 'form-field-set flex flex-col gap-4',
-    fieldSetLegend:
-      'form-field-set-legend mb-1 flex items-center gap-1.5 font-medium',
-    root: 'form-root flex flex-col gap-4',
+    // Field wrapper — groups label + input + description + error
+    field: [
+      'group/field flex w-full flex-col gap-2',
+      '*:w-full [&>.sr-only]:w-auto',
+    ],
+
+    // Helper text below the input
+    fieldDescription: [
+      'text-left font-normal text-muted-foreground text-sm leading-normal',
+      '[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4',
+    ],
+
+    // Error message
+    fieldError: 'font-normal text-destructive text-sm',
+
+    // Stacked row of fields (e.g. first name + last name)
+    fieldGroup: '@container/field-group flex w-full flex-col gap-5',
+
+    // Fieldset legend
+    fieldLegend: 'mb-1.5 flex items-center gap-1.5 font-medium',
+
+    // Separator wrapper
+    fieldSeparator: 'relative my-2 h-5 text-sm',
+
+    // Separator inline text label
+    fieldSeparatorContent: [
+      'relative mx-auto block w-fit',
+      'bg-background px-2',
+      'text-center text-muted-foreground text-sm',
+    ],
+
+    // Separator line
+    fieldSeparatorLine: [
+      'absolute inset-x-0 top-1/2',
+      'h-px bg-border',
+    ],
+
+    // Fieldset — groups related sections with legend
+    fieldSet: 'flex flex-col gap-4',
+    root: '',
+  },
+
+  variants: {
+    // Error state — paints label and helper text in destructive color
+    invalid: {
+      true: {
+        field: 'text-destructive',
+        fieldDescription: 'text-destructive/80',
+      },
+    },
+
+    // Legend size — 'legend' for fieldset sections, 'label' for inline use
+    legendVariant: {
+      label: {
+        fieldLegend: 'text-sm',
+      },
+      legend: {
+        fieldLegend: 'text-base',
+      },
+    },
   },
 })
 
-const { root, field, fieldDescription, fieldError, fieldSet, fieldSetLegend } =
-  form()
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
 
-function FormRoot({ children, onSubmit }: PropsWithChildren<FormProps>) {
+function FormRoot({
+  children,
+  onSubmit,
+  ...props
+}: PropsWithChildren<FormProps> & React.ComponentProps<'form'>) {
   return (
     <form
-      className={root()}
-      data-testid="form-root"
       onSubmit={onSubmit}
+      {...props}
     >
       {children}
     </form>
@@ -36,80 +109,50 @@ function FormRoot({ children, onSubmit }: PropsWithChildren<FormProps>) {
 
 function FormField({
   children,
-  label,
-  name,
   description,
   error,
+  label,
+  name,
 }: PropsWithChildren<FormFieldProps>) {
-  const labelText = typeof label === 'string' ? label : label?.content
-  const labelExtras = typeof label === 'object' && label !== null ? label : {}
+  const invalid = !!error
+
+  const { field, fieldDescription, fieldError } = styles({
+    invalid,
+  })
+
+  const labelConfig =
+    typeof label === 'string'
+      ? {
+          content: label,
+          htmlFor: name,
+        }
+      : label
+        ? {
+            htmlFor: name,
+            ...label,
+          }
+        : undefined
 
   return (
-    <div
-      className={field()}
-      data-testid="form-field"
-    >
-      {labelText && (
-        <Label
-          disabled={
-            (
-              labelExtras as {
-                disabled?: boolean
-              }
-            ).disabled
-          }
-          htmlFor={
-            (
-              labelExtras as {
-                htmlFor?: string
-              }
-            ).htmlFor ?? name
-          }
-          optional={
-            (
-              labelExtras as {
-                optional?: boolean
-              }
-            ).optional
-          }
-          required={
-            (
-              labelExtras as {
-                required?: boolean
-              }
-            ).required
-          }
-          tooltip={
-            (
-              labelExtras as {
-                tooltip?: React.ReactNode
-              }
-            ).tooltip
-          }
-        >
-          {labelText}
-        </Label>
-      )}
+    <div className={field()}>
+      {labelConfig && <Label {...labelConfig}>{labelConfig.content}</Label>}
       {children}
-      {description && (
-        <p
-          className={fieldDescription()}
-          data-testid="form-field-description"
-        >
-          {description}
-        </p>
-      )}
+      {description && <p className={fieldDescription()}>{description}</p>}
       {error && (
-        <p
+        <div
           className={fieldError()}
-          data-testid="form-field-error"
           role="alert"
         >
           {error}
-        </p>
+        </div>
       )}
     </div>
   )
+}
+
+function FormFieldGroup({ children }: PropsWithChildren<FormFieldGroupProps>) {
+  const { fieldGroup } = styles()
+  return <div className={fieldGroup()}>{children}</div>
 }
 
 function FormFieldSet({
@@ -117,22 +160,22 @@ function FormFieldSet({
   legend,
   tooltip,
 }: PropsWithChildren<FormFieldSetProps>) {
+  const { fieldSet, fieldLegend } = styles()
+
+  const tooltipProps: TooltipProps | undefined =
+    typeof tooltip === 'string'
+      ? {
+          content: tooltip,
+        }
+      : tooltip
+
   return (
-    <fieldset
-      className={fieldSet()}
-      data-testid="form-field-set"
-    >
+    <fieldset className={fieldSet()}>
       {legend && (
-        <legend
-          className={fieldSetLegend()}
-          data-testid="form-field-set-legend"
-        >
+        <legend className={fieldLegend()}>
           {legend}
-          {tooltip && (
-            <Tooltip
-              content={typeof tooltip === 'string' ? tooltip : tooltip.content}
-              side={typeof tooltip === 'object' ? tooltip.side : undefined}
-            >
+          {tooltipProps && (
+            <Tooltip {...tooltipProps}>
               <Info
                 className="text-muted-foreground"
                 size={14}
@@ -146,8 +189,28 @@ function FormFieldSet({
   )
 }
 
+function FormFieldSeparator({ children }: FormFieldSeparatorProps) {
+  const { fieldSeparator, fieldSeparatorLine, fieldSeparatorContent } = styles()
+
+  return (
+    <div className={fieldSeparator()}>
+      <Separator
+        className={fieldSeparatorLine()}
+        orientation="horizontal"
+      />
+      {children && <span className={fieldSeparatorContent()}>{children}</span>}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Compound export
+// ---------------------------------------------------------------------------
+
 const Form = Object.assign(FormRoot, {
   Field: FormField,
+  FieldGroup: FormFieldGroup,
+  FieldSeparator: FormFieldSeparator,
   FieldSet: FormFieldSet,
 })
 

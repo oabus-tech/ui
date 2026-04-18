@@ -171,6 +171,7 @@ function AlertAction({ children }: PropsWithChildren<AlertActionProps>) {
   return (
     <div
       className={action()}
+      data-slot="alert-action"
       data-testid="alert-action"
     >
       {children}
