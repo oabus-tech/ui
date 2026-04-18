@@ -3,14 +3,13 @@ import {
   BadgeCheck,
   BarChart2,
   Bell,
-  ChevronDown,
   ChevronsUpDown,
   CreditCard,
   Home,
   LogOut,
   Settings,
   Sparkles,
-  Users
+  Users,
 } from 'lucide-react'
 import { useState } from 'react'
 

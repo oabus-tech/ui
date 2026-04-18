@@ -94,12 +94,7 @@ function RadioItem({
   )
 }
 
-function RadioRoot({
-  checked,
-  onChange,
-  value,
-  ...props
-}: RadioProps) {
+function RadioRoot({ checked, onChange, value, ...props }: RadioProps) {
   const innerValue = value ?? 'radio'
 
   return (

@@ -13,6 +13,7 @@ import { Button } from '@/components/button'
 import { Separator } from '@/components/separator'
 import { Skeleton } from '@/components/skeleton'
 import { useIsMobile } from '@/hooks/use-mobile'
+import { cn } from '@/support/utils'
 
 import type {
   SidebarCollapsible,
@@ -32,7 +33,6 @@ import type {
   SidebarRailProps,
   SidebarTriggerProps,
 } from './sidebar.types'
-import { cn } from '@/support/utils'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -822,12 +822,14 @@ function SidebarMenuButton({
   if (!tooltip || state !== 'collapsed' || isMobile) {
     return (
       <button
-        className={cn(menuButtonStyles({
-          className,
-          isActive,
-          size,
-          variant,
-        }))}
+        className={cn(
+          menuButtonStyles({
+            className,
+            isActive,
+            size,
+            variant,
+          }),
+        )}
         data-active={isActive || undefined}
         data-sidebar="menu-button"
         data-size={size}

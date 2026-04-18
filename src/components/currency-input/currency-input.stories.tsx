@@ -4,7 +4,7 @@ import { CurrencyInput } from './currency-input'
 
 const meta = {
   args: {
-    size: 'sm'
+    size: 'sm',
   },
   component: CurrencyInput,
   title: 'Form/CurrencyInput',

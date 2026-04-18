@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { Button } from '@base-ui/react'
 import { ChevronsUpDown } from 'lucide-react'
+import { useState } from 'react'
 import { IMaskInput } from 'react-imask'
 import { tv } from 'tailwind-variants'
 
@@ -9,7 +10,6 @@ import { inputShared } from '@/components/input/input.shared'
 import { buttonShared } from '../button/button.shared'
 import type { InputSize } from '../input/input.types'
 import type { Currency, CurrencyInputProps } from './currency-input.types'
-import { Button } from '@base-ui/react'
 
 type CurrencyConfig = {
   symbol: string

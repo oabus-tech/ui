@@ -46,7 +46,7 @@ const styles = tv({
     bordered: {
       true: {
         footer: 'pt-2',
-        header: 'pb-2'
+        header: 'pb-2',
       },
     },
   },

@@ -4,8 +4,8 @@ import { DocumentInput } from './document-input'
 
 const meta = {
   args: {
-    size: 'sm'
-  }, 
+    size: 'sm',
+  },
   component: DocumentInput,
   title: 'Form/DocumentInput',
 } satisfies Meta<typeof DocumentInput>

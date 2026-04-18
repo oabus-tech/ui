@@ -1,3 +1,5 @@
+import { Button } from '@base-ui/react'
+import { ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 
@@ -7,8 +9,6 @@ import { MaskInput } from '@/components/mask-input'
 import { buttonShared } from '../button/button.shared'
 import type { InputSize } from '../input/input.types'
 import type { DocumentInputProps, DocumentType } from './document-input.types'
-import { Button } from '@base-ui/react'
-import { ChevronsUpDown } from 'lucide-react'
 
 const MASKS: Record<Exclude<DocumentType, 'any'>, string> = {
   cnpj: '00.000.000/0000-00',
@@ -107,11 +107,17 @@ function DocumentInput({
   }
 
   return (
-    <div className={rootStyles({ className })}>
+    <div
+      className={rootStyles({
+        className,
+      })}
+    >
       <DropdownMenu>
         <DropdownMenu.Trigger asChild>
           <Button
-            className={triggerStyles({ size })}
+            className={triggerStyles({
+              size,
+            })}
             data-testid="document-input-trigger"
             disabled={disabled}
             type="button"
