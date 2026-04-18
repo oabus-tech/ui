@@ -6,4 +6,4 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export { tv, cn }
+export { cn, tv }

@@ -1,7 +1,21 @@
+import { tv } from 'tailwind-variants'
+
 import type { SkeletonProps } from './skeleton.types'
 
-function Skeleton(_props: SkeletonProps) {
-  return <div></div>
+const skeleton = tv({
+  base: 'skeleton animate-pulse rounded-md bg-muted',
+})
+
+function Skeleton({ className, ...props }: SkeletonProps) {
+  return (
+    <div
+      className={skeleton({
+        className,
+      })}
+      data-testid="skeleton"
+      {...props}
+    />
+  )
 }
 
 export { Skeleton }

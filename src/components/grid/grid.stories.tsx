@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { Box } from '../box'
-import { Typography } from '../typography'
 import { Grid } from './grid'
 
 const meta = {
@@ -12,177 +10,116 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const Cell = ({ label }: { label: string }) => (
-  <Typography>
-    <Box bg="muted">{label}</Box>
-  </Typography>
+const Box = ({ children }: { children: React.ReactNode }) => (
+  <div className="rounded bg-muted p-4 text-center text-sm">{children}</div>
 )
 
 export const Default: Story = {
+  render: () => (
+    <Grid>
+      <Grid.Item>
+        <Box>Item 1</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 2</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 3</Box>
+      </Grid.Item>
+    </Grid>
+  ),
+}
+
+export const ThreeColumns: Story = {
+  render: () => (
+    <Grid cols={3}>
+      <Grid.Item>
+        <Box>Col 1</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Col 2</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Col 3</Box>
+      </Grid.Item>
+    </Grid>
+  ),
+}
+
+export const WithGap: Story = {
   render: () => (
     <Grid
       cols={3}
       gap="md"
     >
-      <Cell label="1" />
-      <Cell label="2" />
-      <Cell label="3" />
+      <Grid.Item>
+        <Box>Item 1</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 2</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 3</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 4</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 5</Box>
+      </Grid.Item>
+      <Grid.Item>
+        <Box>Item 6</Box>
+      </Grid.Item>
     </Grid>
   ),
 }
 
-export const TwoCols: Story = {
-  render: () => (
-    <Grid
-      cols={2}
-      gap="md"
-    >
-      <Cell label="1" />
-      <Cell label="2" />
-      <Cell label="3" />
-      <Cell label="4" />
-    </Grid>
-  ),
-}
-
-export const FourCols: Story = {
+export const WithSpan: Story = {
   render: () => (
     <Grid
       cols={4}
       gap="md"
     >
-      {[
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-      ].map((n) => (
-        <Cell
-          key={n}
-          label={n}
-        />
-      ))}
-    </Grid>
-  ),
-}
-
-export const TwelveCols: Story = {
-  render: () => (
-    <Grid
-      cols={12}
-      gap="sm"
-    >
-      {[
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-      ].map((n) => (
-        <Cell
-          key={n}
-          label={n}
-        />
-      ))}
-    </Grid>
-  ),
-}
-
-export const WithItemSpan: Story = {
-  render: () => (
-    <Grid
-      cols={12}
-      gap="md"
-    >
-      <Grid.Item span={8}>
-        <Cell label="span 8" />
+      <Grid.Item span={2}>
+        <Box>Span 2</Box>
       </Grid.Item>
-      <Grid.Item span={4}>
-        <Cell label="span 4" />
+      <Grid.Item>
+        <Box>Span 1</Box>
       </Grid.Item>
-      <Grid.Item span={4}>
-        <Cell label="span 4" />
+      <Grid.Item>
+        <Box>Span 1</Box>
       </Grid.Item>
-      <Grid.Item span={4}>
-        <Cell label="span 4" />
-      </Grid.Item>
-      <Grid.Item span={4}>
-        <Cell label="span 4" />
-      </Grid.Item>
-      <Grid.Item span={6}>
-        <Cell label="span 6" />
-      </Grid.Item>
-      <Grid.Item span={6}>
-        <Cell label="span 6" />
-      </Grid.Item>
-    </Grid>
-  ),
-}
-
-export const FullSpan: Story = {
-  render: () => (
-    <Grid
-      cols={3}
-      gap="md"
-    >
-      <Cell label="1" />
-      <Cell label="2" />
-      <Cell label="3" />
       <Grid.Item span="full">
-        <Cell label="full width" />
+        <Box>Span Full</Box>
       </Grid.Item>
-      <Cell label="5" />
-      <Cell label="6" />
     </Grid>
   ),
 }
 
-export const AllGaps: Story = {
+export const ResponsiveLike: Story = {
   render: () => (
-    <div className="flex flex-col gap-8">
-      {(
-        [
-          'none',
-          'xs',
-          'sm',
-          'md',
-          'lg',
-          'xl',
-        ] as const
-      ).map((gap) => (
-        <div key={gap}>
-          <p className="mb-2 text-muted-foreground text-xs">gap="{gap}"</p>
-          <Grid
-            cols={4}
-            gap={gap}
-          >
-            {(
-              [
-                '1',
-                '2',
-                '3',
-                '4',
-              ] as const
-            ).map((n) => (
-              <Cell
-                key={n}
-                label={n}
-              />
-            ))}
-          </Grid>
-        </div>
-      ))}
-    </div>
+    <Grid
+      cols={6}
+      gap="lg"
+    >
+      <Grid.Item span={6}>
+        <Box>Full Width Header</Box>
+      </Grid.Item>
+      <Grid.Item span={2}>
+        <Box>Sidebar</Box>
+      </Grid.Item>
+      <Grid.Item span={4}>
+        <Box>Main Content</Box>
+      </Grid.Item>
+      <Grid.Item span={3}>
+        <Box>Half Left</Box>
+      </Grid.Item>
+      <Grid.Item span={3}>
+        <Box>Half Right</Box>
+      </Grid.Item>
+      <Grid.Item span={6}>
+        <Box>Full Width Footer</Box>
+      </Grid.Item>
+    </Grid>
   ),
 }

@@ -1,6 +1,10 @@
 import { ChevronRight, MoreHorizontal } from 'lucide-react'
-import type { PropsWithChildren } from 'react'
-import { cloneElement, isValidElement } from 'react'
+import {
+  cloneElement,
+  isValidElement,
+  type PropsWithChildren,
+  type ReactElement,
+} from 'react'
 import { tv } from 'tailwind-variants'
 
 import type {
@@ -13,65 +17,71 @@ import type {
   BreadcrumbSeparatorProps,
 } from './breadcrumb.types'
 
-const styles = tv({
+const breadcrumb = tv({
   slots: {
-    ellipsis: 'flex size-9 items-center justify-center',
-    ellipsisIcon: 'size-4',
-    item: 'inline-flex items-center gap-1.5',
-    link: 'text-muted-foreground transition-colors hover:text-foreground',
-    list: 'flex flex-wrap items-center gap-1.5 break-words text-muted-foreground text-sm sm:gap-2.5',
-    page: 'font-normal text-foreground',
-    root: '',
-    separator: 'text-muted-foreground [&>svg]:size-3.5',
+    ellipsis:
+      'breadcrumb-ellipsis flex size-5 items-center justify-center [&>svg]:size-4',
+    item: 'breadcrumb-item inline-flex items-center gap-1',
+    link: 'breadcrumb-link transition-colors hover:text-foreground',
+    list: 'breadcrumb-list flex flex-wrap items-center gap-1.5 break-words text-muted-foreground text-sm',
+    page: 'breadcrumb-page font-normal text-foreground',
+    root: 'breadcrumb-root',
+    separator: 'breadcrumb-separator [&>svg]:size-3.5',
   },
 })
 
-function BreadcrumbRoot({ children }: PropsWithChildren<BreadcrumbProps>) {
-  const s = styles()
+const { root, list, item, link, page, separator, ellipsis } = breadcrumb()
 
+function BreadcrumbRoot({ children }: PropsWithChildren) {
   return (
     <nav
       aria-label="breadcrumb"
-      className={s.root()}
+      className={root()}
+      data-testid="breadcrumb-root"
     >
       {children}
     </nav>
   )
 }
 
-function BreadcrumbList({ children }: PropsWithChildren<BreadcrumbListProps>) {
-  const s = styles()
-
-  return <ol className={s.list()}>{children}</ol>
+function BreadcrumbList({ children }: PropsWithChildren) {
+  return (
+    <ol
+      className={list()}
+      data-testid="breadcrumb-list"
+    >
+      {children}
+    </ol>
+  )
 }
 
-function BreadcrumbItem({ children }: PropsWithChildren<BreadcrumbItemProps>) {
-  const s = styles()
-
-  return <li className={s.item()}>{children}</li>
+function BreadcrumbItem({ children }: PropsWithChildren) {
+  return (
+    <li
+      className={item()}
+      data-testid="breadcrumb-item"
+    >
+      {children}
+    </li>
+  )
 }
 
 function BreadcrumbLink({
   asChild,
-  children,
   href,
+  children,
 }: PropsWithChildren<BreadcrumbLinkProps>) {
-  const s = styles()
-
   if (asChild && isValidElement(children)) {
-    return cloneElement(
-      children as React.ReactElement<{
-        className?: string
-      }>,
-      {
-        className: s.link(),
-      },
-    )
+    return cloneElement(children as ReactElement<Record<string, unknown>>, {
+      className: link(),
+      'data-testid': 'breadcrumb-link',
+    })
   }
 
   return (
     <a
-      className={s.link()}
+      className={link()}
+      data-testid="breadcrumb-link"
       href={href}
     >
       {children}
@@ -79,46 +89,41 @@ function BreadcrumbLink({
   )
 }
 
-function BreadcrumbPage({ children }: PropsWithChildren<BreadcrumbPageProps>) {
-  const s = styles()
-
+function BreadcrumbPage({ children }: PropsWithChildren) {
   return (
     <span
       aria-current="page"
-      aria-disabled="true"
-      className={s.page()}
+      className={page()}
+      data-testid="breadcrumb-page"
     >
       {children}
     </span>
   )
 }
 
-function BreadcrumbSeparator({
-  children,
-}: PropsWithChildren<BreadcrumbSeparatorProps>) {
-  const s = styles()
-
+function BreadcrumbSeparator({ children }: PropsWithChildren) {
   return (
     <li
       aria-hidden="true"
-      className={s.separator()}
+      className={separator()}
+      data-testid="breadcrumb-separator"
+      role="presentation"
     >
       {children ?? <ChevronRight />}
     </li>
   )
 }
 
-function BreadcrumbEllipsis({
-  children: _children,
-}: PropsWithChildren<BreadcrumbEllipsisProps>) {
-  const s = styles()
-
+function BreadcrumbEllipsis() {
   return (
     <span
       aria-hidden="true"
-      className={s.ellipsis()}
+      className={ellipsis()}
+      data-testid="breadcrumb-ellipsis"
+      role="presentation"
     >
-      <MoreHorizontal className={s.ellipsisIcon()} />
+      <MoreHorizontal />
+      <span className="sr-only">More</span>
     </span>
   )
 }

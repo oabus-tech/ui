@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AlertCircle, CheckCircle, Info, TriangleAlert } from 'lucide-react'
+import { AlertCircle, Info, Terminal } from 'lucide-react'
+
+import { Button } from '@/components/button'
 
 import { Alert } from './alert'
 
@@ -14,9 +16,6 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: () => (
     <Alert>
-      <Alert.Icon>
-        <Info />
-      </Alert.Icon>
       <Alert.Title>Heads up!</Alert.Title>
       <Alert.Description>
         You can add components to your app using the CLI.
@@ -39,44 +38,51 @@ export const Destructive: Story = {
   ),
 }
 
-export const Success: Story = {
+export const WithIcon: Story = {
   render: () => (
     <Alert>
       <Alert.Icon>
-        <CheckCircle />
+        <Terminal />
       </Alert.Icon>
-      <Alert.Title>Success</Alert.Title>
-      <Alert.Description>Your changes have been saved.</Alert.Description>
+      <Alert.Title>Heads up!</Alert.Title>
+      <Alert.Description>
+        You can add components to your app using the CLI.
+      </Alert.Description>
     </Alert>
   ),
 }
 
-export const Warning: Story = {
+export const WithAction: Story = {
   render: () => (
     <Alert>
       <Alert.Icon>
-        <TriangleAlert />
+        <Info />
       </Alert.Icon>
-      <Alert.Title>Warning</Alert.Title>
+      <Alert.Title>Update available</Alert.Title>
       <Alert.Description>
-        This action cannot be undone. Proceed with caution.
+        A new version is available. Update now to get the latest features.
       </Alert.Description>
+      <Alert.Action>
+        <Button
+          size="sm"
+          variant="outline"
+        >
+          Update
+        </Button>
+      </Alert.Action>
     </Alert>
   ),
 }
 
 export const Closable: Story = {
   render: () => (
-    <Alert
-      closable
-      onClose={() => console.log('closed')}
-    >
+    <Alert closable>
       <Alert.Icon>
         <Info />
       </Alert.Icon>
-      <Alert.Title>Dismissible</Alert.Title>
+      <Alert.Title>Dismissible alert</Alert.Title>
       <Alert.Description>
-        Click the X button to dismiss this alert.
+        Click the X button to dismiss this alert with a fade animation.
       </Alert.Description>
     </Alert>
   ),
@@ -86,48 +92,14 @@ export const ClosableDestructive: Story = {
   render: () => (
     <Alert
       closable
-      onClose={() => console.log('closed')}
       variant="destructive"
     >
       <Alert.Icon>
         <AlertCircle />
       </Alert.Icon>
-      <Alert.Title>Error</Alert.Title>
+      <Alert.Title>Something went wrong</Alert.Title>
       <Alert.Description>
-        Something went wrong. Please try again.
-      </Alert.Description>
-    </Alert>
-  ),
-}
-
-export const WithAction: Story = {
-  render: () => (
-    <Alert closable>
-      <Alert.Icon>
-        <AlertCircle />
-      </Alert.Icon>
-      <Alert.Title>Update available</Alert.Title>
-      <Alert.Description>
-        A new version is available. Reload to apply.
-      </Alert.Description>
-      <Alert.Action>
-        <button
-          className="mt-2 rounded border px-3 py-1 text-xs hover:bg-muted"
-          type="button"
-        >
-          Reload
-        </button>
-      </Alert.Action>
-    </Alert>
-  ),
-}
-
-export const NoIcon: Story = {
-  render: () => (
-    <Alert>
-      <Alert.Title>No icon</Alert.Title>
-      <Alert.Description>
-        An alert without an icon, using a single-column layout.
+        There was an error processing your request. Please try again.
       </Alert.Description>
     </Alert>
   ),

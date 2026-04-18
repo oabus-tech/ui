@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Search, X } from 'lucide-react'
+import { Search } from 'lucide-react'
 
 import { Input } from './input'
 
 const meta = {
+  args: {
+    placeholder: 'Type something...',
+  },
   component: Input,
   title: 'Form/Input',
 } satisfies Meta<typeof Input>
@@ -11,92 +14,41 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Default: Story = {}
+
+export const WithLeftSection: Story = {
   args: {
-    placeholder: 'Type something...',
+    leftSection: <Search size={16} />,
   },
 }
 
-export const WithValue: Story = {
+export const WithRightSection: Story = {
   args: {
-    placeholder: 'Controlled input',
-    value: 'Hello world',
-  },
-}
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    value: 'Disabled input',
+    rightSection: <span className="text-muted-foreground text-xs">kg</span>,
   },
 }
 
 export const Loading: Story = {
   args: {
     loading: true,
-    placeholder: 'Searching...',
   },
 }
 
-export const WithLeftSection: Story = {
+export const Disabled: Story = {
   args: {
-    leftSection: <Search />,
-    placeholder: 'Search...',
+    disabled: true,
+    value: 'Disabled value',
   },
 }
 
-export const WithRightSection: Story = {
+export const Small: Story = {
   args: {
-    placeholder: 'Type to clear',
-    rightSection: <X />,
-    value: 'Some value',
-  },
-}
-
-export const WithBothSections: Story = {
-  args: {
-    leftSection: <Search />,
-    placeholder: 'Search...',
-    rightSection: <X />,
-  },
-}
-
-export const SizeSm: Story = {
-  args: {
-    placeholder: 'Small input',
     size: 'sm',
   },
 }
 
-export const SizeLg: Story = {
+export const Large: Story = {
   args: {
-    placeholder: 'Large input',
     size: 'lg',
-  },
-}
-
-export const AllSizes: Story = {
-  render: () => (
-    <div className="flex flex-col gap-3">
-      <Input
-        placeholder="Small"
-        size="sm"
-      />
-      <Input
-        placeholder="Medium (default)"
-        size="md"
-      />
-      <Input
-        placeholder="Large"
-        size="lg"
-      />
-    </div>
-  ),
-}
-
-export const Password: Story = {
-  args: {
-    placeholder: 'Enter password',
-    type: 'password',
   },
 }

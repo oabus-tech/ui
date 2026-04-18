@@ -1,1 +1,2 @@
-// Sidebar sub-component - to be implemented
+export { Sidebar, useSidebar } from './sidebar'
+export type * from './sidebar.types'

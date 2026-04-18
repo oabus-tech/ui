@@ -3,8 +3,8 @@ import { tv } from 'tailwind-variants'
 
 import type { BoxProps } from './box.types'
 
-const styles = tv({
-  base: 'block',
+export const styles = tv({
+  base: 'box-root',
   variants: {
     bg: {
       background: 'bg-background',
@@ -12,13 +12,13 @@ const styles = tv({
       muted: 'bg-muted',
     },
     grow: {
-      true: 'grow',
+      true: 'flex-grow',
     },
     minHeight: {
       lg: 'min-h-64',
-      md: 'min-h-32',
+      md: 'min-h-48',
       screen: 'min-h-screen',
-      sm: 'min-h-16',
+      sm: 'min-h-32',
     },
     overflow: {
       auto: 'overflow-auto',
@@ -29,25 +29,25 @@ const styles = tv({
       lg: 'p-6',
       md: 'p-4',
       none: 'p-0',
-      sm: 'p-3',
+      sm: 'p-2',
       xl: 'p-8',
-      xs: 'p-2',
+      xs: 'p-1',
     },
     paddingX: {
       lg: 'px-6',
       md: 'px-4',
       none: 'px-0',
-      sm: 'px-3',
+      sm: 'px-2',
       xl: 'px-8',
-      xs: 'px-2',
+      xs: 'px-1',
     },
     paddingY: {
       lg: 'py-6',
       md: 'py-4',
       none: 'py-0',
-      sm: 'py-3',
+      sm: 'py-2',
       xl: 'py-8',
-      xs: 'py-2',
+      xs: 'py-1',
     },
     position: {
       absolute: 'absolute',
@@ -74,22 +74,20 @@ const styles = tv({
   },
 })
 
-function Box(props: PropsWithChildren<BoxProps>) {
-  const {
-    bg,
-    children,
-    grow,
-    minHeight,
-    overflow,
-    padding,
-    paddingX,
-    paddingY,
-    position,
-    rounded,
-    textAlign,
-    width,
-  } = props
-
+function Box({
+  bg,
+  children,
+  grow,
+  minHeight,
+  overflow,
+  padding,
+  paddingX,
+  paddingY,
+  position,
+  rounded,
+  textAlign,
+  width,
+}: PropsWithChildren<BoxProps>) {
   return (
     <div
       className={styles({
@@ -105,6 +103,7 @@ function Box(props: PropsWithChildren<BoxProps>) {
         textAlign,
         width,
       })}
+      data-testid="box-root"
     >
       {children}
     </div>

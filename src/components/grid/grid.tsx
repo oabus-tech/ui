@@ -3,8 +3,12 @@ import { tv } from 'tailwind-variants'
 
 import type { GridItemProps, GridProps } from './grid.types'
 
-const gridStyles = tv({
-  base: 'grid',
+const rootStyles = tv({
+  base: 'grid-root grid',
+  defaultVariants: {
+    cols: 1,
+    gap: 'none',
+  },
   variants: {
     cols: {
       1: 'grid-cols-1',
@@ -32,7 +36,7 @@ const gridStyles = tv({
 })
 
 const itemStyles = tv({
-  base: '',
+  base: 'grid-item',
   variants: {
     span: {
       1: 'col-span-1',
@@ -52,29 +56,27 @@ const itemStyles = tv({
   },
 })
 
-function GridRoot(props: PropsWithChildren<GridProps>) {
-  const { children, cols, gap } = props
-
+function GridRoot({ children, cols, gap }: PropsWithChildren<GridProps>) {
   return (
     <div
-      className={gridStyles({
+      className={rootStyles({
         cols,
         gap,
       })}
+      data-testid="grid-root"
     >
       {children}
     </div>
   )
 }
 
-function GridItem(props: PropsWithChildren<GridItemProps>) {
-  const { children, span } = props
-
+function GridItem({ children, span }: PropsWithChildren<GridItemProps>) {
   return (
     <div
       className={itemStyles({
         span,
       })}
+      data-testid="grid-item"
     >
       {children}
     </div>

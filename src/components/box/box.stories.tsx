@@ -12,75 +12,49 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    bg: 'card',
-    children: 'Box content',
+    children: 'Default box',
+  },
+}
+
+export const WithBackground: Story = {
+  args: {
+    bg: 'muted',
+    children: 'Muted background',
     padding: 'md',
     rounded: 'md',
   },
 }
 
-export const Muted: Story = {
+export const WithPadding: Story = {
   args: {
-    bg: 'muted',
-    children: 'Muted background',
+    bg: 'card',
+    children: 'Padded content',
     padding: 'lg',
     rounded: 'lg',
   },
 }
 
-export const FullWidth: Story = {
-  args: {
-    bg: 'card',
-    children: 'Full width box',
-    padding: 'md',
-    rounded: 'md',
-    width: 'full',
-  },
-}
-
-export const WithMinHeight: Story = {
+export const WithRounded: Story = {
   args: {
     bg: 'muted',
-    children: 'Min height md',
-    minHeight: 'md',
+    children: 'Rounded box',
     padding: 'md',
-    rounded: 'md',
+    rounded: 'xl',
   },
 }
 
-export const Overflow: Story = {
+export const Grow: Story = {
   args: {
-    bg: 'card',
-    children:
-      'This box has overflow hidden applied so content will be clipped at the boundaries.',
-    overflow: 'hidden',
+    bg: 'muted',
+    children: 'I grow to fill available space',
+    grow: true,
     padding: 'md',
-    rounded: 'md',
-    width: 'full',
   },
-}
-
-export const TextAlignCenter: Story = {
-  args: {
-    bg: 'card',
-    children: 'Centered text',
-    padding: 'md',
-    rounded: 'md',
-    textAlign: 'center',
-    width: 'full',
-  },
-}
-
-export const PaddingAxes: Story = {
-  render: () => (
-    <Box
-      bg="card"
-      paddingX="xl"
-      paddingY="sm"
-      rounded="md"
-      width="full"
-    >
-      paddingX xl + paddingY sm
-    </Box>
-  ),
+  decorators: [
+    (Story) => (
+      <div className="flex gap-4">
+        <Story />
+      </div>
+    ),
+  ],
 }

@@ -11,75 +11,35 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  render: () => (
-    <Container>
-      <p className="rounded bg-muted p-4 text-sm">
-        Default container — max-width xl, centered.
-      </p>
-    </Container>
-  ),
+  args: {
+    children: (
+      <div className="rounded bg-muted p-4">Default container content</div>
+    ),
+  },
 }
 
-export const MaxWidthSm: Story = {
-  render: () => (
-    <Container maxWidth="sm">
-      <p className="rounded bg-muted p-4 text-sm">max-width sm (640px)</p>
-    </Container>
-  ),
+export const Centered: Story = {
+  args: {
+    centered: true,
+    children: <div className="rounded bg-muted p-4">Centered container</div>,
+    maxWidth: 'md',
+  },
 }
 
-export const MaxWidthMd: Story = {
-  render: () => (
-    <Container maxWidth="md">
-      <p className="rounded bg-muted p-4 text-sm">max-width md (768px)</p>
-    </Container>
-  ),
+export const WithMaxWidth: Story = {
+  args: {
+    children: (
+      <div className="rounded bg-muted p-4">
+        Container with max-width constraint
+      </div>
+    ),
+    maxWidth: 'sm',
+  },
 }
 
-export const MaxWidthLg: Story = {
-  render: () => (
-    <Container maxWidth="lg">
-      <p className="rounded bg-muted p-4 text-sm">max-width lg (1024px)</p>
-    </Container>
-  ),
-}
-
-export const MaxWidth2xl: Story = {
-  render: () => (
-    <Container maxWidth="2xl">
-      <p className="rounded bg-muted p-4 text-sm">max-width 2xl (1536px)</p>
-    </Container>
-  ),
-}
-
-export const Full: Story = {
-  render: () => (
-    <Container maxWidth="full">
-      <p className="rounded bg-muted p-4 text-sm">max-width full (100%)</p>
-    </Container>
-  ),
-}
-
-export const NotCentered: Story = {
-  render: () => (
-    <Container
-      centered={false}
-      maxWidth="sm"
-    >
-      <p className="rounded bg-muted p-4 text-sm">
-        Not centered — aligned to the left.
-      </p>
-    </Container>
-  ),
-}
-
-export const TextCenter: Story = {
-  render: () => (
-    <Container
-      maxWidth="sm"
-      textAlign="center"
-    >
-      <p className="rounded bg-muted p-4 text-sm">Centered text alignment.</p>
-    </Container>
-  ),
+export const FullWidth: Story = {
+  args: {
+    children: <div className="rounded bg-muted p-4">Full width container</div>,
+    maxWidth: 'full',
+  },
 }

@@ -3,8 +3,13 @@ import { tv } from 'tailwind-variants'
 
 import type { TypographyProps } from './typography.types'
 
-const styles = tv({
-  base: 'text-foreground',
+const typography = tv({
+  base: 'typography',
+  defaultVariants: {
+    size: 'base',
+    variant: 'default',
+    weight: 'normal',
+  },
   variants: {
     size: {
       '2xl': 'text-2xl',
@@ -22,7 +27,7 @@ const styles = tv({
       xs: 'text-xs',
     },
     truncate: {
-      true: 'overflow-hidden text-ellipsis whitespace-nowrap',
+      true: 'inline-block max-w-full truncate',
     },
     variant: {
       default: 'text-foreground',
@@ -42,27 +47,26 @@ const styles = tv({
   },
 })
 
-function Typography(props: PropsWithChildren<TypographyProps>) {
-  const {
-    children,
-    component: Tag = 'span',
-    size,
-    truncate,
-    variant,
-    weight,
-  } = props
-
+function Typography({
+  component: Component = 'span',
+  size,
+  variant,
+  weight,
+  truncate,
+  children,
+}: PropsWithChildren<TypographyProps>) {
   return (
-    <Tag
-      className={styles({
+    <Component
+      className={typography({
         size,
         truncate,
         variant,
         weight,
       })}
+      data-testid="typography"
     >
       {children}
-    </Tag>
+    </Component>
   )
 }
 

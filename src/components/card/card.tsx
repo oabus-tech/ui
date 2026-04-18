@@ -11,96 +11,135 @@ import type {
   CardTitleProps,
 } from './card.types'
 
-const styles = tv({
+const card = tv({
   slots: {
-    content: 'p-6 pt-0',
-    description: 'text-muted-foreground text-sm',
-    footer: 'flex items-center p-6 pt-0',
-    header: 'flex flex-col gap-1.5 p-6',
-    root: 'rounded-xl border bg-card text-card-foreground shadow-sm',
-    separator: 'border-t',
-    title: 'font-semibold text-xl leading-none tracking-tight',
+    content: 'card-content px-4',
+    description: 'card-description text-muted-foreground text-sm',
+    footer: 'card-footer flex items-center px-4',
+    header: 'card-header grid auto-rows-min items-start gap-1 px-4',
+    root: 'card-root flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground text-sm shadow-sm ring-1 ring-foreground/10',
+    separator: 'card-separator border-t',
+    title: 'card-title font-heading font-medium text-base leading-snug',
   },
   variants: {
+    clickable: {
+      true: {
+        root: 'cursor-pointer transition-shadow hover:shadow-md',
+      },
+    },
     footerBordered: {
       true: {
-        footer: 'border-t pt-6',
+        footer: 'border-t bg-muted/50 pt-4',
       },
     },
     headerBordered: {
       true: {
-        header: 'border-b',
-      },
-    },
-    interactive: {
-      true: {
-        root: 'cursor-pointer transition-colors hover:bg-accent/50',
+        header: 'border-b pb-4',
       },
     },
   },
 })
 
-function CardRoot(props: PropsWithChildren<CardProps>) {
-  const { children, onClick } = props
-
-  const s = styles({
-    interactive: !!onClick,
+function CardRoot({ onClick, children }: PropsWithChildren<CardProps>) {
+  const { root } = card({
+    clickable: !!onClick,
   })
 
   return (
     <div
-      className={s.root()}
-      // onClick={onClick}
+      className={root()}
+      data-testid="card-root"
+      onClick={onClick}
     >
       {children}
     </div>
   )
 }
 
-function CardHeader(props: PropsWithChildren<CardHeaderProps>) {
-  const { bordered, children } = props
-
-  const s = styles({
+function CardHeader({
+  bordered,
+  children,
+}: PropsWithChildren<CardHeaderProps>) {
+  const { header } = card({
     headerBordered: bordered,
   })
 
-  return <div className={s.header()}>{children}</div>
+  return (
+    <div
+      className={header()}
+      data-testid="card-header"
+    >
+      {children}
+    </div>
+  )
 }
 
-function CardTitle({ children }: PropsWithChildren<CardTitleProps>) {
-  const s = styles()
+function CardTitle({ children }: PropsWithChildren) {
+  const { title } = card()
 
-  return <div className={s.title()}>{children}</div>
+  return (
+    <div
+      className={title()}
+      data-testid="card-title"
+    >
+      {children}
+    </div>
+  )
 }
 
-function CardDescription({
+function CardDescription({ children }: PropsWithChildren) {
+  const { description } = card()
+
+  return (
+    <div
+      className={description()}
+      data-testid="card-description"
+    >
+      {children}
+    </div>
+  )
+}
+
+function CardContent({ children }: PropsWithChildren) {
+  const { content } = card()
+
+  return (
+    <div
+      className={content()}
+      data-testid="card-content"
+    >
+      {children}
+    </div>
+  )
+}
+
+function CardFooter({
+  bordered,
   children,
-}: PropsWithChildren<CardDescriptionProps>) {
-  const s = styles()
-
-  return <p className={s.description()}>{children}</p>
-}
-
-function CardContent({ children }: PropsWithChildren<CardContentProps>) {
-  const s = styles()
-
-  return <div className={s.content()}>{children}</div>
-}
-
-function CardFooter(props: PropsWithChildren<CardFooterProps>) {
-  const { bordered, children } = props
-
-  const s = styles({
+}: PropsWithChildren<CardFooterProps>) {
+  const { footer } = card({
     footerBordered: bordered,
   })
 
-  return <div className={s.footer()}>{children}</div>
+  return (
+    <div
+      className={footer()}
+      data-testid="card-footer"
+    >
+      {children}
+    </div>
+  )
 }
 
-function CardSeparator(_props: CardSeparatorProps) {
-  const s = styles()
+function CardSeparator() {
+  const { separator } = card()
 
-  return <hr className={s.separator()} />
+  return (
+    <hr
+      className={separator()}
+      data-testid="card-separator"
+    />
+  )
 }
 
 const Card = Object.assign(CardRoot, {

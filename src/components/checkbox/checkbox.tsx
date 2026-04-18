@@ -1,54 +1,57 @@
-import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox'
-import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group'
+import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
 import { Check } from 'lucide-react'
-import { useId } from 'react'
+import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type { CheckboxGroupProps, CheckboxProps } from './checkbox.types'
 
-const styles = tv({
+const checkbox = tv({
   defaultVariants: {
     size: 'md',
   },
   slots: {
-    description: 'mt-0.5 text-muted-foreground text-xs',
-    icon: 'block',
-    indicator:
-      'flex shrink-0 cursor-pointer items-center justify-center rounded-sm border border-input bg-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',
-    label: 'cursor-pointer font-medium text-sm leading-none',
-    labelWrapper: 'flex flex-col gap-1',
-    root: 'flex cursor-pointer select-none items-start gap-2',
+    box: [
+      'checkbox-box relative flex shrink-0 items-center justify-center rounded-[4px]',
+      'border border-input outline-none transition-colors',
+      'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+      'disabled:cursor-not-allowed disabled:opacity-50',
+      'data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground',
+      'dark:bg-input/30 dark:data-checked:bg-primary',
+    ],
+    indicator: 'checkbox-indicator grid place-content-center text-current',
+    root: 'checkbox-root flex cursor-pointer items-center gap-2',
   },
   variants: {
     bordered: {
       true: {
-        root: 'rounded-md border border-input px-4 py-3 transition-colors has-[data-checked]:border-primary',
+        root: 'w-full select-none rounded-md border p-3 hover:bg-muted/50 has-disabled:cursor-not-allowed has-disabled:opacity-50',
       },
     },
-    disabled: {
+    hasDescription: {
       true: {
-        root: 'pointer-events-none opacity-50',
+        box: 'mt-px',
+        root: 'items-start',
       },
     },
     size: {
       lg: {
-        icon: 'size-3.5',
-        indicator: 'mt-0.5 size-5',
+        box: 'size-5',
+        indicator: '[&>svg]:size-4',
       },
       md: {
-        icon: 'size-3',
-        indicator: 'mt-px size-4',
+        box: 'size-4',
+        indicator: '[&>svg]:size-3.5',
       },
       sm: {
-        icon: 'size-2.5',
-        indicator: 'size-3.5',
+        box: 'size-3',
+        indicator: '[&>svg]:size-2.5',
       },
     },
   },
 })
 
-const groupStyles = tv({
-  base: 'flex',
+const checkboxGroup = tv({
+  base: 'checkbox-group flex',
   defaultVariants: {
     variant: 'vertical',
   },
@@ -60,50 +63,56 @@ const groupStyles = tv({
   },
 })
 
-function CheckboxRoot(props: CheckboxProps) {
-  const {
+function CheckboxRoot({
+  label,
+  description,
+  size,
+  checked,
+  defaultChecked,
+  disabled,
+  bordered,
+  value,
+  onChange,
+}: CheckboxProps) {
+  const hasDescription = Boolean(description)
+  const { root, box, indicator } = checkbox({
     bordered,
-    checked,
-    defaultChecked,
-    description,
-    disabled,
-    label,
-    onChange,
-    size = 'md',
-    value,
-  } = props
-
-  const id = useId()
-
-  const s = styles({
-    bordered,
-    disabled,
+    hasDescription,
     size,
   })
 
   return (
     <label
-      className={s.root()}
-      htmlFor={id}
+      className={root()}
+      data-testid="checkbox-root"
     >
-      <BaseCheckbox.Root
+      <CheckboxPrimitive.Root
         checked={checked}
-        className={s.indicator()}
+        className={box()}
+        data-slot="checkbox"
+        data-testid="checkbox-box"
         defaultChecked={defaultChecked}
         disabled={disabled}
-        id={id}
-        onCheckedChange={onChange}
+        onCheckedChange={(val) => onChange?.(val === true)}
         value={value}
       >
-        <BaseCheckbox.Indicator>
-          <Check className={s.icon()} />
-        </BaseCheckbox.Indicator>
-      </BaseCheckbox.Root>
+        <CheckboxPrimitive.Indicator
+          className={indicator()}
+          data-slot="checkbox-indicator"
+          data-testid="checkbox-indicator"
+        >
+          <Check />
+        </CheckboxPrimitive.Indicator>
+      </CheckboxPrimitive.Root>
       {(label || description) && (
-        <div className={s.labelWrapper()}>
-          {label && <span className={s.label()}>{label}</span>}
+        <div className="flex flex-col gap-0.5">
+          {label && (
+            <span className="cursor-pointer font-medium text-sm leading-none">
+              {label}
+            </span>
+          )}
           {description && (
-            <span className={s.description()}>{description}</span>
+            <span className="text-muted-foreground text-xs">{description}</span>
           )}
         </div>
       )}
@@ -111,37 +120,48 @@ function CheckboxRoot(props: CheckboxProps) {
   )
 }
 
-function CheckboxGroupRoot(props: CheckboxGroupProps) {
-  const {
-    defaultValue,
-    disabled,
-    items,
-    onChange,
-    value,
-    variant = 'vertical',
-  } = props
+function CheckboxGroup({
+  items,
+  value: controlledValue,
+  defaultValue = [],
+  disabled,
+  variant,
+  onChange,
+}: CheckboxGroupProps) {
+  const [internalValue, setInternalValue] = useState<string[]>(defaultValue)
+  const isControlled = controlledValue !== undefined
+  const selected = isControlled ? controlledValue : internalValue
 
-  const s = groupStyles({
-    variant,
-  })
+  const handleChange = (itemValue: string, checked: boolean) => {
+    const next = checked
+      ? [
+          ...selected,
+          itemValue,
+        ]
+      : selected.filter((v) => v !== itemValue)
+    if (!isControlled) {
+      setInternalValue(next)
+    }
+    onChange?.(next)
+  }
 
   return (
-    <BaseCheckboxGroup
-      className={s}
-      defaultValue={defaultValue}
-      disabled={disabled}
-      onValueChange={onChange}
-      value={value}
+    <div
+      className={checkboxGroup({
+        variant,
+      })}
+      data-testid="checkbox-group"
     >
       {items.map((item) => (
         <CheckboxRoot
-          disabled={item.disabled}
+          checked={selected.includes(item.value)}
+          disabled={disabled || item.disabled}
           key={item.value}
           label={item.label}
-          value={item.value}
+          onChange={(checked) => handleChange(item.value, checked)}
         />
       ))}
-    </BaseCheckboxGroup>
+    </div>
   )
 }
 

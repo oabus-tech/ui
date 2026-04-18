@@ -4,7 +4,7 @@ import { Card } from './card'
 
 const meta = {
   component: Card,
-  title: 'Components/Card',
+  title: 'Feedback/Card',
 } satisfies Meta<typeof Card>
 
 export default meta
@@ -20,60 +20,57 @@ export const Default: Story = {
       <Card.Content>
         <p>Card content body.</p>
       </Card.Content>
+    </Card>
+  ),
+}
+
+export const WithFooter: Story = {
+  render: () => (
+    <Card>
+      <Card.Header>
+        <Card.Title>Settings</Card.Title>
+        <Card.Description>Manage your account settings.</Card.Description>
+      </Card.Header>
+      <Card.Content>
+        <p>Content area with form fields or other content.</p>
+      </Card.Content>
       <Card.Footer>
-        <span className="text-muted-foreground text-sm">Footer info</span>
+        <button
+          className="font-medium text-sm"
+          type="button"
+        >
+          Save changes
+        </button>
       </Card.Footer>
     </Card>
   ),
 }
 
-export const WithBorderedHeader: Story = {
+export const Bordered: Story = {
   render: () => (
     <Card>
       <Card.Header bordered>
         <Card.Title>Bordered Header</Card.Title>
-        <Card.Description>This header has a bottom border.</Card.Description>
+        <Card.Description>Header has a bottom border.</Card.Description>
       </Card.Header>
       <Card.Content>
-        <p>Content below the bordered header.</p>
-      </Card.Content>
-    </Card>
-  ),
-}
-
-export const WithBorderedFooter: Story = {
-  render: () => (
-    <Card>
-      <Card.Content>
-        <p>Content above the bordered footer.</p>
+        <p>Main content area.</p>
       </Card.Content>
       <Card.Footer bordered>
-        <span className="text-muted-foreground text-sm">Bordered footer</span>
+        <button
+          className="font-medium text-sm"
+          type="button"
+        >
+          Action
+        </button>
       </Card.Footer>
     </Card>
   ),
 }
 
-export const WithSeparator: Story = {
+export const Clickable: Story = {
   render: () => (
-    <Card>
-      <Card.Header>
-        <Card.Title>Sections</Card.Title>
-      </Card.Header>
-      <Card.Content>
-        <p>First section.</p>
-      </Card.Content>
-      <Card.Separator />
-      <Card.Content>
-        <p>Second section.</p>
-      </Card.Content>
-    </Card>
-  ),
-}
-
-export const Interactive: Story = {
-  render: () => (
-    <Card onClick={() => alert('card clicked')}>
+    <Card onClick={() => console.log('card clicked')}>
       <Card.Header>
         <Card.Title>Clickable Card</Card.Title>
         <Card.Description>Click anywhere on this card.</Card.Description>
@@ -85,14 +82,18 @@ export const Interactive: Story = {
   ),
 }
 
-export const TitleOnly: Story = {
+export const WithSeparator: Story = {
   render: () => (
     <Card>
       <Card.Header>
-        <Card.Title>Minimal Card</Card.Title>
+        <Card.Title>Sections</Card.Title>
       </Card.Header>
       <Card.Content>
-        <p>No description, no footer.</p>
+        <p>First section content.</p>
+      </Card.Content>
+      <Card.Separator />
+      <Card.Content>
+        <p>Second section content.</p>
       </Card.Content>
     </Card>
   ),

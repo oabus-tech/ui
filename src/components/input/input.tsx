@@ -1,87 +1,66 @@
-import { Loader2 } from 'lucide-react'
-import { useCallback, useEffect, useRef } from 'react'
+import { forwardRef, useCallback, useRef } from 'react'
 import { tv } from 'tailwind-variants'
 
+import { Loader } from '@/components/loader'
 import { cn } from '@/support/utils'
 
+import { DEFAULT_SECTION_WIDTH } from './input.shared'
 import type { InputProps } from './input.types'
 
-const styles = tv({
+const input = tv({
   defaultVariants: {
-    hasLeft: false,
-    hasRight: false,
     size: 'md',
   },
   slots: {
-    input:
-      'h-full w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed',
-    leftSection:
-      'pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground [&_svg]:size-4',
-    rightSection:
-      'absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground [&_svg]:size-4',
-    root: 'relative flex items-center rounded-md border border-input bg-background transition-colors focus-within:ring-2 focus-within:ring-ring/50 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50',
-    spinner: 'animate-spin',
+    field: [
+      'input-field w-full min-w-0 rounded-lg border border-input bg-transparent',
+      'text-base outline-none transition-colors md:text-sm',
+      'placeholder:text-muted-foreground',
+      'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+      'disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
+      'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20',
+      'dark:bg-input/30 dark:disabled:bg-input/80',
+      'dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+    ],
+    root: 'input-root relative flex w-full items-center',
+    section:
+      'input-section pointer-events-none absolute top-1/2 flex -translate-y-1/2 items-center text-muted-foreground',
   },
   variants: {
-    hasLeft: {
-      false: {
-        input: 'pl-3',
-      },
-      true: {
-        input: 'pl-9',
-      },
-    },
-    hasRight: {
-      false: {
-        input: 'pr-3',
-      },
-      true: {
-        input: 'pr-9',
-      },
-    },
     size: {
       lg: {
-        root: 'h-11',
-        spinner: 'size-4',
+        field: 'h-11 px-3 py-1',
       },
       md: {
-        root: 'h-10',
-        spinner: 'size-4',
+        field: 'h-10 px-2.5 py-1',
       },
       sm: {
-        input: 'text-xs',
-        root: 'h-9',
-        spinner: 'size-3.5',
+        field: 'h-9 px-2.5 py-1',
       },
     },
   },
 })
 
-function Input(props: InputProps) {
-  const {
-    debounce: shouldDebounce,
-    defaultValue,
-    disabled,
-    leftSection,
-    loading,
-    onChange,
-    rightSection,
-    rootClassName,
-    size = 'md',
-    type = 'text',
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    size,
     value,
-    ...rest
-  } = props
-
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(null)
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current)
-      }
-    }
-  }, [])
+    defaultValue,
+    leftSection,
+    leftSectionWidth = DEFAULT_SECTION_WIDTH,
+    rightSection,
+    rightSectionWidth = DEFAULT_SECTION_WIDTH,
+    loading,
+    debounce,
+    rootClassName,
+    className,
+    onChange,
+    type = 'text',
+    ...props
+  },
+  ref,
+) {
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,52 +68,100 @@ function Input(props: InputProps) {
         return
       }
       const val = e.target.value === '' ? null : e.target.value
-      if (shouldDebounce) {
-        if (timerRef.current) {
-          clearTimeout(timerRef.current)
-        }
-        timerRef.current = setTimeout(() => onChange(val), 300)
-      } else {
+      if (!debounce) {
         onChange(val)
+        return
       }
+      clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => onChange(val), 300)
     },
     [
       onChange,
-      shouldDebounce,
+      debounce,
     ],
   )
 
-  const effectiveRightSection = loading ? undefined : rightSection
-  const hasRight = loading || !!rightSection
+  const effectiveRight = loading ? <Loader size="sm" /> : rightSection
+  const hasLeft = Boolean(leftSection)
+  const hasRight = Boolean(effectiveRight)
 
-  const s = styles({
-    hasLeft: !!leftSection,
-    hasRight,
+  const { root, field, section } = input({
     size,
   })
 
+  const fieldStyle: React.CSSProperties = {
+    ...(hasLeft
+      ? {
+          paddingLeft: leftSectionWidth,
+        }
+      : {}),
+    ...(hasRight
+      ? {
+          paddingRight: rightSectionWidth,
+        }
+      : {}),
+  }
+
+  const controlledProps =
+    value !== undefined
+      ? {
+          value: value ?? '',
+        }
+      : {
+          defaultValue: defaultValue ?? undefined,
+        }
+
   return (
-    <div className={cn(s.root(), rootClassName)}>
-      {leftSection && <span className={s.leftSection()}>{leftSection}</span>}
-      <input
-        {...rest}
-        className={s.input()}
-        defaultValue={defaultValue === null ? '' : defaultValue}
-        disabled={disabled}
-        onChange={handleChange}
-        type={type}
-        value={value === null ? '' : value}
-      />
-      {loading && (
-        <span className={s.rightSection()}>
-          <Loader2 className={s.spinner()} />
+    <div
+      className={root({
+        className: rootClassName,
+      })}
+      data-testid="input-root"
+    >
+      {hasLeft && (
+        <span
+          className={section({
+            className: 'left-0 justify-center',
+          })}
+          data-testid="input-section-left"
+          style={{
+            width: leftSectionWidth,
+          }}
+        >
+          {leftSection}
         </span>
       )}
-      {!loading && effectiveRightSection && (
-        <span className={s.rightSection()}>{effectiveRightSection}</span>
+      <input
+        data-slot="input"
+        data-testid="input-field"
+        onChange={handleChange}
+        ref={ref}
+        style={fieldStyle}
+        type={type}
+        {...controlledProps}
+        {...props}
+        className={cn(
+          field({
+            className,
+          }),
+          className ?? '',
+        )}
+      />
+      {hasRight && (
+        <span
+          className={section({
+            className: 'pointer-events-auto right-0 justify-center',
+          })}
+          data-testid="input-section-right"
+          style={{
+            width: rightSectionWidth,
+          }}
+        >
+          {effectiveRight}
+        </span>
       )}
     </div>
   )
-}
+})
 
 export { Input }

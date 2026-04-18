@@ -3,8 +3,13 @@ import { tv } from 'tailwind-variants'
 
 import type { FlexProps } from './flex.types'
 
-const styles = tv({
-  base: 'flex',
+export const styles = tv({
+  base: 'flex flex-root',
+  defaultVariants: {
+    align: 'stretch',
+    direction: 'row',
+    gap: 'none',
+  },
   variants: {
     align: {
       baseline: 'items-baseline',
@@ -42,8 +47,8 @@ const styles = tv({
       start: 'justify-start',
     },
     minHeight: {
-      lg: 'min-h-96',
-      md: 'min-h-64',
+      lg: 'min-h-64',
+      md: 'min-h-48',
       screen: 'min-h-screen',
       sm: 'min-h-32',
     },
@@ -55,19 +60,17 @@ const styles = tv({
   },
 })
 
-function Flex(props: PropsWithChildren<FlexProps>) {
-  const {
-    align,
-    block,
-    children,
-    direction,
-    gap,
-    inline,
-    justify,
-    minHeight,
-    wrap,
-  } = props
-
+function Flex({
+  align,
+  block,
+  children,
+  direction,
+  gap,
+  inline,
+  justify,
+  minHeight,
+  wrap,
+}: PropsWithChildren<FlexProps>) {
   return (
     <div
       className={styles({
@@ -80,6 +83,7 @@ function Flex(props: PropsWithChildren<FlexProps>) {
         minHeight,
         wrap,
       })}
+      data-testid="flex-root"
     >
       {children}
     </div>

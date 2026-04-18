@@ -3,23 +3,22 @@ import { tv } from 'tailwind-variants'
 
 import type { ContainerProps } from './container.types'
 
-const styles = tv({
-  base: 'w-full px-4',
+export const styles = tv({
+  base: 'container-root w-full',
   defaultVariants: {
     centered: true,
-    maxWidth: 'xl',
   },
   variants: {
     centered: {
       true: 'mx-auto',
     },
     maxWidth: {
-      '2xl': 'max-w-screen-2xl',
+      '2xl': 'max-w-[1536px]',
       full: 'max-w-full',
-      lg: 'max-w-screen-lg',
-      md: 'max-w-screen-md',
-      sm: 'max-w-screen-sm',
-      xl: 'max-w-screen-xl',
+      lg: 'max-w-6xl',
+      md: 'max-w-3xl',
+      sm: 'max-w-sm',
+      xl: 'max-w-7xl',
       xs: 'max-w-xs',
     },
     textAlign: {
@@ -30,9 +29,12 @@ const styles = tv({
   },
 })
 
-function Container(props: PropsWithChildren<ContainerProps>) {
-  const { centered = true, children, maxWidth = 'xl', textAlign } = props
-
+function Container({
+  centered,
+  children,
+  maxWidth,
+  textAlign,
+}: PropsWithChildren<ContainerProps>) {
   return (
     <div
       className={styles({
@@ -40,6 +42,7 @@ function Container(props: PropsWithChildren<ContainerProps>) {
         maxWidth,
         textAlign,
       })}
+      data-testid="container-root"
     >
       {children}
     </div>

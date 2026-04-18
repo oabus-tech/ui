@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { Typography } from '../typography'
 import { Flex } from './flex'
 
 const meta = {
@@ -11,147 +10,81 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const items = (
+  <>
+    <div className="rounded bg-muted p-4">Item 1</div>
+    <div className="rounded bg-muted p-4">Item 2</div>
+    <div className="rounded bg-muted p-4">Item 3</div>
+  </>
+)
+
 export const Default: Story = {
-  render: () => (
-    <Flex gap="md">
-      <Typography>A</Typography>
-      <Typography>B</Typography>
-      <Typography>C</Typography>
-    </Flex>
-  ),
+  args: {
+    children: items,
+  },
 }
 
 export const Column: Story = {
-  render: () => (
-    <Flex
-      direction="col"
-      gap="sm"
-    >
-      <Typography>A</Typography>
-      <Typography>B</Typography>
-      <Typography>C</Typography>
-    </Flex>
-  ),
+  args: {
+    children: items,
+    direction: 'col',
+    gap: 'md',
+  },
 }
 
-export const JustifyBetween: Story = {
-  render: () => (
-    <Flex
-      gap="md"
-      justify="between"
-    >
-      <Typography>Left</Typography>
-      <Typography>Center</Typography>
-      <Typography>Right</Typography>
-    </Flex>
-  ),
+export const CenterBoth: Story = {
+  args: {
+    align: 'center',
+    children: items,
+    gap: 'md',
+    justify: 'center',
+    minHeight: 'sm',
+  },
 }
 
-export const JustifyCenter: Story = {
-  render: () => (
-    <Flex
-      gap="md"
-      justify="center"
-    >
-      <Typography>A</Typography>
-      <Typography>B</Typography>
-    </Flex>
-  ),
+export const SpaceBetween: Story = {
+  args: {
+    block: true,
+    children: items,
+    justify: 'between',
+  },
 }
 
-export const AlignCenter: Story = {
-  render: () => (
-    <Flex
-      align="center"
-      gap="md"
-      minHeight="sm"
-    >
-      <Typography>A</Typography>
-      <Typography>B</Typography>
-      <Typography>C</Typography>
-    </Flex>
-  ),
+export const WithGap: Story = {
+  args: {
+    children: items,
+    gap: 'lg',
+  },
 }
 
-export const Wrap: Story = {
-  render: () => (
-    <Flex
-      gap="sm"
-      wrap="wrap"
-    >
-      {[
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-        'Item 5',
-        'Item 6',
-        'Item 7',
-        'Item 8',
-        'Item 9',
-        'Item 10',
-      ].map((label) => (
-        <Typography key={label}>{label}</Typography>
-      ))}
-    </Flex>
-  ),
+export const WithWrap: Story = {
+  args: {
+    children: (
+      <>
+        {Array.from(
+          {
+            length: 10,
+          },
+          (_, i) => (
+            <div
+              className="rounded bg-muted p-4"
+              key={i}
+            >
+              Item {i + 1}
+            </div>
+          ),
+        )}
+      </>
+    ),
+    gap: 'sm',
+    wrap: 'wrap',
+  },
 }
 
 export const Inline: Story = {
-  render: () => (
-    <div>
-      <Flex
-        gap="sm"
-        inline
-      >
-        <Typography>A</Typography>
-        <Typography>B</Typography>
-        <Typography>C</Typography>
-      </Flex>
-      <p className="mt-2 text-muted-foreground text-sm">
-        Inline flex — sits inline with other content.
-      </p>
-    </div>
-  ),
-}
-
-export const Block: Story = {
-  render: () => (
-    <Flex
-      block
-      justify="between"
-    >
-      <Typography>Left</Typography>
-      <Typography>Right</Typography>
-    </Flex>
-  ),
-}
-
-export const AllGaps: Story = {
-  render: () => (
-    <Flex
-      direction="col"
-      gap="lg"
-    >
-      {(
-        [
-          'none',
-          'xs',
-          'sm',
-          'md',
-          'lg',
-          'xl',
-        ] as const
-      ).map((gap) => (
-        <div key={gap}>
-          <Typography size="xs">gap="{gap}"</Typography>
-          <Flex gap={gap}>
-            <Typography>A</Typography>
-            <Typography>B</Typography>
-            <Typography>C</Typography>
-          </Flex>
-        </div>
-      ))}
-    </Flex>
-  ),
+  args: {
+    children: items,
+    gap: 'sm',
+    inline: true,
+  },
 }

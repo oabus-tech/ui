@@ -10,6 +10,7 @@ export * from './components/box'
 export * from './components/breadcrumb'
 // Existing
 export * from './components/button'
+export * from './components/calendar'
 export * from './components/card'
 // Form — Basic
 export * from './components/checkbox'

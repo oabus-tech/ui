@@ -1,7 +1,31 @@
+import { Loader2 } from 'lucide-react'
+import { tv } from 'tailwind-variants'
+
 import type { LoaderProps } from './loader.types'
 
-function Loader(_props: LoaderProps) {
-  return <div></div>
+const loader = tv({
+  base: 'loader animate-spin text-muted-foreground',
+  defaultVariants: {
+    size: 'md',
+  },
+  variants: {
+    size: {
+      lg: 'size-8',
+      md: 'size-6',
+      sm: 'size-4',
+    },
+  },
+})
+
+function Loader({ size }: LoaderProps) {
+  return (
+    <Loader2
+      className={loader({
+        size,
+      })}
+      data-testid="loader"
+    />
+  )
 }
 
 export { Loader }

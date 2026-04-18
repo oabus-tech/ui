@@ -1,7 +1,661 @@
+import { Popover } from '@base-ui/react/popover'
+import { Select as SelectPrimitive } from '@base-ui/react/select'
+import { Check, ChevronDown, ChevronUp, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { tv } from 'tailwind-variants'
+
+import { Badge } from '@/components/badge'
+import { Loader } from '@/components/loader'
+
 import type { SelectProps } from './select.types'
 
-function Select<T, I = string, O = I>(_props: SelectProps<T, I, O>) {
-  return <div></div>
+const select = tv({
+  defaultVariants: {
+    size: 'md',
+  },
+  slots: {
+    checkbox: [
+      'select-checkbox flex size-4 items-center justify-center rounded border border-input transition-colors',
+      'data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground',
+    ],
+    empty: 'select-empty px-3 py-4 text-center text-muted-foreground text-sm',
+    groupLabel:
+      'select-group-label px-1.5 py-1 font-medium text-muted-foreground text-xs',
+    item: [
+      'select-item relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5',
+      'select-none text-sm outline-none',
+      'focus:bg-accent focus:text-accent-foreground',
+      'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
+      'data-disabled:pointer-events-none data-disabled:opacity-50',
+      'data-selected:font-medium',
+    ],
+    itemCheck:
+      'select-item-check pointer-events-none absolute right-2 flex size-4 items-center justify-center',
+    list: 'select-list p-1',
+    multipleItem: [
+      'select-multiple-item relative flex cursor-default items-center gap-2 rounded-md px-1.5 py-1',
+      'select-none text-sm outline-none',
+      'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+      'data-disabled:pointer-events-none data-disabled:opacity-50',
+    ],
+    popup: [
+      'select-popup relative isolate z-50 max-h-64 w-(--anchor-width) min-w-36',
+      'origin-(--transform-origin) overflow-y-auto overflow-x-hidden rounded-lg',
+      'bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10',
+      'data-open:fade-in-0 data-open:zoom-in-95 duration-100 data-open:animate-in',
+      'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',
+    ],
+    search: [
+      'select-search sticky top-0 flex items-center border-input border-b bg-popover px-2',
+    ],
+    searchInput: [
+      'select-search-input w-full bg-transparent py-2 text-sm outline-none',
+      'placeholder:text-muted-foreground',
+    ],
+    sentinel: 'select-sentinel h-1',
+    trigger: [
+      'select-trigger flex h-8 w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
+      'whitespace-nowrap border border-input bg-transparent px-2.5 text-sm',
+      'select-none outline-none transition-colors',
+      'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+      'disabled:cursor-not-allowed disabled:opacity-50',
+      'data-placeholder:text-muted-foreground',
+    ],
+    triggerValue:
+      'select-trigger-value flex flex-1 items-center gap-1.5 overflow-hidden text-left',
+  },
+  variants: {
+    size: {
+      lg: {
+        trigger: 'h-9',
+      },
+      md: {
+        trigger: 'h-8',
+      },
+      sm: {
+        trigger: 'h-7',
+      },
+    },
+  },
+})
+
+function getLabel<T>(
+  option: T,
+  extractor: keyof T | ((o: T) => string),
+): string {
+  return typeof extractor === 'function'
+    ? extractor(option)
+    : String(option[extractor as keyof T])
+}
+
+function getValue<T, O>(option: T, extractor: keyof T | ((o: T) => O)): O {
+  return typeof extractor === 'function'
+    ? extractor(option)
+    : (option[extractor as keyof T] as unknown as O)
+}
+
+function toKey<O>(val: O): string {
+  if (val === null || val === undefined) {
+    return ''
+  }
+  return typeof val === 'string' ? val : JSON.stringify(val)
+}
+
+function Select<T, I = string, O = I>(props: SelectProps<T, I, O>) {
+  if (props.mode === 'multiple') {
+    return <MultipleSelect {...props} />
+  }
+  return <SingleSelect {...props} />
+}
+
+function SingleSelect<T, I = string, O = I>({
+  options,
+  optionLabel,
+  optionValue,
+  optionGroup,
+  renderOption,
+  renderValue,
+  placeholder = 'Select...',
+  searchable,
+  searchPlaceholder = 'Search...',
+  emptySection,
+  leftSection,
+  rightSection,
+  infinite,
+  disabled,
+  loading,
+  size,
+  value,
+  defaultValue,
+  onChange,
+}: SelectProps<T, I, O> & {
+  mode: 'single'
+}) {
+  const {
+    trigger,
+    triggerValue,
+    popup,
+    search,
+    searchInput,
+    list,
+    groupLabel,
+    item,
+    itemCheck,
+    sentinel,
+    empty,
+  } = select({
+    size,
+  })
+
+  const [query, setQuery] = useState('')
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
+  const isControlled = value !== undefined
+  const defaultKey =
+    defaultValue !== undefined && defaultValue !== null
+      ? toKey(defaultValue as O)
+      : undefined
+  const [internalKey, setInternalKey] = useState<string>(defaultKey ?? '')
+
+  const currentKey = isControlled
+    ? value !== null
+      ? toKey(value as O)
+      : ''
+    : internalKey
+
+  const filteredOptions =
+    searchable && query
+      ? options.filter((o) =>
+          getLabel(o, optionLabel).toLowerCase().includes(query.toLowerCase()),
+        )
+      : options
+
+  // Group options
+  const grouped = optionGroup
+    ? filteredOptions.reduce<
+        {
+          group: string
+          items: T[]
+        }[]
+      >((acc, option) => {
+        const g = getLabel(option, optionGroup as keyof T | ((o: T) => string))
+        const existing = acc.find((a) => a.group === g)
+        if (existing) {
+          existing.items.push(option)
+        } else {
+          acc.push({
+            group: g,
+            items: [
+              option,
+            ],
+          })
+        }
+        return acc
+      }, [])
+    : [
+        {
+          group: '',
+          items: filteredOptions,
+        },
+      ]
+
+  // Infinite scroll observer
+  useEffect(() => {
+    if (!infinite?.onLoadMore || !sentinelRef.current) {
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          infinite.hasMore &&
+          !infinite.loadingMore
+        ) {
+          infinite.onLoadMore?.()
+        }
+      },
+      {
+        threshold: 0.1,
+      },
+    )
+    observer.observe(sentinelRef.current)
+    return () => observer.disconnect()
+  }, [
+    infinite,
+  ])
+
+  const selectedOption = options.find(
+    (o) => toKey(getValue(o, optionValue)) === currentKey,
+  )
+
+  return (
+    <SelectPrimitive.Root
+      defaultValue={defaultKey}
+      onValueChange={(key: string | null) => {
+        if (!isControlled) {
+          setInternalKey(key ?? '')
+        }
+        const option = key
+          ? options.find((o) => toKey(getValue(o, optionValue)) === key)
+          : undefined
+        onChange?.(option ? getValue(option, optionValue) : null)
+      }}
+      value={isControlled ? currentKey || undefined : undefined}
+    >
+      <SelectPrimitive.Trigger
+        className={trigger()}
+        data-testid="select-trigger"
+        disabled={disabled || loading}
+      >
+        {leftSection && <span className="shrink-0">{leftSection}</span>}
+        <span
+          className={triggerValue()}
+          data-testid="select-value"
+        >
+          {selectedOption ? (
+            renderValue ? (
+              renderValue(selectedOption)
+            ) : (
+              getLabel(selectedOption, optionLabel)
+            )
+          ) : (
+            <span className="text-muted-foreground">{placeholder}</span>
+          )}
+        </span>
+        {loading ? (
+          <Loader size="sm" />
+        ) : rightSection ? (
+          <span className="shrink-0">{rightSection}</span>
+        ) : (
+          <SelectPrimitive.Icon
+            render={<ChevronDown className="size-4 text-muted-foreground" />}
+          />
+        )}
+      </SelectPrimitive.Trigger>
+      <SelectPrimitive.Portal>
+        <SelectPrimitive.Positioner
+          className="isolate z-50"
+          sideOffset={4}
+        >
+          <SelectPrimitive.Popup
+            className={popup()}
+            data-testid="select-popup"
+          >
+            <SelectPrimitive.ScrollUpArrow className="sticky top-0 flex w-full items-center justify-center bg-popover py-1">
+              <ChevronUp className="size-4" />
+            </SelectPrimitive.ScrollUpArrow>
+            {searchable && (
+              <div
+                className={search()}
+                data-testid="select-search"
+              >
+                <input
+                  className={searchInput()}
+                  data-testid="select-search-input"
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.stopPropagation()}
+                  placeholder={searchPlaceholder}
+                  value={query}
+                />
+              </div>
+            )}
+            <SelectPrimitive.List
+              className={list()}
+              data-testid="select-list"
+            >
+              {filteredOptions.length === 0 && (
+                <div
+                  className={empty()}
+                  data-testid="select-empty"
+                >
+                  {emptySection ?? 'No options found.'}
+                </div>
+              )}
+              {grouped.map(({ group, items }) => (
+                <SelectPrimitive.Group key={group || '__default'}>
+                  {group && (
+                    <SelectPrimitive.GroupLabel
+                      className={groupLabel()}
+                      data-testid="select-group-label"
+                    >
+                      {group}
+                    </SelectPrimitive.GroupLabel>
+                  )}
+                  {items.map((option) => {
+                    const key = toKey(getValue(option, optionValue))
+                    const label = getLabel(option, optionLabel)
+                    return (
+                      <SelectPrimitive.Item
+                        className={item()}
+                        data-testid="select-item"
+                        key={key}
+                        value={key}
+                      >
+                        <SelectPrimitive.ItemText>
+                          {renderOption ? renderOption(option) : label}
+                        </SelectPrimitive.ItemText>
+                        <SelectPrimitive.ItemIndicator
+                          data-testid="select-item-check"
+                          render={<span className={itemCheck()} />}
+                        >
+                          <Check className="size-3.5" />
+                        </SelectPrimitive.ItemIndicator>
+                      </SelectPrimitive.Item>
+                    )
+                  })}
+                </SelectPrimitive.Group>
+              ))}
+              {infinite?.hasMore && (
+                <div
+                  className={sentinel()}
+                  data-testid="select-sentinel"
+                  ref={sentinelRef}
+                />
+              )}
+              {infinite?.loadingMore && (
+                <div className="flex justify-center py-2">
+                  <Loader size="sm" />
+                </div>
+              )}
+            </SelectPrimitive.List>
+            <SelectPrimitive.ScrollDownArrow className="sticky bottom-0 flex w-full items-center justify-center bg-popover py-1">
+              <ChevronDown className="size-4" />
+            </SelectPrimitive.ScrollDownArrow>
+          </SelectPrimitive.Popup>
+        </SelectPrimitive.Positioner>
+      </SelectPrimitive.Portal>
+    </SelectPrimitive.Root>
+  )
+}
+
+function MultipleSelect<T, I = string, O = I>({
+  options,
+  optionLabel,
+  optionValue,
+  optionGroup,
+  renderOption,
+  renderValue,
+  placeholder = 'Select...',
+  searchable,
+  searchPlaceholder = 'Search...',
+  emptySection,
+  leftSection,
+  rightSection,
+  infinite,
+  disabled,
+  loading,
+  size,
+  value,
+  defaultValue,
+  onChange,
+}: SelectProps<T, I, O> & {
+  mode: 'multiple'
+}) {
+  const {
+    trigger,
+    triggerValue,
+    popup,
+    search,
+    searchInput,
+    list,
+    groupLabel,
+    multipleItem,
+    checkbox,
+    sentinel,
+    empty,
+  } = select({
+    size,
+  })
+
+  const isControlled = value !== undefined
+  const [internalValues, setInternalValues] = useState<string[]>(
+    (defaultValue as unknown as I[] | undefined)?.map((v) =>
+      toKey(v as unknown as O),
+    ) ?? [],
+  )
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+
+  const selectedKeys: string[] = isControlled
+    ? ((value as unknown as I[]) ?? []).map((v) => toKey(v as unknown as O))
+    : internalValues
+
+  const toggle = (key: string, _option: T) => {
+    const next = selectedKeys.includes(key)
+      ? selectedKeys.filter((k) => k !== key)
+      : [
+          ...selectedKeys,
+          key,
+        ]
+    if (!isControlled) {
+      setInternalValues(next)
+    }
+    const nextOptions = options.filter((o) =>
+      next.includes(toKey(getValue(o, optionValue))),
+    )
+    onChange?.(
+      nextOptions.map((o) => getValue(o, optionValue)) as unknown as O[],
+    )
+  }
+
+  const filteredOptions =
+    searchable && query
+      ? options.filter((o) =>
+          getLabel(o, optionLabel).toLowerCase().includes(query.toLowerCase()),
+        )
+      : options
+
+  const grouped = optionGroup
+    ? filteredOptions.reduce<
+        {
+          group: string
+          items: T[]
+        }[]
+      >((acc, option) => {
+        const g = getLabel(option, optionGroup as keyof T | ((o: T) => string))
+        const existing = acc.find((a) => a.group === g)
+        if (existing) {
+          existing.items.push(option)
+        } else {
+          acc.push({
+            group: g,
+            items: [
+              option,
+            ],
+          })
+        }
+        return acc
+      }, [])
+    : [
+        {
+          group: '',
+          items: filteredOptions,
+        },
+      ]
+
+  useEffect(() => {
+    if (!infinite?.onLoadMore || !sentinelRef.current) {
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          infinite.hasMore &&
+          !infinite.loadingMore
+        ) {
+          infinite.onLoadMore?.()
+        }
+      },
+      {
+        threshold: 0.1,
+      },
+    )
+    observer.observe(sentinelRef.current)
+    return () => observer.disconnect()
+  }, [
+    infinite,
+  ])
+
+  const selectedOptions = options.filter((o) =>
+    selectedKeys.includes(toKey(getValue(o, optionValue))),
+  )
+  const visibleBadges = selectedOptions.slice(0, 2)
+  const overflowCount = selectedOptions.length - visibleBadges.length
+
+  return (
+    <Popover.Root
+      onOpenChange={setOpen}
+      open={open}
+    >
+      <Popover.Trigger
+        className={trigger()}
+        data-testid="select-trigger"
+        disabled={disabled || loading}
+      >
+        {leftSection && <span className="shrink-0">{leftSection}</span>}
+        <span
+          className={triggerValue()}
+          data-testid="select-value"
+        >
+          {selectedOptions.length === 0 ? (
+            <span className="text-muted-foreground">{placeholder}</span>
+          ) : (
+            <>
+              {visibleBadges.map((o) => {
+                const key = toKey(getValue(o, optionValue))
+                return (
+                  <Badge
+                    key={key}
+                    variant="secondary"
+                  >
+                    {renderValue ? renderValue(o) : getLabel(o, optionLabel)}
+                    <button
+                      className="pointer-events-auto ml-0.5 rounded-full opacity-60 hover:opacity-100"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggle(key, o)
+                      }}
+                      type="button"
+                    >
+                      <X size={10} />
+                    </button>
+                  </Badge>
+                )
+              })}
+              {overflowCount > 0 && (
+                <span className="shrink-0 text-muted-foreground text-xs">
+                  +{overflowCount}
+                </span>
+              )}
+            </>
+          )}
+        </span>
+        {loading ? (
+          <Loader size="sm" />
+        ) : rightSection ? (
+          <span className="shrink-0">{rightSection}</span>
+        ) : (
+          <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+        )}
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Positioner
+          className="isolate z-50"
+          sideOffset={4}
+        >
+          <Popover.Popup
+            className={popup()}
+            data-testid="select-popup"
+          >
+            {searchable && (
+              <div
+                className={search()}
+                data-testid="select-search"
+              >
+                <input
+                  className={searchInput()}
+                  data-testid="select-search-input"
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  value={query}
+                />
+              </div>
+            )}
+            <div
+              className={list()}
+              data-testid="select-list"
+            >
+              {filteredOptions.length === 0 && (
+                <div
+                  className={empty()}
+                  data-testid="select-empty"
+                >
+                  {emptySection ?? 'No options found.'}
+                </div>
+              )}
+              {grouped.map(({ group, items }) => (
+                <div key={group || '__default'}>
+                  {group && (
+                    <div
+                      className={groupLabel()}
+                      data-testid="select-group-label"
+                    >
+                      {group}
+                    </div>
+                  )}
+                  {items.map((option) => {
+                    const key = toKey(getValue(option, optionValue))
+                    const label = getLabel(option, optionLabel)
+                    const checked = selectedKeys.includes(key)
+                    return (
+                      <div
+                        aria-selected={checked}
+                        className={multipleItem()}
+                        data-testid="select-item"
+                        key={key}
+                        onClick={() => toggle(key, option)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            toggle(key, option)
+                          }
+                        }}
+                        role="option"
+                        tabIndex={0}
+                      >
+                        <span
+                          className={checkbox()}
+                          data-checked={checked || undefined}
+                          data-testid="select-checkbox"
+                        >
+                          {checked && <Check size={10} />}
+                        </span>
+                        {renderOption ? renderOption(option) : label}
+                      </div>
+                    )
+                  })}
+                </div>
+              ))}
+              {infinite?.hasMore && (
+                <div
+                  className={sentinel()}
+                  data-testid="select-sentinel"
+                  ref={sentinelRef}
+                />
+              )}
+              {infinite?.loadingMore && (
+                <div className="flex justify-center py-2">
+                  <Loader size="sm" />
+                </div>
+              )}
+            </div>
+          </Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
+  )
 }
 
 export { Select }

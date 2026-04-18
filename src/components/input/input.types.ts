@@ -35,7 +35,9 @@ export type InputProps = Omit<
   size?: InputSize // visual size variant
   rootClassName?: string // className for the root wrapper div
   leftSection?: React.ReactNode // element rendered on the left (e.g. icon)
+  leftSectionWidth?: number // left section padding in px (default 36)
   rightSection?: React.ReactNode // element rendered on the right (e.g. clear button)
+  rightSectionWidth?: number // right section padding in px (default 36)
   debounce?: boolean // debounces onChange calls
   loading?: boolean // shows loader in right section
   onChange?: (value: string | null) => void // fires on value change (null when empty)

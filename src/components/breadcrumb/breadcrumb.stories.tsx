@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { SlashIcon } from 'lucide-react'
 
 import { Breadcrumb } from './breadcrumb'
 
 const meta = {
   component: Breadcrumb,
-  title: 'Components/Breadcrumb',
+  title: 'Feedback/Breadcrumb',
 } satisfies Meta<typeof Breadcrumb>
 
 export default meta
@@ -20,11 +19,11 @@ export const Default: Story = {
         </Breadcrumb.Item>
         <Breadcrumb.Separator />
         <Breadcrumb.Item>
-          <Breadcrumb.Link href="/components">Components</Breadcrumb.Link>
+          <Breadcrumb.Link href="/products">Products</Breadcrumb.Link>
         </Breadcrumb.Item>
         <Breadcrumb.Separator />
         <Breadcrumb.Item>
-          <Breadcrumb.Page>Breadcrumb</Breadcrumb.Page>
+          <Breadcrumb.Page>Current Page</Breadcrumb.Page>
         </Breadcrumb.Item>
       </Breadcrumb.List>
     </Breadcrumb>
@@ -44,11 +43,11 @@ export const WithEllipsis: Story = {
         </Breadcrumb.Item>
         <Breadcrumb.Separator />
         <Breadcrumb.Item>
-          <Breadcrumb.Link href="/components">Components</Breadcrumb.Link>
+          <Breadcrumb.Link href="/category">Category</Breadcrumb.Link>
         </Breadcrumb.Item>
         <Breadcrumb.Separator />
         <Breadcrumb.Item>
-          <Breadcrumb.Page>Breadcrumb</Breadcrumb.Page>
+          <Breadcrumb.Page>Item</Breadcrumb.Page>
         </Breadcrumb.Item>
       </Breadcrumb.List>
     </Breadcrumb>
@@ -62,17 +61,13 @@ export const CustomSeparator: Story = {
         <Breadcrumb.Item>
           <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Separator>
-          <SlashIcon />
-        </Breadcrumb.Separator>
+        <Breadcrumb.Separator>/</Breadcrumb.Separator>
         <Breadcrumb.Item>
-          <Breadcrumb.Link href="/components">Components</Breadcrumb.Link>
+          <Breadcrumb.Link href="/docs">Docs</Breadcrumb.Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Separator>
-          <SlashIcon />
-        </Breadcrumb.Separator>
+        <Breadcrumb.Separator>/</Breadcrumb.Separator>
         <Breadcrumb.Item>
-          <Breadcrumb.Page>Breadcrumb</Breadcrumb.Page>
+          <Breadcrumb.Page>Guide</Breadcrumb.Page>
         </Breadcrumb.Item>
       </Breadcrumb.List>
     </Breadcrumb>

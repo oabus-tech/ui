@@ -1,7 +1,15 @@
 import { X } from 'lucide-react'
-import type { PropsWithChildren } from 'react'
-import { createContext, useContext, useState } from 'react'
+import {
+  createContext,
+  type PropsWithChildren,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from 'react'
 import { tv } from 'tailwind-variants'
+
+import { Button } from '@/components/button'
 
 import type {
   AlertActionProps,
@@ -9,96 +17,111 @@ import type {
   AlertIconProps,
   AlertProps,
   AlertTitleProps,
-  AlertVariant,
 } from './alert.types'
 
-type AlertContextValue = {
-  variant: AlertVariant
-}
-
-const AlertContext = createContext<AlertContextValue>({
-  variant: 'default',
-})
-
-const styles = tv({
+const alert = tv({
   defaultVariants: {
     variant: 'default',
   },
   slots: {
-    action: 'col-start-2',
-    closeButton:
-      'absolute top-3 right-3 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none',
-    description:
-      'col-start-2 text-muted-foreground text-sm [&_p]:leading-relaxed',
-    icon: 'col-start-1 row-start-1 [&>svg]:size-4 [&>svg]:translate-y-0.5',
-    root: 'relative grid w-full grid-cols-[auto_1fr] items-start gap-x-3 gap-y-0.5 rounded-lg border px-4 py-3 text-sm transition-[opacity,transform] duration-200',
-    title: 'col-start-2 font-medium leading-none tracking-tight',
+    action: 'alert-action absolute top-2 right-2',
+    description: [
+      'alert-description text-balance text-muted-foreground text-sm md:text-pretty',
+      '[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground',
+      '[&_p:not(:last-child)]:mb-4',
+    ],
+    icon: 'alert-icon row-span-2 translate-y-0.5 text-current [&_svg:not([class*=size-])]:size-4',
+    root: [
+      'alert-root group/alert relative grid w-full gap-0.5 rounded-lg border px-2.5 py-2',
+      'text-left text-sm transition-all duration-200',
+      'has-data-[slot=alert-action]:pr-18',
+      'has-[[data-testid=alert-icon]]:grid-cols-[auto_1fr] has-[[data-testid=alert-icon]]:gap-x-2',
+    ],
+    title: [
+      'alert-title font-heading font-medium',
+      'group-has-[[data-testid=alert-icon]]/alert:col-start-2',
+      '[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground',
+    ],
   },
   variants: {
-    closing: {
-      true: {
-        root: '-translate-y-1 opacity-0',
-      },
-    },
     variant: {
       default: {
-        icon: 'text-foreground',
         root: 'bg-card text-card-foreground',
       },
       destructive: {
-        icon: 'text-destructive',
-        root: 'border-destructive/50 text-destructive dark:border-destructive',
+        description: 'text-destructive/90',
+        icon: 'text-current',
+        root: 'bg-card text-destructive',
       },
     },
   },
 })
 
-function AlertRoot(props: PropsWithChildren<AlertProps>) {
-  const { children, closable, onClose, variant = 'default' } = props
-  const [closing, setClosing] = useState(false)
-  const [mounted, setMounted] = useState(true)
+type AlertSlots = Omit<ReturnType<typeof alert>, 'root'>
 
-  const s = styles({
-    closing,
+const AlertContext = createContext<AlertSlots>({} as AlertSlots)
+
+function AlertRoot({
+  children,
+  variant,
+  closable,
+  onClose,
+}: PropsWithChildren<AlertProps>) {
+  const [visible, setVisible] = useState(true)
+  const [closing, setClosing] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  const { root, ...slots } = alert({
     variant,
   })
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     setClosing(true)
-  }
+  }, [])
 
-  function handleTransitionEnd() {
+  const handleTransitionEnd = useCallback(() => {
     if (closing) {
-      setMounted(false)
+      setVisible(false)
       onClose?.()
     }
-  }
+  }, [
+    closing,
+    onClose,
+  ])
 
-  if (!mounted) {
+  if (!visible) {
     return null
   }
 
   return (
-    <AlertContext.Provider
-      value={{
-        variant,
-      }}
-    >
+    <AlertContext.Provider value={slots}>
       <div
-        className={s.root()}
+        className={root()}
+        data-slot="alert"
+        data-testid="alert-root"
         onTransitionEnd={handleTransitionEnd}
+        ref={rootRef}
         role="alert"
+        style={
+          closing
+            ? {
+                opacity: 0,
+                transform: 'translateY(-4px)',
+              }
+            : undefined
+        }
       >
         {children}
         {closable && (
-          <button
-            aria-label="Fechar"
-            className={s.closeButton()}
-            onClick={handleClose}
-            type="button"
-          >
-            <X className="size-4" />
-          </button>
+          <div className="absolute top-2 right-2">
+            <Button
+              onClick={handleClose}
+              size="icon-sm"
+              variant="ghost"
+            >
+              <X className="size-3.5" />
+            </Button>
+          </div>
         )}
       </div>
     </AlertContext.Provider>
@@ -106,32 +129,53 @@ function AlertRoot(props: PropsWithChildren<AlertProps>) {
 }
 
 function AlertIcon({ children }: PropsWithChildren<AlertIconProps>) {
-  const { variant } = useContext(AlertContext)
-  const s = styles({
-    variant,
-  })
-
-  return <span className={s.icon()}>{children}</span>
+  const { icon } = useContext(AlertContext)
+  return (
+    <div
+      className={icon()}
+      data-testid="alert-icon"
+    >
+      {children}
+    </div>
+  )
 }
 
 function AlertTitle({ children }: PropsWithChildren<AlertTitleProps>) {
-  const s = styles()
-
-  return <div className={s.title()}>{children}</div>
+  const { title } = useContext(AlertContext)
+  return (
+    <div
+      className={title()}
+      data-testid="alert-title"
+    >
+      {children}
+    </div>
+  )
 }
 
 function AlertDescription({
   children,
 }: PropsWithChildren<AlertDescriptionProps>) {
-  const s = styles()
-
-  return <div className={s.description()}>{children}</div>
+  const { description } = useContext(AlertContext)
+  return (
+    <div
+      className={description()}
+      data-testid="alert-description"
+    >
+      {children}
+    </div>
+  )
 }
 
 function AlertAction({ children }: PropsWithChildren<AlertActionProps>) {
-  const s = styles()
-
-  return <div className={s.action()}>{children}</div>
+  const { action } = useContext(AlertContext)
+  return (
+    <div
+      className={action()}
+      data-testid="alert-action"
+    >
+      {children}
+    </div>
+  )
 }
 
 const Alert = Object.assign(AlertRoot, {

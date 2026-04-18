@@ -4,132 +4,75 @@ import { Avatar } from './avatar'
 
 const meta = {
   component: Avatar,
-  title: 'Components/Avatar',
+  title: 'Feedback/Avatar',
 } satisfies Meta<typeof Avatar>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-const IMAGE_URL =
-  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop'
+export const WithImage: Story = {
+  args: {
+    alt: 'User avatar',
+    src: 'https://i.pravatar.cc/150?u=1',
+  },
+}
 
-export const Default: Story = {
+export const Fallback: Story = {
   args: {
     alt: 'John Doe',
-    src: IMAGE_URL,
+    children: 'JD',
   },
 }
 
-export const WithInitials: Story = {
+export const Small: Story = {
   args: {
-    alt: 'John Doe',
-    src: null,
-  },
-}
-
-export const FallbackIcon: Story = {
-  args: {
-    src: null,
-  },
-}
-
-export const BrokenSrc: Story = {
-  args: {
-    alt: 'Jane Smith',
-    src: 'https://broken.url/image.jpg',
-  },
-}
-
-export const SizeSm: Story = {
-  args: {
-    alt: 'User',
+    alt: 'Small avatar',
     size: 'sm',
-    src: IMAGE_URL,
+    src: 'https://i.pravatar.cc/150?u=2',
   },
 }
 
-export const SizeMd: Story = {
+export const Large: Story = {
   args: {
-    alt: 'User',
-    size: 'md',
-    src: IMAGE_URL,
-  },
-}
-
-export const SizeLg: Story = {
-  args: {
-    alt: 'User',
+    alt: 'Large avatar',
     size: 'lg',
-    src: IMAGE_URL,
+    src: 'https://i.pravatar.cc/150?u=3',
   },
 }
 
 export const Square: Story = {
   args: {
-    alt: 'User',
-    src: IMAGE_URL,
+    alt: 'Square avatar',
+    src: 'https://i.pravatar.cc/150?u=4',
     variant: 'square',
   },
 }
 
-export const SquareWithInitials: Story = {
+export const SquareFallback: Story = {
   args: {
-    alt: 'Roberto Junior',
-    src: null,
+    alt: 'Ana Silva',
+    children: 'AS',
     variant: 'square',
   },
 }
 
-export const AllSizes: Story = {
+export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
       <Avatar
-        alt="User"
+        alt="Small"
         size="sm"
-        src={IMAGE_URL}
+        src="https://i.pravatar.cc/150?u=5"
       />
       <Avatar
-        alt="User"
+        alt="Medium"
         size="md"
-        src={IMAGE_URL}
+        src="https://i.pravatar.cc/150?u=5"
       />
       <Avatar
-        alt="User"
+        alt="Large"
         size="lg"
-        src={IMAGE_URL}
-      />
-    </div>
-  ),
-}
-
-export const AllVariants: Story = {
-  render: () => (
-    <div className="flex items-center gap-4">
-      <Avatar
-        alt="User"
-        src={IMAGE_URL}
-        variant="circle"
-      />
-      <Avatar
-        alt="User"
-        src={IMAGE_URL}
-        variant="square"
-      />
-    </div>
-  ),
-}
-
-export const FallbackStates: Story = {
-  render: () => (
-    <div className="flex items-center gap-4">
-      <Avatar src={null} />
-      <Avatar
-        alt="John"
-        src={null}
-      />
-      <Avatar
-        alt="John Doe"
-        src={null}
+        src="https://i.pravatar.cc/150?u=5"
       />
     </div>
   ),

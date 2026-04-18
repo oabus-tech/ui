@@ -1,89 +1,82 @@
-import { User } from 'lucide-react'
-import { useState } from 'react'
+import { Avatar as AvatarPrimitive } from '@base-ui/react/avatar'
+import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type { AvatarProps } from './avatar.types'
 
-const styles = tv({
+const avatar = tv({
   defaultVariants: {
     size: 'md',
     variant: 'circle',
   },
   slots: {
     fallback:
-      'flex h-full w-full items-center justify-center bg-muted text-muted-foreground',
-    icon: 'size-[45%]',
-    image: 'aspect-square h-full w-full object-cover',
-    initials: 'select-none font-medium text-xs leading-none',
-    root: 'relative inline-flex shrink-0 overflow-hidden',
+      'avatar-fallback flex size-full items-center justify-center bg-muted text-muted-foreground',
+    image: 'avatar-image aspect-square size-full object-cover',
+    root: 'avatar-root relative flex shrink-0 select-none overflow-hidden',
   },
   variants: {
     size: {
       lg: {
+        fallback: 'text-base',
         root: 'size-12',
       },
       md: {
+        fallback: 'text-sm',
         root: 'size-9',
       },
       sm: {
+        fallback: 'text-xs',
         root: 'size-7',
       },
     },
     variant: {
       circle: {
+        fallback: 'rounded-full',
+        image: 'rounded-full',
         root: 'rounded-full',
       },
       square: {
+        fallback: 'rounded-md',
+        image: 'rounded-md',
         root: 'rounded-md',
       },
     },
   },
 })
 
-function getInitials(alt?: string) {
-  if (!alt) {
-    return null
-  }
-  const parts = alt.trim().split(/\s+/)
-  if (parts.length === 1) {
-    return parts[0]?.charAt(0).toUpperCase() ?? null
-  }
-  return (
-    (parts[0]?.charAt(0).toUpperCase() ?? '') +
-    (parts[parts.length - 1]?.charAt(0).toUpperCase() ?? '')
-  )
-}
-
-function Avatar(props: AvatarProps) {
-  const { alt, size = 'md', src, variant = 'circle' } = props
-  const [error, setError] = useState(false)
-
-  const s = styles({
+function Avatar({
+  src,
+  alt,
+  size,
+  variant,
+  children,
+}: PropsWithChildren<AvatarProps>) {
+  const { root, image, fallback } = avatar({
     size,
     variant,
   })
-  const initials = getInitials(alt)
-  const showImage = src && !error
 
   return (
-    <span className={s.root()}>
-      {showImage ? (
-        <img
+    <AvatarPrimitive.Root
+      className={root()}
+      data-testid="avatar-root"
+    >
+      {src && (
+        <AvatarPrimitive.Image
           alt={alt}
-          className={s.image()}
-          onError={() => setError(true)}
+          className={image()}
+          data-testid="avatar-image"
           src={src}
         />
-      ) : (
-        <span className={s.fallback()}>
-          {initials ? (
-            <span className={s.initials()}>{initials}</span>
-          ) : (
-            <User className={s.icon()} />
-          )}
-        </span>
       )}
-    </span>
+      <AvatarPrimitive.Fallback
+        className={fallback()}
+        data-testid="avatar-fallback"
+      >
+        {children}
+      </AvatarPrimitive.Fallback>
+    </AvatarPrimitive.Root>
   )
 }
 

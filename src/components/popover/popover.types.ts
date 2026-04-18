@@ -28,6 +28,9 @@ export type PopoverAlign = 'start' | 'center' | 'end'
 
 export type PopoverProps = {
   content: React.ReactNode // popover content (required)
+  // open/onOpenChange exposed for internal use by components with draft state (e.g. CurrencyInput range mode)
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
   side?: PopoverSide // preferred side for placement
   sideOffset?: number // distance from trigger in px
   align?: PopoverAlign // alignment relative to trigger
