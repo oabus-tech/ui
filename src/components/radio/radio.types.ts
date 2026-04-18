@@ -32,6 +32,8 @@ export type RadioProps = {
   value?: string // radio value for group selection
   disabled?: boolean // prevents interaction
   bordered?: boolean // adds border around radio wrapper
+  checked?: boolean // controlled checked state (standalone only)
+  onChange?: (checked: boolean) => void // fires on toggle (standalone only)
 }
 
 export type RadioGroupVariant = 'vertical' | 'horizontal'
