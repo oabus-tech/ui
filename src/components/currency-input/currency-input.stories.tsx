@@ -3,6 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { CurrencyInput } from './currency-input'
 
 const meta = {
+  args: {
+    size: 'sm'
+  },
   component: CurrencyInput,
   title: 'Form/CurrencyInput',
 } satisfies Meta<typeof CurrencyInput>
