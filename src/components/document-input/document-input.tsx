@@ -1,12 +1,14 @@
+import { Button } from '@base-ui/react'
+import { ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
+import { tv } from 'tailwind-variants'
 
 import { DropdownMenu } from '@/components/dropdown-menu'
 import { MaskInput } from '@/components/mask-input'
 
-import { Button } from '../button'
+import { buttonShared } from '../button/button.shared'
+import type { InputSize } from '../input/input.types'
 import type { DocumentInputProps, DocumentType } from './document-input.types'
-
-const LEFT_SECTION_WIDTH = 60
 
 const MASKS: Record<Exclude<DocumentType, 'any'>, string> = {
   cnpj: '00.000.000/0000-00',
@@ -23,6 +25,31 @@ const PLACEHOLDERS: Record<Exclude<DocumentType, 'any'>, string> = {
   cpf: '000.000.000-00',
 }
 
+const rootStyles = tv({
+  base: 'flex',
+})
+
+const triggerStyles = tv({
+  base: buttonShared({
+    className: 'rounded-s-lg rounded-e-none border-r-0 px-3 focus:z-10',
+    variant: 'outline',
+  }),
+  defaultVariants: {
+    size: 'md',
+  },
+  variants: {
+    size: {
+      lg: 'h-11',
+      md: 'h-10',
+      sm: 'h-9',
+    } as Record<InputSize, string>,
+  },
+})
+
+const inputFieldStyles = tv({
+  base: 'rounded-s-none rounded-e-lg',
+})
+
 function DocumentInput({
   variant,
   value,
@@ -30,6 +57,7 @@ function DocumentInput({
   onChange,
   disabled,
   size,
+  className,
   ...props
 }: DocumentInputProps) {
   const [internalType, setInternalType] = useState<
@@ -62,17 +90,40 @@ function DocumentInput({
     onChange?.(null)
   }
 
-  const leftSection =
-    variant === 'any' ? (
+  if (variant !== 'any') {
+    return (
+      <MaskInput
+        {...props}
+        className={className}
+        defaultValue={defaultValue?.number ?? undefined}
+        disabled={disabled}
+        mask={mask}
+        onChange={handleChange}
+        placeholder={props.placeholder ?? PLACEHOLDERS[activeType]}
+        size={size}
+        value={value?.number ?? undefined}
+      />
+    )
+  }
+
+  return (
+    <div
+      className={rootStyles({
+        className,
+      })}
+    >
       <DropdownMenu>
         <DropdownMenu.Trigger asChild>
           <Button
+            className={triggerStyles({
+              size,
+            })}
             data-testid="document-input-trigger"
             disabled={disabled}
             type="button"
-            variant="ghost"
           >
             {LABELS[internalType]}
+            <ChevronsUpDown className="size-4 opacity-50" />
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
@@ -95,21 +146,18 @@ function DocumentInput({
           ))}
         </DropdownMenu.Content>
       </DropdownMenu>
-    ) : undefined
-
-  return (
-    <MaskInput
-      {...props}
-      defaultValue={defaultValue?.number ?? undefined}
-      disabled={disabled}
-      leftSection={leftSection}
-      leftSectionWidth={variant === 'any' ? LEFT_SECTION_WIDTH : undefined}
-      mask={mask}
-      onChange={handleChange}
-      placeholder={props.placeholder ?? PLACEHOLDERS[activeType]}
-      size={size}
-      value={value?.number ?? undefined}
-    />
+      <MaskInput
+        {...props}
+        className={inputFieldStyles()}
+        defaultValue={defaultValue?.number ?? undefined}
+        disabled={disabled}
+        mask={mask}
+        onChange={handleChange}
+        placeholder={props.placeholder ?? PLACEHOLDERS[activeType]}
+        size={size}
+        value={value?.number ?? undefined}
+      />
+    </div>
   )
 }
 

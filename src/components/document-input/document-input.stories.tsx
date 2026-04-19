@@ -3,6 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DocumentInput } from './document-input'
 
 const meta = {
+  args: {
+    size: 'sm',
+  },
   component: DocumentInput,
   title: 'Form/DocumentInput',
 } satisfies Meta<typeof DocumentInput>

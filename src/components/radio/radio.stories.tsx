@@ -12,26 +12,47 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: {
-    label: 'Accept terms and conditions',
-    value: 'accept',
+  render: () => {
+    const [checked, setChecked] = useState(false)
+    return (
+      <Radio
+        checked={checked}
+        label="Accept terms and conditions"
+        onChange={setChecked}
+        value="accept"
+      />
+    )
   },
 }
 
 export const WithDescription: Story = {
-  args: {
-    description: 'Receive emails about new products and features.',
-    label: 'Marketing emails',
-    value: 'marketing',
+  render: () => {
+    const [checked, setChecked] = useState(false)
+    return (
+      <Radio
+        checked={checked}
+        description="Receive emails about new products and features."
+        label="Marketing emails"
+        onChange={setChecked}
+        value="marketing"
+      />
+    )
   },
 }
 
 export const Bordered: Story = {
-  args: {
-    bordered: true,
-    description: 'With a visible container.',
-    label: 'Bordered radio',
-    value: 'bordered',
+  render: () => {
+    const [checked, setChecked] = useState(false)
+    return (
+      <Radio
+        bordered
+        checked={checked}
+        description="With a visible container."
+        label="Bordered radio"
+        onChange={setChecked}
+        value="bordered"
+      />
+    )
   },
 }
 

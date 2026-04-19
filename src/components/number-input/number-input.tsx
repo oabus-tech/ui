@@ -22,7 +22,7 @@ const numberInput = tv({
       'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
     ],
     group: [
-      'number-input-group flex overflow-hidden rounded-lg border border-input',
+      'number-input-group flex w-full overflow-hidden rounded-lg border border-input',
       'transition-colors',
       'has-focus-visible:border-ring has-focus-visible:ring-3 has-focus-visible:ring-ring/50',
     ],
@@ -62,6 +62,7 @@ function NumberInput({
       data-testid="number-input-root"
     >
       <NumberField.Root
+        className="w-full"
         defaultValue={defaultValue}
         disabled={disabled}
         onValueChange={(val) => onChange?.(val ?? 0)}

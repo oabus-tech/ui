@@ -178,6 +178,61 @@ export const Bordered: Story = {
   },
 }
 
+export const Scrollable: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Scrollable Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+        >
+          <Sheet.Header
+            bordered
+            closable
+          >
+            <Sheet.Header.Title>Terms & Conditions</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Please read all sections before accepting.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            {Array.from(
+              {
+                length: 12,
+              },
+              (_, i) => (
+                <div
+                  className="mb-4"
+                  key={i}
+                >
+                  <p className="mb-1 font-medium text-sm">Section {i + 1}</p>
+                  <p className="text-muted-foreground text-sm">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque habitant morbi tristique senectus et netus et
+                    malesuada fames ac turpis egestas. Vestibulum tortor quam,
+                    feugiat vitae, ultricies eget, tempor sit amet, ante.
+                  </p>
+                </div>
+              ),
+            )}
+          </Sheet.Body>
+          <Sheet.Footer bordered>
+            <Button onClick={() => setOpen(false)}>Accept</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Decline
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
 export const Bottom: Story = {
   render: () => {
     const [open, setOpen] = useState(false)

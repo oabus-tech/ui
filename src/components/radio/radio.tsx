@@ -45,7 +45,7 @@ const radioGroup = tv({
   },
 })
 
-function RadioRoot({
+function RadioItem({
   label,
   description,
   disabled,
@@ -94,6 +94,22 @@ function RadioRoot({
   )
 }
 
+function RadioRoot({ checked, onChange, value, ...props }: RadioProps) {
+  const innerValue = value ?? 'radio'
+
+  return (
+    <RadioGroupPrimitive
+      onValueChange={(v) => onChange?.(v === innerValue)}
+      value={checked ? innerValue : ''}
+    >
+      <RadioItem
+        value={innerValue}
+        {...props}
+      />
+    </RadioGroupPrimitive>
+  )
+}
+
 function RadioGroup({
   items,
   value,
@@ -115,7 +131,7 @@ function RadioGroup({
       value={value}
     >
       {items.map((item) => (
-        <RadioRoot
+        <RadioItem
           bordered={bordered}
           description={item.description}
           disabled={item.disabled}

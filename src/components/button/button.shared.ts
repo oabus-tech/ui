@@ -4,7 +4,7 @@ export const buttonShared = tv({
   base: [
     'button group/button inline-flex shrink-0 items-center justify-center rounded-lg',
     'whitespace-nowrap border border-transparent bg-clip-padding font-medium text-sm',
-    'select-none outline-none transition-all',
+    'cursor-pointer select-none outline-none transition-all',
     'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
     'active:translate-y-px',
     'disabled:pointer-events-none disabled:opacity-50',

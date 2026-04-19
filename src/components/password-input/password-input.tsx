@@ -95,7 +95,7 @@ function PasswordInput({
 
   const toggle = (
     <button
-      className="pointer-events-auto flex items-center text-muted-foreground hover:text-foreground"
+      className="pointer-events-auto flex cursor-pointer items-center text-muted-foreground hover:text-foreground"
       onClick={() => setVisible((v) => !v)}
       tabIndex={-1}
       type="button"
