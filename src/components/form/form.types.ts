@@ -62,7 +62,9 @@ export type FormFieldLabelProps = {
   tooltip?: React.ReactNode // tooltip next to label
 }
 
-export type FormFieldGroupProps = {}
+export type FormFieldGroupProps = {
+  children: React.ReactNode
+}
 
 export type FormFieldSeparatorProps = {
   children?: React.ReactNode // optional label text shown centered on the separator
