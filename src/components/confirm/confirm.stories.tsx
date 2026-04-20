@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 
 import { Button } from '@/components/button'
+import { useUnsaved } from '@/hooks/use-unsaved'
 
 import { Confirm } from './confirm'
 
@@ -65,6 +66,42 @@ export const Destructive: Story = {
           title="Delete your account?"
         />
       </>
+    )
+  },
+}
+
+export const WithUnsaved: Story = {
+  render: () => {
+    const [hasChanges, setHasChanges] = useState(false)
+    const [proceeded, setProceeded] = useState(false)
+
+    const [handleLeave, UnsavedDialog] = useUnsaved({
+      leaving: true,
+      onProceed: () => setProceeded(true),
+      unsaved: hasChanges,
+    })
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={() => setHasChanges((v) => !v)}
+            variant="outline"
+          >
+            {hasChanges ? 'Clear changes' : 'Simulate unsaved changes'}
+          </Button>
+          <span className="text-muted-foreground text-sm">
+            {hasChanges ? 'You have unsaved changes' : 'No changes'}
+          </span>
+        </div>
+        <Button onClick={handleLeave}>Leave page</Button>
+        {proceeded && (
+          <p className="text-muted-foreground text-sm">
+            Proceeded without saving.
+          </p>
+        )}
+        <UnsavedDialog />
+      </div>
     )
   },
 }
