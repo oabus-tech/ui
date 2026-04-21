@@ -27,7 +27,7 @@ const styles = tv({
   slots: {
     backdrop: [
       'sheet-backdrop fixed inset-0 z-50 bg-black/50',
-      'data-open:fade-in-0 duration-150 data-open:animate-in',
+      'data-open:fade-in-0 duration-200 ease-in-out data-open:animate-in',
       'data-closed:fade-out-0 data-closed:animate-out',
     ],
     body: 'sheet-body flex-1 overflow-y-auto p-4 py-2',
@@ -38,7 +38,8 @@ const styles = tv({
     popup: [
       'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
       'duration-200 ease-in-out',
-      'data-closed:animate-out data-open:animate-in',
+      'data-open:fade-in-0 data-open:animate-in',
+      'data-closed:fade-out-0 data-closed:animate-out',
     ],
     title: 'sheet-title font-heading font-medium text-base leading-none',
   },

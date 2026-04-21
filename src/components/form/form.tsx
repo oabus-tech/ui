@@ -19,7 +19,7 @@ import type {
 // Styles
 // ---------------------------------------------------------------------------
 
-export const styles = tv({
+const styles = tv({
   defaultVariants: {
     invalid: false,
     legendVariant: 'legend',

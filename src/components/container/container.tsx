@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants'
 
 import type { ContainerProps } from './container.types'
 
-export const styles = tv({
+const styles = tv({
   base: 'container-root w-full',
   defaultVariants: {
     centered: true,

@@ -166,7 +166,7 @@ function CheckboxGroup({
 }
 
 const Checkbox = Object.assign(CheckboxRoot, {
-  Group: CheckboxGroupRoot,
+  Group: CheckboxGroup,
 })
 
 export { Checkbox }
