@@ -57,11 +57,6 @@ export type SidebarTriggerProps = React.ComponentProps<'button'> & {
   asChild?: boolean
 }
 
-// ─── SidebarRail ──────────────────────────────────────────────────────────────
-
-/** Thin interactive strip on the sidebar edge — click to toggle. */
-export type SidebarRailProps = React.ComponentProps<'button'>
-
 // ─── SidebarInset ─────────────────────────────────────────────────────────────
 
 /** The main content area that sits next to (or inside) the sidebar. */

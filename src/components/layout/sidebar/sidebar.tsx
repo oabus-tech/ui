@@ -30,7 +30,6 @@ import type {
   SidebarMenuSubButtonProps,
   SidebarProps,
   SidebarProviderProps,
-  SidebarRailProps,
   SidebarTriggerProps,
 } from './sidebar.types'
 
@@ -175,20 +174,6 @@ const sidebarInnerStyles = tv({
     'flex size-full flex-col bg-sidebar',
     'group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-sm',
     'group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border',
-  ],
-})
-
-const sidebarRailStyles = tv({
-  base: [
-    'absolute inset-y-0 z-20 hidden w-4 transition-all ease-linear',
-    'after:absolute after:inset-y-0 after:start-1/2 after:w-[2px] hover:after:bg-sidebar-border',
-    'group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
-    'ltr:-translate-x-1/2 rtl:-translate-x-1/2',
-    'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
-    '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
-    'group-data-[collapsible=offcanvas]:translate-x-0 hover:group-data-[collapsible=offcanvas]:bg-sidebar group-data-[collapsible=offcanvas]:after:left-full',
-    '[[data-side=left][data-collapsible=offcanvas]_&]:-right-2',
-    '[[data-side=right][data-collapsible=offcanvas]_&]:-left-2',
   ],
 })
 
@@ -622,26 +607,6 @@ function SidebarTrigger({ onClick }: SidebarTriggerProps) {
       <PanelLeft />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
-  )
-}
-
-// ─── SidebarRail ──────────────────────────────────────────────────────────────
-
-function SidebarRail({ className, ...props }: SidebarRailProps) {
-  const { toggleSidebar } = useSidebar()
-  return (
-    <ButtonPrimitive
-      aria-label="Toggle Sidebar"
-      className={sidebarRailStyles({
-        className,
-      })}
-      data-sidebar="rail"
-      data-slot="sidebar-rail"
-      onClick={toggleSidebar}
-      tabIndex={-1}
-      title="Toggle Sidebar"
-      {...props}
-    />
   )
 }
 
@@ -1323,7 +1288,6 @@ const Sidebar = Object.assign(SidebarRoot, {
     }),
   }),
   Provider: SidebarProvider,
-  Rail: SidebarRail,
   Separator: SidebarSeparator,
   Trigger: SidebarTrigger,
 })
