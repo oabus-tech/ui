@@ -16,7 +16,7 @@ const tagsInput = tv({
     removeBtn:
       'tags-input-remove ml-0.5 rounded-full opacity-60 hover:opacity-100',
     root: [
-      'tags-input-root flex flex-wrap items-center gap-1.5',
+      'tags-input-root flex w-full flex-wrap items-center gap-1.5',
       'rounded-lg border border-input px-2.5 py-1.5',
       'transition-colors',
       'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
