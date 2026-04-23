@@ -69,7 +69,10 @@ export function useUnsaved({
   const handleConfirm = useCallback(() => {
     onProceed?.()
     off()
-  }, [onProceed, off])
+  }, [
+    onProceed,
+    off,
+  ])
 
   return [
     unsavedHandler,

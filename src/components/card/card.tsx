@@ -1,15 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
-import type {
-  CardContentProps,
-  CardDescriptionProps,
-  CardFooterProps,
-  CardHeaderProps,
-  CardProps,
-  CardSeparatorProps,
-  CardTitleProps,
-} from './card.types'
+import type { CardFooterProps, CardHeaderProps, CardProps } from './card.types'
 
 const card = tv({
   slots: {

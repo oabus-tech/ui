@@ -1,8 +1,6 @@
 import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { Loader2 } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
-import { cloneElement, isValidElement } from 'react'
-import { tv } from 'tailwind-variants'
 
 import { buttonShared } from './button.shared'
 import type { ButtonProps } from './button.types'

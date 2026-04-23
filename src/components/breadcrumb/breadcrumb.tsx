@@ -7,15 +7,7 @@ import {
 } from 'react'
 import { tv } from 'tailwind-variants'
 
-import type {
-  BreadcrumbEllipsisProps,
-  BreadcrumbItemProps,
-  BreadcrumbLinkProps,
-  BreadcrumbListProps,
-  BreadcrumbPageProps,
-  BreadcrumbProps,
-  BreadcrumbSeparatorProps,
-} from './breadcrumb.types'
+import type { BreadcrumbLinkProps } from './breadcrumb.types'
 
 const breadcrumb = tv({
   slots: {
