@@ -251,8 +251,6 @@ export const Default: Story = {
               </Sidebar.Menu.Item>
             </Sidebar.Menu>
           </Sidebar.Footer>
-
-          <Sidebar.Rail />
         </Sidebar>
 
         {/* Sidebar.Inset is already flex-col — Layout sub-components stack correctly inside it */}
