@@ -87,7 +87,7 @@ const PhoneInput = React.forwardRef<
       defaultValue,
       loading,
       onChange,
-      size = 'sm',
+      size,
       value,
       ...props
     },

@@ -54,7 +54,7 @@ const select = tv({
     ],
     sentinel: 'select-sentinel h-1',
     trigger: [
-      'select-trigger flex h-8 w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
+      'select-trigger flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
       'whitespace-nowrap border border-input bg-transparent px-2.5 text-sm',
       'select-none outline-none transition-colors',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
@@ -67,13 +67,13 @@ const select = tv({
   variants: {
     size: {
       lg: {
-        trigger: 'h-9',
+        trigger: 'h-11',
       },
       md: {
-        trigger: 'h-8',
+        trigger: 'h-10',
       },
       sm: {
-        trigger: 'h-7',
+        trigger: 'h-9',
       },
     },
   },

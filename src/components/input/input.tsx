@@ -9,7 +9,7 @@ import type { InputProps } from './input.types'
 
 const input = tv({
   defaultVariants: {
-    size: 'sm',
+    size: 'md',
   },
   slots: {
     field: [

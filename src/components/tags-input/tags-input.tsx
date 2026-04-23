@@ -7,18 +7,34 @@ import { Badge } from '@/components/badge'
 import type { TagsInputProps } from './tags-input.types'
 
 const tagsInput = tv({
+  defaultVariants: {
+    size: 'md',
+  },
   slots: {
     field:
       'tags-input-field min-w-20 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground',
     removeBtn:
       'tags-input-remove ml-0.5 rounded-full opacity-60 hover:opacity-100',
     root: [
-      'tags-input-root flex min-h-10 flex-wrap items-center gap-1.5',
+      'tags-input-root flex flex-wrap items-center gap-1.5',
       'rounded-lg border border-input px-2.5 py-1.5',
       'transition-colors',
       'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
       'has-disabled:pointer-events-none has-disabled:opacity-50',
     ],
+  },
+  variants: {
+    size: {
+      lg: {
+        root: 'min-h-11',
+      },
+      md: {
+        root: 'min-h-10',
+      },
+      sm: {
+        root: 'min-h-9',
+      },
+    },
   },
 })
 
@@ -30,14 +46,16 @@ function TagsInput({
   onChange,
   placeholder,
   disabled,
-  size: _size,
+  size,
   ...props
 }: TagsInputProps) {
   const [internalValue, setInternalValue] = useState<string[]>(defaultValue)
   const isControlled = controlledValue !== undefined
   const tags = isControlled ? controlledValue : internalValue
   const inputRef = useRef<HTMLInputElement>(null)
-  const { root, field } = tagsInput()
+  const { root, field } = tagsInput({
+    size,
+  })
 
   const updateTags = (next: string[]) => {
     if (!isControlled) {

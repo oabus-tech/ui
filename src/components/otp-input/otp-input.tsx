@@ -33,13 +33,13 @@ const otpInput = tv({
   variants: {
     size: {
       lg: {
-        slot: 'size-10 text-base',
+        slot: 'size-11 text-base',
       },
       md: {
-        slot: 'size-8 text-sm',
+        slot: 'size-10 text-sm',
       },
       sm: {
-        slot: 'size-7 text-xs',
+        slot: 'size-9 text-sm',
       },
     },
   },
