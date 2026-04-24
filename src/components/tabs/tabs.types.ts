@@ -44,6 +44,7 @@ export type TabsListProps = {
 export type TabsTriggerProps = {
   value: string // tab identifier (required, must match content value)
   icon?: React.ReactNode // icon rendered before tab label
+  disabled?: boolean // prevents activation and applies muted styling
 }
 
 export type TabsContentProps = {

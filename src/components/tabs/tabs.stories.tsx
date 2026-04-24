@@ -80,6 +80,32 @@ export const Justified: Story = {
   ),
 }
 
+export const Disabled: Story = {
+  render: () => (
+    <Tabs defaultValue="account">
+      <Tabs.List>
+        <Tabs.Trigger value="account">Account</Tabs.Trigger>
+        <Tabs.Trigger
+          disabled
+          value="password"
+        >
+          Password
+        </Tabs.Trigger>
+        <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="account">
+        <p>Account settings and preferences.</p>
+      </Tabs.Content>
+      <Tabs.Content value="password">
+        <p>Change your password here.</p>
+      </Tabs.Content>
+      <Tabs.Content value="settings">
+        <p>General application settings.</p>
+      </Tabs.Content>
+    </Tabs>
+  ),
+}
+
 export const Vertical: Story = {
   render: () => (
     <Tabs
