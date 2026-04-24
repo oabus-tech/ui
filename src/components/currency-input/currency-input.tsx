@@ -123,9 +123,7 @@ function CurrencyInput({
   })
 
   const formatNumber = (n: number | null | undefined): string =>
-    n === null || n === undefined
-      ? ''
-      : n.toFixed(2).replace('.', config.radix)
+    n === null || n === undefined ? '' : n.toFixed(2).replace('.', config.radix)
 
   const [display, setDisplay] = useState<string>(() =>
     formatNumber(value !== undefined ? value : defaultValue),
