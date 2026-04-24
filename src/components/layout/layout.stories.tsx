@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   ArrowDownToLine,
   Bus,
@@ -12,111 +12,111 @@ import {
   Settings,
   UserCheck,
   Users,
-} from "lucide-react";
+} from 'lucide-react'
 
-import { Avatar } from "@/components/avatar";
-import { DropdownMenu } from "@/components/dropdown-menu";
+import { Avatar } from '@/components/avatar'
+import { DropdownMenu } from '@/components/dropdown-menu'
 
-import { Layout } from "./layout";
-import { Sidebar } from "./sidebar";
+import { Layout } from './layout'
+import { Sidebar } from './sidebar'
 
 const meta = {
   parameters: {
     centeredLayout: false,
-    layout: "fullscreen",
+    layout: 'fullscreen',
   },
-  title: "Layout/Layout",
-} satisfies Meta;
+  title: 'Layout/Layout',
+} satisfies Meta
 
-export default meta;
-type Story = StoryObj;
+export default meta
+type Story = StoryObj
 
 // ─── Shared nav data ──────────────────────────────────────────────────────────
 const SIDEBAR_NAV = [
   {
     items: [
       {
-        href: "/",
+        href: '/',
         icon: LayoutDashboard,
-        title: "Dashboard",
+        title: 'Dashboard',
       },
     ],
-    title: "Geral",
+    title: 'Geral',
   },
   {
     items: [
       {
-        href: "/vehicles",
+        href: '/vehicles',
         icon: Bus,
-        title: "Veículos",
+        title: 'Veículos',
       },
       {
-        href: "/drivers",
+        href: '/drivers',
         icon: UserCheck,
-        title: "Motoristas",
+        title: 'Motoristas',
       },
       {
-        href: "/routes",
+        href: '/routes',
         icon: Route,
-        title: "Rotas",
+        title: 'Rotas',
       },
       {
-        href: "/trips",
+        href: '/trips',
         icon: Route,
-        title: "Viagens",
+        title: 'Viagens',
       },
     ],
-    title: "Operações",
+    title: 'Operações',
   },
   {
     items: [
       {
-        href: "/orders",
+        href: '/orders',
         icon: ClipboardList,
-        title: "Pedidos",
+        title: 'Pedidos',
       },
       {
-        href: "/clients",
+        href: '/clients',
         icon: Users,
-        title: "Clientes",
+        title: 'Clientes',
       },
     ],
-    title: "Comercial",
+    title: 'Comercial',
   },
   {
     items: [
       {
-        href: "/payments",
+        href: '/payments',
         icon: CreditCard,
-        title: "Pagamentos",
+        title: 'Pagamentos',
       },
       {
-        href: "/receivables",
+        href: '/receivables',
         icon: Receipt,
-        title: "Recebíveis",
+        title: 'Recebíveis',
       },
       {
-        href: "/withdrawals",
+        href: '/withdrawals',
         icon: ArrowDownToLine,
-        title: "Saques",
+        title: 'Saques',
       },
     ],
-    title: "Financeiro",
+    title: 'Financeiro',
   },
   {
     items: [
       {
-        href: "/settings",
+        href: '/settings',
         icon: Settings,
-        title: "Configurações",
+        title: 'Configurações',
       },
     ],
-    title: "Sistema",
+    title: 'Sistema',
   },
-];
+]
 
 export const OABusOps: Story = {
-  name: "OABus Ops",
+  name: 'OABus Ops',
   render: () => {
     const visibleNav = SIDEBAR_NAV.flatMap((group) => {
       return group.items.length
@@ -126,12 +126,16 @@ export const OABusOps: Story = {
               items: group.items,
             },
           ]
-        : [];
-    });
+        : []
+    })
 
     return (
       <Sidebar.Provider defaultOpen>
-        <Sidebar collapsible="icon" side="left" variant="sidebar">
+        <Sidebar
+          collapsible="icon"
+          side="left"
+          variant="sidebar"
+        >
           <Sidebar.Header>
             <div className="flex items-center gap-2 px-1 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
               <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground text-sm">
@@ -174,7 +178,10 @@ export const OABusOps: Story = {
               <Sidebar.Menu.Item>
                 <DropdownMenu>
                   <DropdownMenu.Trigger asChild>
-                    <Sidebar.Menu.Button size="lg" tooltip="Account options">
+                    <Sidebar.Menu.Button
+                      size="lg"
+                      tooltip="Account options"
+                    >
                       <Avatar size="sm">O</Avatar>
                       <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-semibold">John Doe</span>
@@ -185,7 +192,11 @@ export const OABusOps: Story = {
                       <ChevronsUpDown className="ml-auto size-4" />
                     </Sidebar.Menu.Button>
                   </DropdownMenu.Trigger>
-                  <DropdownMenu.Content align="end" side="right" sideOffset={4}>
+                  <DropdownMenu.Content
+                    align="end"
+                    side="right"
+                    sideOffset={4}
+                  >
                     <div className="flex items-center gap-2 px-1.5 py-1.5 text-sm">
                       <Avatar size="sm">O</Avatar>
                       <div className="grid flex-1 text-left leading-tight">
@@ -196,7 +207,10 @@ export const OABusOps: Story = {
                       </div>
                     </div>
                     <DropdownMenu.Separator />
-                    <DropdownMenu.Item onClick={() => {}} variant="destructive">
+                    <DropdownMenu.Item
+                      onClick={() => {}}
+                      variant="destructive"
+                    >
                       <LogOut />
                       Sign out
                     </DropdownMenu.Item>
@@ -214,12 +228,15 @@ export const OABusOps: Story = {
           </Layout.Header>
 
           <Layout.Main>
-            <Layout.Content maxWidth="lg" padding="md">
+            <Layout.Content
+              maxWidth="lg"
+              padding="md"
+            >
               <div>Hello World</div>
             </Layout.Content>
           </Layout.Main>
         </Sidebar.Inset>
       </Sidebar.Provider>
-    );
+    )
   },
-};
+}
