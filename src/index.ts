@@ -14,6 +14,7 @@ export * from './components/calendar'
 export * from './components/card'
 // Form — Basic
 export * from './components/checkbox'
+export * from './components/color-picker'
 export * from './components/color-scheme-provider'
 export * from './components/color-scheme-switcher'
 // Overlays

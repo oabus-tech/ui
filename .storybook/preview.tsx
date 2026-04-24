@@ -11,7 +11,7 @@ const withCenteredLayout = (
 ) => {
   if (context.parameters.centeredLayout === false) return <Story />;
   return (
-    <OABusProvider>
+    <OABusProvider theme="mono">
       <div className=" max-w-96  m-auto flex justify-center p-8">
         <Story />
       </div>

@@ -200,7 +200,7 @@ const structureStyles = tv({
     footer: 'flex flex-col gap-2 p-2',
     group: 'relative flex w-full min-w-0 flex-col p-2',
     groupAction: [
-      'absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0',
+      'absolute top-3.5 right-3 flex aspect-square w-5 cursor-pointer items-center justify-center rounded-md p-0',
       'text-sidebar-foreground outline-hidden ring-sidebar-ring transition-transform',
       'group-data-[collapsible=icon]:hidden',
       'after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
@@ -251,7 +251,7 @@ const {
 
 const menuButtonStyles = tv({
   base: [
-    'peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm',
+    'peer/menu-button group/menu-button flex w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm',
     'outline-hidden ring-sidebar-ring transition-[width,height,padding]',
     'group-has-data-[sidebar=menu-action]/menu-item:pr-8',
     'group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2!',
@@ -286,7 +286,7 @@ const menuButtonStyles = tv({
 
 const menuActionStyles = tv({
   base: [
-    'absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0',
+    'absolute top-1.5 right-1 flex aspect-square w-5 cursor-pointer items-center justify-center rounded-md p-0',
     'text-sidebar-foreground outline-hidden ring-sidebar-ring transition-transform',
     'peer-hover/menu-button:text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden',
     'peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1',
@@ -305,7 +305,7 @@ const menuActionStyles = tv({
 
 const menuSubButtonStyles = tv({
   base: [
-    'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2',
+    'flex h-7 min-w-0 -translate-x-px cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2',
     'text-sidebar-foreground outline-hidden ring-sidebar-ring',
     'group-data-[collapsible=icon]:hidden',
     'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2',
@@ -356,7 +356,7 @@ const collapsibleDropdownStyles = tv({
       'mb-1 border-b pb-1.5',
     ],
     item: [
-      'flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm',
+      'flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm',
       'outline-hidden focus:bg-accent focus:text-accent-foreground',
       'data-disabled:pointer-events-none data-disabled:opacity-50',
       '[&>svg]:size-4 [&>svg]:shrink-0',
