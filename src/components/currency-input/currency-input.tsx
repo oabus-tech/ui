@@ -1,6 +1,6 @@
 import { Button } from '@base-ui/react'
 import { ChevronsUpDown } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { IMaskInput } from 'react-imask'
 import { tv } from 'tailwind-variants'
 
@@ -122,6 +122,36 @@ function CurrencyInput({
     size,
   })
 
+  const formatNumber = (n: number | null | undefined): string =>
+    n === null || n === undefined
+      ? ''
+      : n.toFixed(2).replace('.', config.radix)
+
+  const [display, setDisplay] = useState<string>(() =>
+    formatNumber(value !== undefined ? value : defaultValue),
+  )
+
+  const lastValueRef = useRef(value)
+  if (value !== lastValueRef.current) {
+    lastValueRef.current = value
+    if (value !== undefined) {
+      const parsed = parseCurrencyValue(display, config)
+      if (value !== parsed) {
+        setDisplay(formatNumber(value))
+      }
+    }
+  }
+
+  const lastConfigRef = useRef(config)
+  if (config !== lastConfigRef.current) {
+    const oldConfig = lastConfigRef.current
+    lastConfigRef.current = config
+    const parsed = parseCurrencyValue(display, oldConfig)
+    if (parsed !== null) {
+      setDisplay(formatNumber(parsed))
+    }
+  }
+
   return (
     <div
       className={rootStyles()}
@@ -179,25 +209,19 @@ function CurrencyInput({
           className: inputFieldStyles(),
         })}
         data-testid="currency-input-field"
-        defaultValue={
-          defaultValue !== null && defaultValue !== undefined
-            ? defaultValue.toFixed(2).replace('.', config.radix)
-            : undefined
-        }
         disabled={disabled}
         mask={Number as unknown as string}
         normalizeZeros
-        onAccept={(val: string) => onChange?.(parseCurrencyValue(val, config))}
+        onAccept={(val: string) => {
+          setDisplay(val)
+          onChange?.(parseCurrencyValue(val, config))
+        }}
         padFractionalZeros
         placeholder={placeholder}
         radix={config.radix}
         scale={2}
         thousandsSeparator={config.thousandsSeparator}
-        value={
-          value !== null && value !== undefined
-            ? value.toFixed(2).replace('.', config.radix)
-            : ''
-        }
+        value={display}
       />
     </div>
   )
