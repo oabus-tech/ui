@@ -214,7 +214,7 @@ const structureStyles = tv({
       'focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
     ],
     header: 'flex flex-col gap-2 p-2',
-    menu: 'flex w-full min-w-0 flex-col gap-0',
+    menu: 'flex w-full min-w-0 flex-col gap-1',
     menuBadge: [
       'pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center',
       'justify-center rounded-md px-1 font-medium text-sidebar-foreground text-xs tabular-nums',
@@ -224,7 +224,7 @@ const structureStyles = tv({
     ],
     menuItem: 'group/menu-item relative',
     menuSub: [
-      'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-sidebar-border border-l px-2.5 py-0.5',
+      'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 gap-1 border-sidebar-border border-l px-2.5 py-0.5',
       'group-data-[collapsible=icon]:hidden',
     ],
     menuSubItem: 'group/menu-sub-item relative',
