@@ -51,7 +51,7 @@ function parseCurrencyValue(
     .join('')
     .replace(config.radix, '.')
   const num = parseFloat(cleaned)
-  return Number.isNaN(num) ? null : num
+  return Number.isNaN(num) ? null : Math.round(num * 100)
 }
 
 const rootStyles = tv({
@@ -122,8 +122,10 @@ function CurrencyInput({
     size,
   })
 
-  const formatNumber = (n: number | null | undefined): string =>
-    n === null || n === undefined ? '' : n.toFixed(2).replace('.', config.radix)
+  const formatNumber = (cents: number | null | undefined): string =>
+    cents === null || cents === undefined
+      ? ''
+      : (cents / 100).toFixed(2).replace('.', config.radix)
 
   const [display, setDisplay] = useState<string>(() =>
     formatNumber(value !== undefined ? value : defaultValue),

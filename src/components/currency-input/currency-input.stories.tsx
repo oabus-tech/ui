@@ -57,7 +57,7 @@ export const UncontrolledEmpty: Story = {
 
 export const UncontrolledWithValue: Story = {
   args: {
-    defaultValue: 1234.56,
+    defaultValue: 123456,
     variant: 'brl',
   },
 }
@@ -79,7 +79,7 @@ export const ControlledEmpty: Story = {
 
 export const ControlledWithValue: Story = {
   render: (args) => {
-    const [value, setValue] = useState<number | null>(1234.56)
+    const [value, setValue] = useState<number | null>(123456)
     return (
       <CurrencyInput
         {...args}

@@ -17,8 +17,9 @@
  * - Radix Popover for range mode dual-input UI
  * - Radix Dropdown for currency type selector in "any" mode
  * - Locale map: brl → pt-BR, usd → en-US, eur → de-DE
- * - <CurrencyInput variant="brl" value={1234.56} onChange={setValue} />
- * - <CurrencyInput mode="range" variant="usd" value={{ from: 10, to: 100 }} onChange={setRange} />
+ * - Values are expressed in integer cents (e.g. 123456 → R$ 1.234,56)
+ * - <CurrencyInput variant="brl" value={123456} onChange={setValue} />
+ * - <CurrencyInput mode="range" variant="usd" value={{ from: 1000, to: 10000 }} onChange={setRange} />
  *
  * Dependencies: Input component, @radix-ui/react-popover, @radix-ui/react-dropdown-menu
  */
@@ -34,7 +35,7 @@ export type CurrencyInputProps = Omit<
   'value' | 'defaultValue' | 'onChange'
 > & {
   variant?: CurrencyVariant // currency type determines symbol/formatting
-  value?: number | null // controlled numeric value
-  defaultValue?: number | null // uncontrolled initial value
-  onChange?: (value: number | null) => void // fires on value change
+  value?: number | null // controlled value in integer cents
+  defaultValue?: number | null // uncontrolled initial value in integer cents
+  onChange?: (value: number | null) => void // fires with integer cents
 }
