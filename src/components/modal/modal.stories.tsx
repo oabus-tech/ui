@@ -6,6 +6,7 @@ import { Form } from '@/components/form'
 import { Input } from '@/components/input'
 import { Select } from '@/components/select'
 
+import { Flex } from '../flex'
 import { Modal } from './modal'
 
 const meta = {
@@ -34,47 +35,52 @@ export const Default: Story = {
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Field
-                label={{
-                  content: 'Full name',
-                  required: true,
-                }}
+              <Flex
+                direction="col"
+                gap="md"
               >
-                <Input placeholder="John Doe" />
-              </Form.Field>
-              <Form.Field
-                label={{
-                  content: 'Email',
-                  required: true,
-                }}
-              >
-                <Input placeholder="john@example.com" />
-              </Form.Field>
-              <Form.Field
-                description="This determines the user's permissions."
-                label="Role"
-              >
-                <Select
-                  mode="single"
-                  optionLabel="label"
-                  options={[
-                    {
-                      label: 'Admin',
-                      value: 'admin',
-                    },
-                    {
-                      label: 'Editor',
-                      value: 'editor',
-                    },
-                    {
-                      label: 'Viewer',
-                      value: 'viewer',
-                    },
-                  ]}
-                  optionValue="value"
-                  placeholder="Select a role"
-                />
-              </Form.Field>
+                <Form.Field
+                  label={{
+                    content: 'Full name',
+                    required: true,
+                  }}
+                >
+                  <Input placeholder="John Doe" />
+                </Form.Field>
+                <Form.Field
+                  label={{
+                    content: 'Email',
+                    required: true,
+                  }}
+                >
+                  <Input placeholder="john@example.com" />
+                </Form.Field>
+                <Form.Field
+                  description="This determines the user's permissions."
+                  label="Role"
+                >
+                  <Select
+                    mode="single"
+                    optionLabel="label"
+                    options={[
+                      {
+                        label: 'Admin',
+                        value: 'admin',
+                      },
+                      {
+                        label: 'Editor',
+                        value: 'editor',
+                      },
+                      {
+                        label: 'Viewer',
+                        value: 'viewer',
+                      },
+                    ]}
+                    optionValue="value"
+                    placeholder="Select a role"
+                  />
+                </Form.Field>
+              </Flex>
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -239,6 +245,148 @@ export const NoFooter: Story = {
               or press Escape to close.
             </p>
           </Modal.Body>
+        </Modal>
+      </>
+    )
+  },
+}
+
+export const SizeSmall: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Small Modal</Button>
+        <Modal
+          onChange={setOpen}
+          open={open}
+          size="sm"
+        >
+          <Modal.Header closable>
+            <Modal.Header.Title>Small (max-w-md)</Modal.Header.Title>
+            <Modal.Header.Description>
+              Compact dialogs, short confirmations.
+            </Modal.Header.Description>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 448px wide.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setOpen(false)}>Ok</Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  },
+}
+
+export const SizeLarge: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Large Modal</Button>
+        <Modal
+          onChange={setOpen}
+          open={open}
+          size="lg"
+        >
+          <Modal.Header closable>
+            <Modal.Header.Title>Large (max-w-2xl)</Modal.Header.Title>
+            <Modal.Header.Description>
+              Forms with a handful of fields side by side.
+            </Modal.Header.Description>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 672px wide.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  },
+}
+
+export const SizeExtraLarge: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open XL Modal</Button>
+        <Modal
+          onChange={setOpen}
+          open={open}
+          size="xl"
+        >
+          <Modal.Header closable>
+            <Modal.Header.Title>Extra Large (max-w-4xl)</Modal.Header.Title>
+            <Modal.Header.Description>
+              Complex forms or grid-based layouts.
+            </Modal.Header.Description>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 896px wide.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  },
+}
+
+export const SizeTwoExtraLarge: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open 2XL Modal</Button>
+        <Modal
+          onChange={setOpen}
+          open={open}
+          size="2xl"
+        >
+          <Modal.Header closable>
+            <Modal.Header.Title>Two Extra Large (max-w-6xl)</Modal.Header.Title>
+            <Modal.Header.Description>
+              Dense editors, tables, or multi-column forms.
+            </Modal.Header.Description>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 1152px wide.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
         </Modal>
       </>
     )

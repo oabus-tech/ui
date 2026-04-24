@@ -22,6 +22,9 @@ const styles = tv({
       },
     },
   ],
+  defaultVariants: {
+    size: 'md',
+  },
   slots: {
     backdrop: [
       'modal-backdrop fixed inset-0 isolate z-50 bg-black/50',
@@ -34,7 +37,7 @@ const styles = tv({
     header: 'modal-header flex items-start justify-between gap-2 p-4 pb-0',
     headerContent: 'modal-header-content flex flex-col gap-1',
     popup: [
-      'modal-popup fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] w-full max-w-lg',
+      'modal-popup fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] w-full',
       '-translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-popover',
       'text-popover-foreground shadow-xl outline-none ring-1 ring-foreground/10',
       'data-open:fade-in-0 data-open:zoom-in-95 duration-100 data-open:animate-in',
@@ -49,15 +52,35 @@ const styles = tv({
         header: 'pb-2',
       },
     },
+    size: {
+      '2xl': {
+        popup: 'max-w-6xl',
+      },
+      lg: {
+        popup: 'max-w-2xl',
+      },
+      md: {
+        popup: 'max-w-lg',
+      },
+      sm: {
+        popup: 'max-w-md',
+      },
+      xl: {
+        popup: 'max-w-4xl',
+      },
+    },
   },
 })
 
 function ModalRoot({
   open,
   onChange,
+  size,
   children,
 }: PropsWithChildren<ModalProps>) {
-  const { backdrop, popup } = styles()
+  const { backdrop, popup } = styles({
+    size,
+  })
   return (
     <Dialog.Root
       onOpenChange={onChange}

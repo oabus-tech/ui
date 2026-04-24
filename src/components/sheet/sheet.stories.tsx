@@ -269,3 +269,147 @@ export const Bottom: Story = {
     )
   },
 }
+
+export const SizeSmall: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Small Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          size="sm"
+        >
+          <Sheet.Header closable>
+            <Sheet.Header.Title>Small (sm:max-w-md)</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Narrow drawers, quick actions.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 448px on desktop (75% on mobile).
+            </p>
+          </Sheet.Body>
+          <Sheet.Footer>
+            <Button onClick={() => setOpen(false)}>Ok</Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
+export const SizeLarge: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Large Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          size="lg"
+        >
+          <Sheet.Header closable>
+            <Sheet.Header.Title>Large (sm:max-w-2xl)</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Detailed forms, record editors.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 672px on desktop (75% on mobile).
+            </p>
+          </Sheet.Body>
+          <Sheet.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
+export const SizeExtraLarge: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open XL Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          size="xl"
+        >
+          <Sheet.Header closable>
+            <Sheet.Header.Title>Extra Large (sm:max-w-4xl)</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Multi-column layouts, side-by-side comparison.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 896px on desktop (75% on mobile).
+            </p>
+          </Sheet.Body>
+          <Sheet.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
+export const SizeTwoExtraLarge: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open 2XL Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          size="2xl"
+        >
+          <Sheet.Header closable>
+            <Sheet.Header.Title>
+              Two Extra Large (sm:max-w-6xl)
+            </Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Dense editors, tables, or dashboards.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <p className="text-muted-foreground text-sm">
+              Popup is capped at 1152px on desktop (75% on mobile).
+            </p>
+          </Sheet.Body>
+          <Sheet.Footer>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}

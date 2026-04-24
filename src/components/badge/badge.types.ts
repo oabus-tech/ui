@@ -20,7 +20,22 @@
  * Dependencies: @radix-ui/react-slot, lucide-react (Loader2 for loading)
  */
 
-export type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
+export type BadgeVariant =
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'outline'
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'solid'
+  | 'solid-destructive'
+  | 'solid-success'
+  | 'solid-info'
+  | 'purple'
+  | 'pink'
+  | 'teal'
+  | 'orange'
 
 export type BadgeAlign = 'start' | 'center' | 'end'
 

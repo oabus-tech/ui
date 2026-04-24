@@ -20,6 +20,56 @@ const styles = tv({
         header: 'border-b',
       },
     },
+    {
+      class: {
+        popup: 'sm:max-w-md',
+      },
+      side: [
+        'left',
+        'right',
+      ],
+      size: 'sm',
+    },
+    {
+      class: {
+        popup: 'sm:max-w-lg',
+      },
+      side: [
+        'left',
+        'right',
+      ],
+      size: 'md',
+    },
+    {
+      class: {
+        popup: 'sm:max-w-2xl',
+      },
+      side: [
+        'left',
+        'right',
+      ],
+      size: 'lg',
+    },
+    {
+      class: {
+        popup: 'sm:max-w-4xl',
+      },
+      side: [
+        'left',
+        'right',
+      ],
+      size: 'xl',
+    },
+    {
+      class: {
+        popup: 'sm:max-w-6xl',
+      },
+      side: [
+        'left',
+        'right',
+      ],
+      size: '2xl',
+    },
   ],
   defaultVariants: {
     side: 'right',
@@ -76,17 +126,26 @@ const styles = tv({
         ],
       },
     },
+    size: {
+      '2xl': {},
+      lg: {},
+      md: {},
+      sm: {},
+      xl: {},
+    },
   },
 })
 
 function SheetRoot({
   open,
   side = 'right',
+  size,
   onChange,
   children,
 }: PropsWithChildren<SheetProps>) {
   const { backdrop, popup } = styles({
     side,
+    size,
   })
 
   return (

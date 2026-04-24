@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { Badge } from './badge'
+import type { BadgeVariant } from './badge.types'
 
 const meta = {
   args: {
@@ -30,6 +31,83 @@ export const Destructive: Story = {
 export const Outline: Story = {
   args: {
     variant: 'outline',
+  },
+}
+
+export const Success: Story = {
+  args: {
+    children: 'Success',
+    variant: 'success',
+  },
+}
+
+export const Warning: Story = {
+  args: {
+    children: 'Warning',
+    variant: 'warning',
+  },
+}
+
+export const Info: Story = {
+  args: {
+    children: 'Info',
+    variant: 'info',
+  },
+}
+
+export const Solid: Story = {
+  args: {
+    children: 'Solid',
+    variant: 'solid',
+  },
+}
+
+export const SolidDestructive: Story = {
+  args: {
+    children: 'Error',
+    variant: 'solid-destructive',
+  },
+}
+
+export const SolidSuccess: Story = {
+  args: {
+    children: 'Done',
+    variant: 'solid-success',
+  },
+}
+
+export const SolidInfo: Story = {
+  args: {
+    children: 'Info',
+    variant: 'solid-info',
+  },
+}
+
+export const Purple: Story = {
+  args: {
+    children: 'Purple',
+    variant: 'purple',
+  },
+}
+
+export const Pink: Story = {
+  args: {
+    children: 'Pink',
+    variant: 'pink',
+  },
+}
+
+export const Teal: Story = {
+  args: {
+    children: 'Teal',
+    variant: 'teal',
+  },
+}
+
+export const Orange: Story = {
+  args: {
+    children: 'Orange',
+    variant: 'orange',
   },
 }
 
@@ -64,4 +142,37 @@ export const AlignStart: Story = {
       </div>
     ),
   ],
+}
+
+const allVariants: BadgeVariant[] = [
+  'default',
+  'secondary',
+  'destructive',
+  'outline',
+  'success',
+  'warning',
+  'info',
+  'solid',
+  'solid-destructive',
+  'solid-success',
+  'solid-info',
+  'purple',
+  'pink',
+  'teal',
+  'orange',
+]
+
+export const Gallery: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      {allVariants.map((variant) => (
+        <Badge
+          key={variant}
+          variant={variant}
+        >
+          {variant}
+        </Badge>
+      ))}
+    </div>
+  ),
 }

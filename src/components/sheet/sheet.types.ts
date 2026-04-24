@@ -30,9 +30,12 @@
 
 export type SheetSide = 'top' | 'right' | 'bottom' | 'left'
 
+export type SheetSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+
 export type SheetProps = {
   open?: boolean // controlled open state
   side?: SheetSide // which side the sheet slides from
+  size?: SheetSize // popup max-width (only applies to side='left' | 'right'; default preserves sm:max-w-sm)
   onChange?: (open: boolean) => void // fires on open/close
 }
 
