@@ -30,3 +30,28 @@ export const Disabled: Story = {
     disabled: true,
   },
 }
+
+export const NonNegative: Story = {
+  args: {
+    defaultValue: 0,
+    min: 0,
+    step: 1,
+  },
+}
+
+export const Bounded: Story = {
+  args: {
+    defaultValue: 5,
+    max: 10,
+    min: 0,
+    step: 1,
+  },
+}
+
+export const NoGrouping: Story = {
+  args: {
+    defaultValue: 2024,
+    grouping: false,
+    step: 1,
+  },
+}

@@ -28,7 +28,10 @@ export type NumberInputProps = {
   defaultValue?: number
   onChange?: (value: number) => void
   step?: number
+  min?: number
+  max?: number
   size?: InputSize
   disabled?: boolean
   placeholder?: string
+  grouping?: boolean
 }
