@@ -22,7 +22,6 @@ import { Sidebar } from './sidebar'
 
 const meta = {
   parameters: {
-    centeredLayout: false,
     layout: 'fullscreen',
   },
   title: 'Layout/Layout',

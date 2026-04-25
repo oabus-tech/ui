@@ -53,6 +53,7 @@ export * from './components/separator'
 export * from './components/sheet'
 export * from './components/skeleton'
 export * from './components/slider'
+export * from './components/stepper'
 export * from './components/switch'
 // Data Display
 export * from './components/table'
