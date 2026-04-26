@@ -1,8 +1,15 @@
+import type { Preview } from "@storybook/react-vite";
+import React from "react";
+import { OABusProvider } from "../src/components/oabus-provider";
 import "../src/index.css";
 
-import type { Preview } from "@storybook/react-vite";
-
+const withOABusProvider = (Story: React.ComponentType) => (
+  <OABusProvider>
+    <Story />
+  </OABusProvider>
+);
 const preview: Preview = {
+  decorators: [withOABusProvider],
   parameters: {
     layout: "centered",
     controls: {

@@ -23,12 +23,39 @@ const styles = tv({
   },
 })
 
+const sectionStyles = tv({
+  base: 'flex items-center gap-2',
+})
+
+const centerStyles = tv({
+  base: 'flex flex-1 items-center',
+})
+
 function LayoutHeader({
   bordered,
   children,
+  leftSection,
+  rightSection,
   size,
   sticky,
 }: PropsWithChildren<LayoutHeaderProps>) {
+  const hasSections = leftSection !== undefined || rightSection !== undefined
+
+  if (!hasSections) {
+    return (
+      <header
+        className={styles({
+          bordered,
+          size,
+          sticky,
+        })}
+        data-testid="layout-header"
+      >
+        {children}
+      </header>
+    )
+  }
+
   return (
     <header
       className={styles({
@@ -38,7 +65,19 @@ function LayoutHeader({
       })}
       data-testid="layout-header"
     >
-      {children}
+      <div
+        className={sectionStyles()}
+        data-testid="layout-header-left"
+      >
+        {leftSection}
+      </div>
+      <div className={centerStyles()}>{children}</div>
+      <div
+        className={sectionStyles()}
+        data-testid="layout-header-right"
+      >
+        {rightSection}
+      </div>
     </header>
   )
 }
