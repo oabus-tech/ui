@@ -394,6 +394,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
   emptySection,
   leftSection,
   rightSection,
+  onSearchChange,
   infinite,
   disabled,
   loading,
@@ -446,11 +447,12 @@ function SingleSearchableSelect<T, I = string, O = I>({
     setOpen(false)
   }
 
-  const filteredOptions = query
-    ? options.filter((o) =>
-        getLabel(o, optionLabel).toLowerCase().includes(query.toLowerCase()),
-      )
-    : options
+  const filteredOptions =
+    query && !onSearchChange
+      ? options.filter((o) =>
+          getLabel(o, optionLabel).toLowerCase().includes(query.toLowerCase()),
+        )
+      : options
 
   const grouped = optionGroup
     ? filteredOptions.reduce<
@@ -566,7 +568,10 @@ function SingleSearchableSelect<T, I = string, O = I>({
               <input
                 className={searchInput()}
                 data-testid="select-search-input"
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value)
+                  onSearchChange?.(e.target.value)
+                }}
                 placeholder={searchPlaceholder}
                 ref={searchInputRef}
                 value={query}

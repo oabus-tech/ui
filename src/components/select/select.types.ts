@@ -48,6 +48,7 @@ export type BaseSelectProps<T, O> = {
   emptySection?: React.ReactNode // content shown when no options match
   leftSection?: React.ReactNode // element on the left of trigger
   rightSection?: React.ReactNode // element on the right of trigger
+  onSearchChange?: (query: string) => void // fires when search input changes
   infinite?: SelectInfiniteProps // infinite scroll configuration
   disabled?: boolean // prevents interaction
   loading?: boolean // shows loading state

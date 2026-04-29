@@ -21,12 +21,12 @@ export const buttonShared = tv({
       true: 'w-full',
     },
     size: {
-      'icon-lg': 'size-9',
-      'icon-md': 'size-8',
-      'icon-sm': 'size-7 rounded-[min(var(--radius-md),12px)]',
-      lg: 'h-9 gap-1.5 px-2.5',
-      md: 'h-8 gap-1.5 px-2.5',
-      sm: 'h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] [&_svg:not([class*=size-])]:size-3.5',
+      'icon-lg': 'size-11',
+      'icon-md': 'size-10',
+      'icon-sm': 'size-9',
+      lg: 'h-11 gap-1.5 px-3',
+      md: 'h-10 gap-1.5 px-2.5',
+      sm: 'h-9 gap-1 px-2.5 text-[0.8rem] [&_svg:not([class*=size-])]:size-3.5',
     },
     variant: {
       dashed:
