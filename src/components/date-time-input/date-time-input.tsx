@@ -27,6 +27,12 @@ const styles = tv({
           'invisible cursor-not-allowed text-muted-foreground opacity-50',
       },
     },
+    hasValue: {
+      false: {
+        clearTrigger:
+          'invisible cursor-pointer text-muted-foreground hover:text-foreground',
+      },
+    },
   },
 })
 
@@ -200,18 +206,17 @@ function DateTimeInput({
         placeholder={resolvedPlaceholder}
         readOnly
         rightSection={
-          committedValue && (
-            <ButtonPrimitive
-              className={clearTrigger({
-                disabled,
-              })}
-              disabled={disabled}
-              onClick={handleClear}
-              tabIndex={committedValue && !disabled ? 0 : -1}
-            >
-              <X className="size-4" />
-            </ButtonPrimitive>
-          )
+          <ButtonPrimitive
+            className={clearTrigger({
+              disabled,
+              hasValue: !!committedValue,
+            })}
+            disabled={disabled}
+            onClick={handleClear}
+            tabIndex={committedValue && !disabled ? 0 : -1}
+          >
+            <X className="size-4" />
+          </ButtonPrimitive>
         }
         size={size}
         value={displayValue}
