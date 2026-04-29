@@ -2,13 +2,31 @@ import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { format } from 'date-fns'
 import { CalendarIcon, Check, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { tv } from 'tailwind-variants'
 
 import { Calendar } from '@/components/calendar'
 import { Input } from '@/components/input'
 import { Popover } from '@/components/popover'
 import { TimeInput } from '@/components/time-input'
 
+import { Button } from '../button'
 import type { DateTimeInputProps } from './date-time-input.types'
+
+const styles = tv({
+  slots: {
+    clearTrigger: 'cursor-pointer text-muted-foreground hover:text-foreground',
+    popoverContent: 'flex flex-col gap-3',
+    root: 'date-time-input-root',
+    timeRow: 'flex items-stretch gap-2 border-border border-t pt-3',
+  },
+  variants: {
+    disabled: {
+      true: {
+        clearTrigger: 'cursor-not-allowed text-muted-foreground opacity-50',
+      },
+    },
+  },
+})
 
 const FULL_TIME_RE = /^\d{2}:\d{2}(:\d{2})?$/
 
@@ -124,11 +142,13 @@ function DateTimeInput({
     ? format(committedValue, resolvedFormat)
     : ''
 
+  const { clearTrigger, popoverContent, root, timeRow } = styles()
+
   return (
     <Popover
       align="start"
       content={
-        <div className="flex flex-col gap-3">
+        <div className={popoverContent()}>
           <Calendar
             maxDate={maxDate}
             minDate={minDate}
@@ -138,7 +158,7 @@ function DateTimeInput({
             size={size}
           />
           <div
-            className="flex items-stretch gap-2 border-border border-t pt-3"
+            className={timeRow()}
             ref={timeWrapperRef}
           >
             <TimeInput
@@ -151,39 +171,44 @@ function DateTimeInput({
               value={timeString || null}
               withSeconds={withSeconds}
             />
-            <ButtonPrimitive
-              aria-label="Confirm"
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50"
+            <Button
+              disabled={disabled}
               onClick={() => setOpen(false)}
-              type="button"
+              size="icon-sm"
             >
               <Check className="size-4" />
-            </ButtonPrimitive>
+            </Button>
           </div>
         </div>
       }
-      onOpenChange={setOpen}
+      onOpenChange={(op) => {
+        if (disabled) {
+          return
+        }
+        setOpen(op)
+      }}
       open={open}
       side="bottom"
     >
       <Input
         {...props}
-        className="date-time-input-root"
+        className={root()}
         disabled={disabled}
         leftSection={<CalendarIcon className="size-4" />}
-        onClick={() => !disabled && setOpen(true)}
         placeholder={resolvedPlaceholder}
         readOnly
         rightSection={
           committedValue ? (
-            <button
-              className="cursor-pointer text-muted-foreground hover:text-foreground"
+            <ButtonPrimitive
+              className={clearTrigger({
+                disabled,
+              })}
+              disabled={disabled}
               onClick={handleClear}
               tabIndex={committedValue && !disabled ? 0 : -1}
-              type="button"
             >
               <X className="size-4" />
-            </button>
+            </ButtonPrimitive>
           ) : null
         }
         size={size}
