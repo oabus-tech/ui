@@ -175,14 +175,16 @@ function DateTimeInput({
         placeholder={resolvedPlaceholder}
         readOnly
         rightSection={
-          <button
-            className={`cursor-pointer text-muted-foreground hover:text-foreground ${committedValue && !disabled ? 'visible' : 'invisible'}`}
-            onClick={handleClear}
-            tabIndex={committedValue && !disabled ? 0 : -1}
-            type="button"
-          >
-            <X className="size-4" />
-          </button>
+          committedValue ? (
+            <button
+              className="cursor-pointer text-muted-foreground hover:text-foreground"
+              onClick={handleClear}
+              tabIndex={committedValue && !disabled ? 0 : -1}
+              type="button"
+            >
+              <X className="size-4" />
+            </button>
+          ) : null
         }
         size={size}
         value={displayValue}
