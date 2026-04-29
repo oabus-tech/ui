@@ -14,7 +14,7 @@ import type { DateTimeInputProps } from './date-time-input.types'
 
 const styles = tv({
   slots: {
-    clearTrigger: 'cursor-pointer text-muted-foreground hover:text-foreground',
+    clearTrigger: 'visible cursor-pointer text-muted-foreground hover:text-foreground',
     popoverContent: 'flex flex-col gap-3',
     root: 'date-time-input-root',
     timeRow: 'flex items-stretch gap-2 border-border border-t pt-3',
@@ -22,7 +22,7 @@ const styles = tv({
   variants: {
     disabled: {
       true: {
-        clearTrigger: 'cursor-not-allowed text-muted-foreground opacity-50',
+        clearTrigger: 'invisible cursor-not-allowed text-muted-foreground opacity-50',
       },
     },
   },
@@ -198,7 +198,7 @@ function DateTimeInput({
         placeholder={resolvedPlaceholder}
         readOnly
         rightSection={
-          committedValue ? (
+          committedValue && (
             <ButtonPrimitive
               className={clearTrigger({
                 disabled,
@@ -209,7 +209,7 @@ function DateTimeInput({
             >
               <X className="size-4" />
             </ButtonPrimitive>
-          ) : null
+          )
         }
         size={size}
         value={displayValue}
