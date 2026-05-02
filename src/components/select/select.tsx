@@ -31,7 +31,7 @@ const select = tv({
       'hover:bg-accent hover:text-accent-foreground',
       'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
       'data-disabled:pointer-events-none data-disabled:opacity-50',
-      'data-selected:font-medium',
+      'data-current:font-medium',
     ],
     itemCheck:
       'select-item-check pointer-events-none absolute right-2 flex size-4 items-center justify-center',
@@ -305,8 +305,13 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
             className={clearTrigger()}
             data-testid="select-clear"
             onClick={(e) => {
+              e.preventDefault()
               e.stopPropagation()
               handleClear()
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
             }}
             onPointerDown={(e) => e.stopPropagation()}
             type="button"
@@ -362,9 +367,11 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
                   {items.map((option) => {
                     const key = toKey(getValue(option, optionValue))
                     const label = getLabel(option, optionLabel)
+                    const isCurrent = key === currentKey && key !== ''
                     return (
                       <SelectPrimitive.Item
                         className={item()}
+                        data-current={isCurrent || undefined}
                         data-testid="select-item"
                         key={key}
                         value={key}
@@ -372,12 +379,14 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
                         <SelectPrimitive.ItemText>
                           {renderOption ? renderOption(option) : label}
                         </SelectPrimitive.ItemText>
-                        <SelectPrimitive.ItemIndicator
-                          data-testid="select-item-check"
-                          render={<span className={itemCheck()} />}
-                        >
-                          <Check className="size-3.5" />
-                        </SelectPrimitive.ItemIndicator>
+                        {isCurrent && (
+                          <span
+                            className={itemCheck()}
+                            data-testid="select-item-check"
+                          >
+                            <Check className="size-3.5" />
+                          </span>
+                        )}
                       </SelectPrimitive.Item>
                     )
                   })}
@@ -592,8 +601,13 @@ function SingleSearchableSelect<T, I = string, O = I>({
             className={clearTrigger()}
             data-testid="select-clear"
             onClick={(e) => {
+              e.preventDefault()
               e.stopPropagation()
               handleClear()
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
             }}
             onPointerDown={(e) => e.stopPropagation()}
             type="button"
@@ -915,8 +929,13 @@ function MultipleSelect<T, I = string, O = I>({
             className={clearTrigger()}
             data-testid="select-clear"
             onClick={(e) => {
+              e.preventDefault()
               e.stopPropagation()
               handleClear()
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
             }}
             onPointerDown={(e) => e.stopPropagation()}
             type="button"
