@@ -18,6 +18,10 @@ const select = tv({
       'select-checkbox flex size-4 items-center justify-center rounded border border-input transition-colors',
       'data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground',
     ],
+    clearTrigger: [
+      'select-clear-trigger -mr-1 flex size-5 shrink-0 cursor-pointer items-center justify-center rounded',
+      'text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+    ],
     empty: 'select-empty px-3 py-4 text-center text-muted-foreground text-sm',
     groupLabel:
       'select-group-label px-1.5 py-1 font-medium text-muted-foreground text-xs',
@@ -129,6 +133,7 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
   value,
   defaultValue,
   onChange,
+  clearable = true,
 }: SelectProps<T, I, O> & {
   mode: 'single'
 }) {
@@ -142,6 +147,7 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
     itemCheck,
     sentinel,
     empty,
+    clearTrigger,
   } = select({
     size,
   })
@@ -247,9 +253,17 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
     (o) => toKey(getValue(o, optionValue)) === currentKey,
   )
 
+  const handleClear = () => {
+    if (!isControlled) {
+      setInternalKey('')
+    }
+    onChange?.(null)
+  }
+
+  const showClear = clearable && !!selectedOption && !disabled && !loading
+
   return (
     <SelectPrimitive.Root
-      defaultValue={defaultKey}
       onValueChange={(key: string | null) => {
         if (!isControlled) {
           setInternalKey(key ?? '')
@@ -259,7 +273,7 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
           : undefined
         onChange?.(option ? getValue(option, optionValue) : null)
       }}
-      value={isControlled ? currentKey || undefined : undefined}
+      value={currentKey || null}
     >
       <SelectPrimitive.Trigger
         className={trigger()}
@@ -285,6 +299,20 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
           <Loader size="sm" />
         ) : rightSection ? (
           <span className="shrink-0">{rightSection}</span>
+        ) : showClear ? (
+          <button
+            aria-label="Clear"
+            className={clearTrigger()}
+            data-testid="select-clear"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClear()
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            type="button"
+          >
+            <X size={14} />
+          </button>
         ) : (
           <SelectPrimitive.Icon
             render={<ChevronDown className="size-4 text-muted-foreground" />}
@@ -402,6 +430,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
   value,
   defaultValue,
   onChange,
+  clearable = true,
 }: SelectProps<T, I, O> & {
   mode: 'single'
 }) {
@@ -417,6 +446,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
     itemCheck,
     sentinel,
     empty,
+    clearTrigger,
   } = select({
     size,
   })
@@ -518,6 +548,15 @@ function SingleSearchableSelect<T, I = string, O = I>({
     (o) => toKey(getValue(o, optionValue)) === currentKey,
   )
 
+  const handleClear = () => {
+    if (!isControlled) {
+      setInternalKey('')
+    }
+    onChange?.(null)
+  }
+
+  const showClear = clearable && !!selectedOption && !disabled && !loading
+
   return (
     <Popover.Root
       onOpenChange={setOpen}
@@ -547,6 +586,20 @@ function SingleSearchableSelect<T, I = string, O = I>({
           <Loader size="sm" />
         ) : rightSection ? (
           <span className="shrink-0">{rightSection}</span>
+        ) : showClear ? (
+          <button
+            aria-label="Clear"
+            className={clearTrigger()}
+            data-testid="select-clear"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClear()
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            type="button"
+          >
+            <X size={14} />
+          </button>
         ) : (
           <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
         )}
@@ -676,6 +729,7 @@ function MultipleSelect<T, I = string, O = I>({
   value,
   defaultValue,
   onChange,
+  clearable = true,
 }: SelectProps<T, I, O> & {
   mode: 'multiple'
 }) {
@@ -691,6 +745,7 @@ function MultipleSelect<T, I = string, O = I>({
     checkbox,
     sentinel,
     empty,
+    clearTrigger,
   } = select({
     size,
   })
@@ -792,6 +847,16 @@ function MultipleSelect<T, I = string, O = I>({
   const visibleBadges = selectedOptions.slice(0, 2)
   const overflowCount = selectedOptions.length - visibleBadges.length
 
+  const handleClear = () => {
+    if (!isControlled) {
+      setInternalValues([])
+    }
+    onChange?.([] as unknown as O[])
+  }
+
+  const showClear =
+    clearable && selectedOptions.length > 0 && !disabled && !loading
+
   return (
     <Popover.Root
       onOpenChange={setOpen}
@@ -844,6 +909,20 @@ function MultipleSelect<T, I = string, O = I>({
           <Loader size="sm" />
         ) : rightSection ? (
           <span className="shrink-0">{rightSection}</span>
+        ) : showClear ? (
+          <button
+            aria-label="Clear"
+            className={clearTrigger()}
+            data-testid="select-clear"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClear()
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            type="button"
+          >
+            <X size={14} />
+          </button>
         ) : (
           <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
         )}

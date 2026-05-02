@@ -53,6 +53,7 @@ export type BaseSelectProps<T, O> = {
   disabled?: boolean // prevents interaction
   loading?: boolean // shows loading state
   size?: SelectSize // visual size
+  clearable?: boolean // shows an X button to clear the value when one is selected (default: true)
 }
 
 export type SelectSingleProps<T, I = string, O = I> = BaseSelectProps<T, O> & {
