@@ -77,8 +77,8 @@ const styles = tv({
   slots: {
     backdrop: [
       'sheet-backdrop fixed inset-0 z-50 bg-black/50',
-      'data-open:fade-in-0 duration-200 ease-in-out data-open:animate-in',
-      'data-closed:fade-out-0 data-closed:animate-out',
+      'transition-opacity duration-200 ease-in-out',
+      'data-ending-style:opacity-0 data-starting-style:opacity-0',
     ],
     body: 'sheet-body flex-1 overflow-y-auto p-4 py-2',
     description: 'sheet-description text-muted-foreground text-sm',
@@ -87,9 +87,8 @@ const styles = tv({
     headerContent: 'sheet-header-content flex flex-col gap-1',
     popup: [
       'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
-      'duration-200 ease-in-out',
-      'data-open:fade-in-0 data-open:animate-in',
-      'data-closed:fade-out-0 data-closed:animate-out',
+      'transition duration-200 ease-in-out',
+      'data-ending-style:opacity-0 data-starting-style:opacity-0',
     ],
     title: 'sheet-title font-heading font-medium text-base leading-none',
   },
@@ -104,25 +103,25 @@ const styles = tv({
       bottom: {
         popup: [
           'inset-x-0 bottom-0 h-auto border-t',
-          'data-open:slide-in-from-bottom data-closed:slide-out-to-bottom',
+          'data-ending-style:translate-y-full data-starting-style:translate-y-full',
         ],
       },
       left: {
         popup: [
           'inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm',
-          'data-open:slide-in-from-left data-closed:slide-out-to-left',
+          'data-ending-style:-translate-x-full data-starting-style:-translate-x-full',
         ],
       },
       right: {
         popup: [
           'inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm',
-          'data-open:slide-in-from-right data-closed:slide-out-to-right',
+          'data-ending-style:translate-x-full data-starting-style:translate-x-full',
         ],
       },
       top: {
         popup: [
           'inset-x-0 top-0 h-auto border-b',
-          'data-open:slide-in-from-top data-closed:slide-out-to-top',
+          'data-ending-style:-translate-y-full data-starting-style:-translate-y-full',
         ],
       },
     },
