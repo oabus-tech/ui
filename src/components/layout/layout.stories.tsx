@@ -407,9 +407,7 @@ export const OABusOpsWithSections: Story = {
           />
 
           <Layout.Main>
-            <Layout.Content
-              padding="sm"
-            >
+            <Layout.Content padding="sm">
               <div>Hello World</div>
             </Layout.Content>
           </Layout.Main>

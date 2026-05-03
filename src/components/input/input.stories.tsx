@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Search } from 'lucide-react'
+import { useState } from 'react'
 
 import { Input } from './input'
 
@@ -31,6 +32,25 @@ export const WithRightSection: Story = {
 export const Loading: Story = {
   args: {
     loading: true,
+  },
+}
+
+export const Debounced: Story = {
+  render: () => {
+    const [value, setValue] = useState<string | null>(null)
+
+    return (
+      <div className="flex w-full max-w-md flex-col gap-2">
+        <Input
+          debounce
+          onChange={setValue}
+          placeholder="Type to debounce..."
+        />
+        <span className="text-muted-foreground text-xs">
+          Debounced value: {value === null ? 'null' : `"${value}"`}
+        </span>
+      </div>
+    )
   },
 }
 
