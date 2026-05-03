@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants'
 export const buttonShared = tv({
   base: [
     'button group/button inline-flex shrink-0 items-center justify-center rounded-lg',
-    'whitespace-nowrap border border-transparent bg-clip-padding font-medium text-sm',
+    'whitespace-nowrap border border-transparent font-medium text-sm',
     'cursor-pointer select-none outline-none transition-all',
     'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
     'active:translate-y-px',
