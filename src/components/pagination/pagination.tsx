@@ -31,7 +31,7 @@ const styles = tv({
       'pagination-ellipsis flex size-8 items-center justify-center text-muted-foreground',
     info: 'pagination-info whitespace-nowrap text-muted-foreground text-sm',
     pageBtn: [
-      'pagination-page-btn inline-flex size-8 items-center justify-center rounded-lg border text-sm',
+      'pagination-page-btn inline-flex size-9 items-center justify-center rounded-lg border text-sm',
       'select-none outline-none transition-colors',
       'border-transparent hover:bg-muted hover:text-foreground',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
