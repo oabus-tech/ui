@@ -12,7 +12,7 @@ const styles = tv({
   slots: {
     body: '[&_tr:last-child]:border-0',
     cell: 'whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0',
-    container: 'relative w-full overflow-x-auto',
+    container: 'relative w-full overflow-x-auto rounded-md border',
     emptyCell: 'p-8 text-center text-muted-foreground',
     head: 'h-10 whitespace-nowrap px-2 text-left align-middle font-medium text-foreground [&:has([role=checkbox])]:pr-0',
     header: '[&_tr]:border-b',
