@@ -4,7 +4,7 @@ import { tv } from 'tailwind-variants'
 import type { GridItemProps, GridProps } from './grid.types'
 
 const rootStyles = tv({
-  base: 'grid-root grid',
+  base: 'grid-root grid w-full',
   defaultVariants: {
     cols: 1,
     gap: 'none',

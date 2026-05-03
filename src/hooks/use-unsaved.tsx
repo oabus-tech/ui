@@ -29,13 +29,13 @@ function UnsavedConfirm({ confirm, ...props }: UnsavedConfirmProps) {
   return (
     <Confirm
       {...props}
-      cancelText="Cancelar"
+      cancelText="Continuar editando"
       confirmProps={{
         variant: 'destructive',
       }}
-      confirmText="Sair"
-      description="Você tem alterações não salvas. Tem certeza que deseja sair?"
-      title="Alterações não salvas"
+      confirmText="Sair sem salvar"
+      description="Você tem alterações não salvas. Sair agora fará você perder as mudanças."
+      title="Deseja sair sem salvar?"
       {...confirm}
     />
   )

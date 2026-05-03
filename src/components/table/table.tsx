@@ -185,7 +185,7 @@ function Table<T>({
                   className={emptyCell()}
                   colSpan={totalColumns}
                 >
-                  {emptySection ?? 'No data'}
+                  {emptySection ?? 'Nenhum dado encontrado'}
                 </td>
               </tr>
             ) : (
