@@ -101,8 +101,9 @@ function Pagination(props: PaginationProps) {
         data-testid="pagination-root"
       >
         <div className={rowsPerPage()}>
-          <span>Rows per page</span>
+          <span>Linhas por página</span>
           <Select
+            clearable={false}
             mode="single"
             onChange={(v) => onRowsPerPageChange(v as number)}
             optionLabel="label"
@@ -118,7 +119,7 @@ function Pagination(props: PaginationProps) {
               className: 'mr-2',
             })}
           >
-            {from}-{to} of {total}
+            {from}-{to} de {total}
           </span>
           <Button
             data-testid="pagination-prev"
