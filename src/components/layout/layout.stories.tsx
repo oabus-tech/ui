@@ -408,8 +408,7 @@ export const OABusOpsWithSections: Story = {
 
           <Layout.Main>
             <Layout.Content
-              maxWidth="lg"
-              padding="md"
+              padding="sm"
             >
               <div>Hello World</div>
             </Layout.Content>

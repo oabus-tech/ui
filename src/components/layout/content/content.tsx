@@ -8,7 +8,7 @@ const outerStyles = tv({
 })
 
 const innerStyles = tv({
-  base: 'layout-content-inner mx-auto w-full',
+  base: 'layout-content-inner mx-auto h-full w-full',
   variants: {
     maxWidth: {
       lg: 'max-w-7xl',
