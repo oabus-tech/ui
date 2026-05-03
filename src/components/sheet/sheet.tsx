@@ -80,7 +80,7 @@ const styles = tv({
       'transition-opacity duration-200 ease-in-out',
       'data-ending-style:opacity-0 data-starting-style:opacity-0',
     ],
-    body: 'sheet-body flex-1 overflow-y-auto p-4 py-2',
+    body: 'sheet-body flex-1 overflow-y-auto p-4',
     description: 'sheet-description text-muted-foreground text-sm',
     footer: 'sheet-footer flex flex-row-reverse gap-2 p-4 pt-0',
     header: 'sheet-header flex items-start justify-between gap-2 p-4 pb-0',
@@ -95,6 +95,7 @@ const styles = tv({
   variants: {
     bordered: {
       true: {
+        body: 'pb-2',
         footer: 'pt-2',
         header: 'pb-2',
       },
