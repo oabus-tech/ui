@@ -184,6 +184,7 @@ function Pagination(props: PaginationProps) {
         <div className={rowsPerPage()}>
           <span>Rows per page</span>
           <Select
+            clearable={false}
             mode="single"
             onChange={(v) => onRowsPerPageChange(v as number)}
             optionLabel="label"
