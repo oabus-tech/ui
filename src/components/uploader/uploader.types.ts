@@ -12,12 +12,12 @@
  * - maxFileSize: limits individual file size in bytes
  * - File list shows: filename, progress bar, remove button, status icon
  * - States per file: pending → uploading (with progress %) → done / error
- * - handler(fileName) returns { fileName, fileNameSigned } — then PUT to signed URL
+ * - handler(fileName) returns a signed POST payload, then uploads FormData
  * - onUpload fires with handler response(s) after successful upload
  *
  * Implementation:
  * - HTML5 File API + drag-and-drop events (onDragOver, onDrop)
- * - XMLHttpRequest for upload (to track progress via xhr.upload.onprogress)
+ * - XMLHttpRequest + FormData for upload progress via xhr.upload.onprogress
  * - File state tracked in array: { file, progress, status, response }
  * - <Uploader accept="image/*" maxFiles={5} maxFileSize={5_000_000}
  *     handler={getSignedUrl} onUpload={handleUploaded} />
@@ -25,9 +25,16 @@
  * Dependencies: none (uses native File API + XMLHttpRequest)
  */
 
+export type Upload = {
+  url: string
+  fields: Record<string, string>
+}
+
 export type UploaderHandlerResponse = {
-  fileName: string // original file name
-  fileNameSigned: string // signed/uploaded file name (from server)
+  key: string
+  cdnUrl: string
+  upload: Upload
+  expiresIn: number
 }
 
 type BaseUploaderProps = {

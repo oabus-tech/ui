@@ -76,6 +76,15 @@ function Uploader({
       try {
         const response = await handler(entry.file.name)
 
+        const formData = new FormData()
+
+        for (const [key, value] of Object.entries(response.upload.fields)) {
+          formData.append(key, value)
+        }
+
+        formData.append('key', response.key)
+        formData.append('file', entry.file)
+
         await new Promise<void>((resolve, reject) => {
           const xhr = new XMLHttpRequest()
 
@@ -105,8 +114,8 @@ function Uploader({
 
           xhr.onerror = () => reject(new Error('Upload failed'))
 
-          xhr.open('PUT', response.fileNameSigned)
-          xhr.send(entry.file)
+          xhr.open('POST', response.upload.url)
+          xhr.send(formData)
         })
 
         setFiles((prev) =>
