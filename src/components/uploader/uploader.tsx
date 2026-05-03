@@ -81,8 +81,6 @@ function Uploader({
         for (const [key, value] of Object.entries(response.upload.fields)) {
           formData.append(key, value)
         }
-
-        formData.append('key', response.key)
         formData.append('file', entry.file)
 
         await new Promise<void>((resolve, reject) => {
