@@ -8,6 +8,7 @@
  * - Single mode: click opens popover, selecting an item shows checkmark and closes
  * - Multiple mode: click opens popover, items have checkboxes, selected shown as badges (max 2 visible + "+N")
  * - Searchable: renders a filter input inside the popover (case-insensitive)
+ * - Debounce mode delays onSearchChange calls (useful for remote search)
  * - Option grouping: groups options under section headers
  * - Infinite scroll: triggers onLoadMore when scrolling near bottom
  * - renderOption/renderValue allow custom rendering of items and selected display
@@ -45,10 +46,12 @@ export type BaseSelectProps<T, O> = {
   placeholder?: string // placeholder text when nothing selected
   searchable?: boolean // enables search/filter input
   searchPlaceholder?: string // placeholder for search input
+  searchValue?: string // controlled search input value
   emptySection?: React.ReactNode // content shown when no options match
   leftSection?: React.ReactNode // element on the left of trigger
   rightSection?: React.ReactNode // element on the right of trigger
   onSearchChange?: (query: string) => void // fires when search input changes
+  debounce?: boolean // debounces onSearchChange calls
   infinite?: SelectInfiniteProps // infinite scroll configuration
   disabled?: boolean // prevents interaction
   loading?: boolean // shows loading state

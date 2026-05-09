@@ -1,7 +1,7 @@
 import { Popover } from '@base-ui/react/popover'
 import { Select as SelectPrimitive } from '@base-ui/react/select'
 import { Check, ChevronDown, ChevronUp, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Badge } from '@/components/badge'
@@ -103,6 +103,38 @@ function toKey<O>(val: O): string {
     return ''
   }
   return typeof val === 'string' ? val : JSON.stringify(val)
+}
+
+function useSearchChange(
+  onSearchChange: ((query: string) => void) | undefined,
+  debounce: boolean | undefined,
+) {
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(
+    () => () => {
+      clearTimeout(timerRef.current)
+    },
+    [],
+  )
+
+  return useCallback(
+    (query: string) => {
+      if (!onSearchChange) {
+        return
+      }
+      if (!debounce) {
+        onSearchChange(query)
+        return
+      }
+      clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => onSearchChange(query), 300)
+    },
+    [
+      debounce,
+      onSearchChange,
+    ],
+  )
 }
 
 function Select<T, I = string, O = I>(props: SelectProps<T, I, O>) {
@@ -428,10 +460,12 @@ function SingleSearchableSelect<T, I = string, O = I>({
   renderValue,
   placeholder = 'Select...',
   searchPlaceholder = 'Search...',
+  searchValue,
   emptySection,
   leftSection,
   rightSection,
   onSearchChange,
+  debounce,
   infinite,
   disabled,
   loading,
@@ -462,8 +496,11 @@ function SingleSearchableSelect<T, I = string, O = I>({
 
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const isSearchControlled = searchValue !== undefined
+  const currentQuery = isSearchControlled ? searchValue : query
   const sentinelRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const handleSearchChange = useSearchChange(onSearchChange, debounce)
 
   const isControlled = value !== undefined
   const defaultKey =
@@ -487,9 +524,11 @@ function SingleSearchableSelect<T, I = string, O = I>({
   }
 
   const filteredOptions =
-    query && !onSearchChange
+    currentQuery && !onSearchChange
       ? options.filter((o) =>
-          getLabel(o, optionLabel).toLowerCase().includes(query.toLowerCase()),
+          getLabel(o, optionLabel)
+            .toLowerCase()
+            .includes(currentQuery.toLowerCase()),
         )
       : options
 
@@ -546,10 +585,11 @@ function SingleSearchableSelect<T, I = string, O = I>({
   ])
 
   useEffect(() => {
-    if (!open) {
+    if (!open && !isSearchControlled) {
       setQuery('')
     }
   }, [
+    isSearchControlled,
     open,
   ])
 
@@ -636,12 +676,14 @@ function SingleSearchableSelect<T, I = string, O = I>({
                 className={searchInput()}
                 data-testid="select-search-input"
                 onChange={(e) => {
-                  setQuery(e.target.value)
-                  onSearchChange?.(e.target.value)
+                  if (!isSearchControlled) {
+                    setQuery(e.target.value)
+                  }
+                  handleSearchChange(e.target.value)
                 }}
                 placeholder={searchPlaceholder}
                 ref={searchInputRef}
-                value={query}
+                value={currentQuery}
               />
             </div>
             <div
@@ -733,9 +775,12 @@ function MultipleSelect<T, I = string, O = I>({
   placeholder = 'Select...',
   searchable,
   searchPlaceholder = 'Search...',
+  searchValue,
   emptySection,
   leftSection,
   rightSection,
+  onSearchChange,
+  debounce,
   infinite,
   disabled,
   loading,
@@ -773,6 +818,9 @@ function MultipleSelect<T, I = string, O = I>({
   const sentinelRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const isSearchControlled = searchValue !== undefined
+  const currentQuery = isSearchControlled ? searchValue : query
+  const handleSearchChange = useSearchChange(onSearchChange, debounce)
 
   const selectedKeys: string[] = isControlled
     ? ((value as unknown as I[]) ?? []).map((v) => toKey(v as unknown as O))
@@ -797,9 +845,11 @@ function MultipleSelect<T, I = string, O = I>({
   }
 
   const filteredOptions =
-    searchable && query
+    searchable && currentQuery && !onSearchChange
       ? options.filter((o) =>
-          getLabel(o, optionLabel).toLowerCase().includes(query.toLowerCase()),
+          getLabel(o, optionLabel)
+            .toLowerCase()
+            .includes(currentQuery.toLowerCase()),
         )
       : options
 
@@ -963,9 +1013,14 @@ function MultipleSelect<T, I = string, O = I>({
                 <input
                   className={searchInput()}
                   data-testid="select-search-input"
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => {
+                    if (!isSearchControlled) {
+                      setQuery(e.target.value)
+                    }
+                    handleSearchChange(e.target.value)
+                  }}
                   placeholder={searchPlaceholder}
-                  value={query}
+                  value={currentQuery}
                 />
               </div>
             )}

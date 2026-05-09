@@ -230,6 +230,64 @@ export const SingleSearchable = {
   ),
 }
 
+export const SingleDebouncedSearch = {
+  render: () => {
+    const [search, setSearch] = useState('')
+    const filteredOptions = search
+      ? OPTIONS.filter((option) =>
+          option.label.toLowerCase().includes(search.toLowerCase()),
+        )
+      : OPTIONS
+
+    return (
+      <div className="flex w-full max-w-md flex-col gap-2">
+        <Select<Option>
+          debounce
+          mode="single"
+          onSearchChange={setSearch}
+          optionLabel="label"
+          options={filteredOptions}
+          optionValue="id"
+          placeholder="Search frameworks..."
+          searchable
+        />
+        <span className="text-muted-foreground text-xs">
+          Debounced search: {search || 'empty'}
+        </span>
+      </div>
+    )
+  },
+}
+
+export const SingleControlledSearch = {
+  render: () => {
+    const [search, setSearch] = useState('re')
+    const filteredOptions = search
+      ? OPTIONS.filter((option) =>
+          option.label.toLowerCase().includes(search.toLowerCase()),
+        )
+      : OPTIONS
+
+    return (
+      <div className="flex w-full max-w-md flex-col gap-2">
+        <Select<Option>
+          mode="single"
+          onSearchChange={setSearch}
+          optionLabel="label"
+          options={filteredOptions}
+          optionValue="id"
+          placeholder="Search frameworks..."
+          searchable
+          searchValue={search}
+        />
+        <span className="text-muted-foreground text-xs">
+          Controlled search: {search || 'empty'}
+        </span>
+      </div>
+    )
+  },
+}
+
 export const SingleGrouped = {
   render: () => (
     <Select<Option>
@@ -431,6 +489,35 @@ export const MultipleSearchable = {
       searchable
     />
   ),
+}
+
+export const MultipleDebouncedSearch = {
+  render: () => {
+    const [search, setSearch] = useState('')
+    const filteredOptions = search
+      ? OPTIONS.filter((option) =>
+          option.label.toLowerCase().includes(search.toLowerCase()),
+        )
+      : OPTIONS
+
+    return (
+      <div className="flex w-full max-w-md flex-col gap-2">
+        <Select<Option>
+          debounce
+          mode="multiple"
+          onSearchChange={setSearch}
+          optionLabel="label"
+          options={filteredOptions}
+          optionValue="id"
+          placeholder="Select frameworks..."
+          searchable
+        />
+        <span className="text-muted-foreground text-xs">
+          Debounced search: {search || 'empty'}
+        </span>
+      </div>
+    )
+  },
 }
 
 export const MultipleGrouped = {
