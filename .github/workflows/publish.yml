@@ -101,7 +101,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install -w-frozen-lockfile --ignore-scripts=true
 
       - name: Configure git
         run: |
