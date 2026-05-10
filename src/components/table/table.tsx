@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
-import { type CSSProperties, useState } from 'react'
+import { type CSSProperties, Fragment, type MouseEvent, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Checkbox } from '@/components/checkbox'
@@ -39,6 +39,18 @@ const {
   table,
 } = styles()
 
+const interactiveSelector = [
+  'a',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  '[role="button"]',
+  '[role="checkbox"]',
+  '[role="menuitem"]',
+  '[data-table-row-click-ignore]',
+].join(',')
+
 function Table<T>({
   columns,
   defaultSelectedKeys = [],
@@ -46,6 +58,7 @@ function Table<T>({
   hidePagination,
   itemKey,
   items,
+  layoutWidth,
   loading,
   onRowClick,
   onSelectionChange,
@@ -64,13 +77,20 @@ function Table<T>({
     : internalSelectedKeys
 
   const visibleColumns = columns.filter((col) => !col.hide)
-  const totalColumns =
-    visibleColumns.length + (selection === 'multiple' ? 1 : 0)
   const selectionColumnWidth = selection === 'multiple' ? 40 : 0
-  const totalWidth = visibleColumns.reduce(
+  const columnWidth = visibleColumns.reduce(
     (acc, col) => acc + (col.width ?? 1),
     selectionColumnWidth,
   )
+  const totalWidth = Math.max(columnWidth, layoutWidth ?? columnWidth)
+  const spacerWidth = totalWidth - columnWidth
+  const spacerIndex =
+    visibleColumns.length > 1 ? visibleColumns.length - 1 : undefined
+  const hasSpacer = spacerWidth > 0 && spacerIndex !== undefined
+  const totalColumns =
+    visibleColumns.length +
+    (selection === 'multiple' ? 1 : 0) +
+    (hasSpacer ? 1 : 0)
 
   const isEmpty = !items || items.length === 0
 
@@ -114,6 +134,20 @@ function Table<T>({
     }
   }
 
+  const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, item: T) => {
+    if (!onRowClick) {
+      return
+    }
+
+    const target = event.target
+
+    if (target instanceof Element && target.closest(interactiveSelector)) {
+      return
+    }
+
+    onRowClick(item)
+  }
+
   const getSortIcon = (columnKey: string) => {
     if (sort === columnKey) {
       return <ArrowUp className="size-3.5" />
@@ -144,10 +178,22 @@ function Table<T>({
     return undefined
   }
 
+  const getColumnAlign = (
+    index: number,
+    align?: 'left' | 'center' | 'right',
+  ) => (index === visibleColumns.length - 1 ? 'right' : align)
+
   const getColumnStyle = (width?: number): CSSProperties | undefined =>
     width
       ? {
           width: `${(width / totalWidth) * 100}%`,
+        }
+      : undefined
+
+  const getSpacerStyle = (): CSSProperties | undefined =>
+    hasSpacer
+      ? {
+          width: `${(spacerWidth / totalWidth) * 100}%`,
         }
       : undefined
 
@@ -166,12 +212,7 @@ function Table<T>({
   return (
     <div className={root()}>
       <div className={container()}>
-        <table
-          className={table()}
-          style={{
-            minWidth: totalWidth,
-          }}
-        >
+        <table className={table()}>
           <colgroup>
             {selection === 'multiple' && (
               <col
@@ -180,11 +221,13 @@ function Table<T>({
                 }}
               />
             )}
-            {visibleColumns.map((col) => (
-              <col
-                key={col.key}
-                style={getColumnStyle(col.width)}
-              />
+            {visibleColumns.map((col, index) => (
+              <Fragment key={col.key}>
+                {hasSpacer && index === spacerIndex && (
+                  <col style={getSpacerStyle()} />
+                )}
+                <col style={getColumnStyle(col.width)} />
+              </Fragment>
             ))}
           </colgroup>
           <thead className={header()}>
@@ -201,37 +244,48 @@ function Table<T>({
                   />
                 </th>
               )}
-              {visibleColumns.map((col) => (
-                <th
-                  className={head({
-                    className: getAlignClass(col.align),
-                  })}
-                  key={col.key}
-                >
-                  {col.sorter ? (
-                    <button
-                      className={sortButton({
-                        className: getContentAlignClass(col.align),
+              {visibleColumns.map((col, index) => {
+                const align = getColumnAlign(index, col.align)
+
+                return (
+                  <Fragment key={col.key}>
+                    {hasSpacer && index === spacerIndex && (
+                      <th
+                        aria-hidden
+                        className={head()}
+                      />
+                    )}
+                    <th
+                      className={head({
+                        className: getAlignClass(align),
                       })}
-                      onClick={() => handleSort(col.key)}
-                      style={getColumnContentStyle(col.width)}
-                      type="button"
                     >
-                      {col.label}
-                      {getSortIcon(col.key)}
-                    </button>
-                  ) : (
-                    <div
-                      className={cellContent({
-                        className: getContentAlignClass(col.align),
-                      })}
-                      style={getColumnContentStyle(col.width)}
-                    >
-                      {col.label}
-                    </div>
-                  )}
-                </th>
-              ))}
+                      {col.sorter ? (
+                        <button
+                          className={sortButton({
+                            className: getContentAlignClass(align),
+                          })}
+                          onClick={() => handleSort(col.key)}
+                          style={getColumnContentStyle(col.width)}
+                          type="button"
+                        >
+                          {col.label}
+                          {getSortIcon(col.key)}
+                        </button>
+                      ) : (
+                        <div
+                          className={cellContent({
+                            className: getContentAlignClass(align),
+                          })}
+                          style={getColumnContentStyle(col.width)}
+                        >
+                          {col.label}
+                        </div>
+                      )}
+                    </th>
+                  </Fragment>
+                )
+              })}
             </tr>
           </thead>
           <tbody className={body()}>
@@ -256,7 +310,7 @@ function Table<T>({
                     })}
                     data-state={isSelected ? 'selected' : undefined}
                     key={key}
-                    onClick={() => onRowClick?.(item)}
+                    onClick={(event) => handleRowClick(event, item)}
                   >
                     {selection === 'multiple' && (
                       <td
@@ -270,25 +324,36 @@ function Table<T>({
                         />
                       </td>
                     )}
-                    {visibleColumns.map((col) => (
-                      <td
-                        className={cell({
-                          className: getAlignClass(col.align),
-                        })}
-                        key={col.key}
-                      >
-                        <div
-                          className={cellContent({
-                            className: getContentAlignClass(col.align),
-                          })}
-                          style={getColumnContentStyle(col.width)}
-                        >
-                          {col.selector
-                            ? col.selector(item, index)
-                            : (item[col.key as keyof T] as React.ReactNode)}
-                        </div>
-                      </td>
-                    ))}
+                    {visibleColumns.map((col, columnIndex) => {
+                      const align = getColumnAlign(columnIndex, col.align)
+
+                      return (
+                        <Fragment key={col.key}>
+                          {hasSpacer && columnIndex === spacerIndex && (
+                            <td
+                              aria-hidden
+                              className={cell()}
+                            />
+                          )}
+                          <td
+                            className={cell({
+                              className: getAlignClass(align),
+                            })}
+                          >
+                            <div
+                              className={cellContent({
+                                className: getContentAlignClass(align),
+                              })}
+                              style={getColumnContentStyle(col.width)}
+                            >
+                              {col.selector
+                                ? col.selector(item, index)
+                                : (item[col.key as keyof T] as React.ReactNode)}
+                            </div>
+                          </td>
+                        </Fragment>
+                      )
+                    })}
                   </tr>
                 )
               })

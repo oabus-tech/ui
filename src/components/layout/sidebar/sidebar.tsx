@@ -214,10 +214,12 @@ const structureStyles = tv({
     ],
     content: [
       'no-scrollbar flex min-h-0 flex-1 flex-col gap-0 overflow-auto',
-      'group-data-[collapsible=icon]:overflow-hidden',
+      'group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:overflow-hidden',
     ],
-    footer: 'flex flex-col gap-2 p-2',
-    group: 'relative flex w-full min-w-0 flex-col p-2',
+    footer:
+      'flex flex-col gap-2 p-2 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-0',
+    group:
+      'relative flex w-full min-w-0 flex-col p-2 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-0',
     groupAction: [
       'absolute top-3.5 right-3 flex aspect-square w-5 cursor-pointer items-center justify-center rounded-md p-0',
       'text-sidebar-foreground outline-hidden ring-sidebar-ring transition-transform',
@@ -225,15 +227,17 @@ const structureStyles = tv({
       'after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
       'focus-visible:ring-2 md:after:hidden [&>svg]:size-4 [&>svg]:shrink-0',
     ],
-    groupContent: 'w-full text-sm',
+    groupContent:
+      'w-full text-sm group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center',
     groupLabel: [
       'flex h-8 shrink-0 items-center rounded-md px-2 font-medium text-sidebar-foreground/70 text-xs',
       'outline-hidden ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear',
       'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
       'focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
     ],
-    header: 'flex flex-col gap-2 p-2',
-    menu: 'flex w-full min-w-0 flex-col gap-1',
+    header:
+      'flex flex-col gap-2 p-2 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-0',
+    menu: 'flex w-full min-w-0 flex-col gap-1 group-data-[collapsible=icon]:w-auto group-data-[collapsible=icon]:items-center',
     menuBadge: [
       'pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center',
       'justify-center rounded-md px-1 font-medium text-sidebar-foreground text-xs tabular-nums',
@@ -241,7 +245,7 @@ const structureStyles = tv({
       'peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1',
       'peer-data-active/menu-button:text-sidebar-accent-foreground',
     ],
-    menuItem: 'group/menu-item relative',
+    menuItem: 'group/menu-item relative group-data-[collapsible=icon]:w-auto',
     menuSub: [
       'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 gap-1 border-sidebar-border border-l px-2.5 py-0.5',
       'group-data-[collapsible=icon]:hidden',
@@ -273,13 +277,13 @@ const menuButtonStyles = tv({
     'peer/menu-button group/menu-button flex w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm',
     'outline-hidden ring-sidebar-ring transition-[width,height,padding]',
     'group-has-data-[sidebar=menu-action]/menu-item:pr-8',
-    'group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2!',
+    'group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2! group-has-data-[sidebar=menu-action]/menu-item:group-data-[collapsible=icon]:pr-2!',
     'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2',
     'active:bg-sidebar-accent active:text-sidebar-accent-foreground',
     'disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50',
     'data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground',
     'data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground',
-    '[&>span:last-child]:truncate [&_svg]:size-4 [&_svg]:shrink-0',
+    '[&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:hidden [&_svg]:size-4 [&_svg]:shrink-0',
   ],
   defaultVariants: {
     isActive: false,
