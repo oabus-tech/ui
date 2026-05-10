@@ -22,6 +22,8 @@ concurrency:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+  TF_DIR: terraform/environments/storybook
   STORYBOOK_DOMAIN: ui.oabus.com.br
   STORYBOOK_DIST: storybook-static
   STORYBOOK_URL: https://ui.oabus.com.br
@@ -55,22 +57,49 @@ jobs:
       - name: Build Storybook
         run: pnpm build-storybook
 
+      - name: Validate deploy configuration
+        run: |
+          test -n "$AWS_ACCOUNT_ID" || {
+            echo "Missing GitHub Environment variable: AWS_ACCOUNT_ID"
+            exit 1
+          }
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/oabus-frontend-deploy-prd
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+          terraform_wrapper: false
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_DIR }}
+        run: |
+          terraform init
+          terraform plan -out=tfplan
+          terraform apply -auto-approve tfplan
+
+      - name: Read Terraform outputs
+        id: tf
+        working-directory: ${{ env.TF_DIR }}
+        run: |
+          echo "bucket=$(terraform output -raw bucket_name)" >> "$GITHUB_OUTPUT"
+          echo "distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> "$GITHUB_OUTPUT"
+
       - name: Upload immutable assets
         run: |
-          aws s3 sync "$STORYBOOK_DIST" "s3://${{ vars.STORYBOOK_S3_BUCKET }}" \
+          aws s3 sync "$STORYBOOK_DIST" "s3://${{ steps.tf.outputs.bucket }}/" \
             --delete \
             --exclude "*.html" \
             --cache-control "public,max-age=31536000,immutable"
 
       - name: Upload html entrypoints
         run: |
-          aws s3 sync "$STORYBOOK_DIST" "s3://${{ vars.STORYBOOK_S3_BUCKET }}" \
+          aws s3 sync "$STORYBOOK_DIST" "s3://${{ steps.tf.outputs.bucket }}/" \
             --exclude "*" \
             --include "*.html" \
             --cache-control "no-cache,no-store,must-revalidate" \
@@ -79,7 +108,7 @@ jobs:
       - name: Invalidate CDN
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id "${{ vars.STORYBOOK_CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --distribution-id "${{ steps.tf.outputs.distribution_id }}" \
             --paths "/*"
 
       - name: Check public DNS
