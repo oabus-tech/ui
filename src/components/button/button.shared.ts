@@ -24,6 +24,7 @@ export const buttonShared = tv({
       'icon-lg': 'size-11',
       'icon-md': 'size-10',
       'icon-sm': 'size-9',
+      'icon-xs': 'size-6 rounded-md [&_svg:not([class*=size-])]:size-3',
       lg: 'h-11 gap-1.5 px-3',
       md: 'h-10 gap-1.5 px-2.5',
       sm: 'h-9 gap-1 px-2.5 text-[0.8rem] [&_svg:not([class*=size-])]:size-3.5',

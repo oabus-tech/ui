@@ -25,7 +25,7 @@ const styles = tv({
   slots: {
     dayButton: [
       // base button (from shadcn Button output)
-      'group/button shrink-0 items-center justify-center rounded-lg border-transparent bg-clip-padding',
+      'group/button shrink-0 cursor-pointer items-center justify-center rounded-lg border-transparent bg-clip-padding',
       'select-none whitespace-nowrap text-sm outline-none transition-all',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
       'active:not-aria-[haspopup]:translate-y-px',
@@ -74,12 +74,12 @@ function buildClassNames() {
   const d = getDefaultClassNames()
   return {
     button_next: cn(
-      'inline-flex size-(--cell-size) shrink-0 items-center justify-center rounded-lg p-0 select-none',
+      'inline-flex size-(--cell-size) shrink-0 cursor-pointer items-center justify-center rounded-lg p-0 select-none',
       'hover:bg-muted hover:text-foreground aria-disabled:opacity-50',
       d.button_next,
     ),
     button_previous: cn(
-      'inline-flex size-(--cell-size) shrink-0 items-center justify-center rounded-lg p-0 select-none',
+      'inline-flex size-(--cell-size) shrink-0 cursor-pointer items-center justify-center rounded-lg p-0 select-none',
       'hover:bg-muted hover:text-foreground aria-disabled:opacity-50',
       d.button_previous,
     ),

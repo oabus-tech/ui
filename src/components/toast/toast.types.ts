@@ -5,7 +5,7 @@
  * Provides success, error, warning, info, and loading variants.
  *
  * Behavior:
- * - Toasts appear at bottom-right (configurable)
+ * - Toasts appear at top-center (configurable)
  * - Auto-dismiss after timeout
  * - Color-coded left border: green (success), red (error), yellow (warning), blue (info)
  * - Custom icons per variant

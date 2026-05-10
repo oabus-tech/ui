@@ -19,7 +19,7 @@ const confirm = tv({
     header: 'confirm-header flex flex-col gap-1.5',
     popup: [
       'confirm-popup fixed top-1/2 left-1/2 z-50 grid w-full max-w-sm',
-      '-translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4',
+      '-translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-5',
       'text-popover-foreground shadow-xl outline-none ring-1 ring-foreground/10',
       'data-open:fade-in-0 data-open:zoom-in-95 duration-100 data-open:animate-in',
       'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',

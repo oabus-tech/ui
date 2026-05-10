@@ -60,7 +60,8 @@ const rootStyles = tv({
 
 const triggerStyles = tv({
   base: buttonShared({
-    className: 'gap-1 rounded-s-lg rounded-e-none border-r-0 px-3 focus:z-10',
+    className:
+      'gap-1 rounded-s-lg rounded-e-none border-r-0 bg-transparent px-3 focus:z-10 aria-expanded:border-ring aria-expanded:ring-3 aria-expanded:ring-ring/50 data-popup-open:border-ring data-popup-open:ring-3 data-popup-open:ring-ring/50 dark:bg-input/30',
     variant: 'outline',
   }),
   defaultVariants: {
@@ -76,7 +77,7 @@ const triggerStyles = tv({
 })
 
 const symbolStyles = tv({
-  base: 'inline-flex shrink-0 items-center justify-center rounded-s-lg rounded-e-none border border-border border-r-0 bg-background px-3 font-medium text-muted-foreground text-sm',
+  base: 'inline-flex shrink-0 items-center justify-center rounded-s-lg rounded-e-none border border-border border-r-0 bg-transparent px-3 font-medium text-muted-foreground text-sm dark:bg-input/30',
   defaultVariants: {
     size: 'md',
   },

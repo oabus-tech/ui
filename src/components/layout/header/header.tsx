@@ -18,7 +18,7 @@ const styles = tv({
       sm: 'h-10',
     },
     sticky: {
-      true: 'sticky top-0 z-40',
+      true: 'sticky top-0 z-50 bg-background',
     },
   },
 })

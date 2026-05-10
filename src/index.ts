@@ -65,6 +65,7 @@ export * from './components/theme-provider'
 export * from './components/time-input'
 export * from './components/toast'
 export * from './components/tooltip'
+export * from './components/truncated-text'
 export * from './components/typography'
 export * from './components/uploader'
 // Hooks

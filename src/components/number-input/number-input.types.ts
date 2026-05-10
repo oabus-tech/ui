@@ -24,9 +24,9 @@
 import type { InputSize } from '@/components/input/input.types'
 
 export type NumberInputProps = {
-  value?: number
-  defaultValue?: number
-  onChange?: (value: number) => void
+  value?: number | null
+  defaultValue?: number | null
+  onChange?: (value: number | null) => void
   step?: number
   min?: number
   max?: number

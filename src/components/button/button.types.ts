@@ -25,7 +25,14 @@
 
 export type ButtonType = 'button' | 'submit' | 'reset'
 
-export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon-sm' | 'icon-md' | 'icon-lg'
+export type ButtonSize =
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'icon-xs'
+  | 'icon-sm'
+  | 'icon-md'
+  | 'icon-lg'
 
 export type ButtonVariant =
   | 'default'

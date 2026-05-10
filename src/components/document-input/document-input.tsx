@@ -31,7 +31,8 @@ const rootStyles = tv({
 
 const triggerStyles = tv({
   base: buttonShared({
-    className: 'rounded-s-lg rounded-e-none border-r-0 px-3 focus:z-10',
+    className:
+      'rounded-s-lg rounded-e-none border-r-0 bg-transparent px-3 focus:z-10 aria-expanded:border-ring aria-expanded:ring-3 aria-expanded:ring-ring/50 data-popup-open:border-ring data-popup-open:ring-3 data-popup-open:ring-ring/50 dark:bg-input/30',
     variant: 'outline',
   }),
   defaultVariants: {

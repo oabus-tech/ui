@@ -80,11 +80,13 @@ const styles = tv({
       'transition-opacity duration-200 ease-in-out',
       'data-ending-style:opacity-0 data-starting-style:opacity-0',
     ],
-    body: 'sheet-body flex-1 overflow-y-auto p-4',
+    body: 'sheet-body flex-1 overflow-y-auto p-5',
+    close: 'sheet-close absolute top-4 right-4',
     description: 'sheet-description text-muted-foreground text-sm',
-    footer: 'sheet-footer flex flex-row-reverse gap-2 p-4 pt-0',
-    header: 'sheet-header flex items-start justify-between gap-2 p-4 pb-0',
-    headerContent: 'sheet-header-content flex flex-col gap-1',
+    footer: 'sheet-footer flex flex-row-reverse gap-3 p-5 pt-0',
+    header:
+      'sheet-header relative flex items-start justify-between gap-4 p-5 pb-0',
+    headerContent: 'sheet-header-content flex flex-col gap-2',
     popup: [
       'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
       'transition duration-200 ease-in-out',
@@ -95,9 +97,9 @@ const styles = tv({
   variants: {
     bordered: {
       true: {
-        body: 'pb-2',
-        footer: 'pt-2',
-        header: 'pb-2',
+        body: 'pb-4',
+        footer: 'pt-4',
+        header: 'pb-4',
       },
     },
     side: {
@@ -178,6 +180,7 @@ function SheetHeader({
   const { header, headerContent } = styles({
     bordered,
   })
+  const { close } = styles()
 
   return (
     <div
@@ -186,18 +189,20 @@ function SheetHeader({
     >
       <div className={headerContent()}>{children}</div>
       {closable && (
-        <Dialog.Close
-          data-testid="sheet-close"
-          render={
-            <Button
-              size="icon-sm"
-              variant="ghost"
-            />
-          }
-        >
-          <X />
-          <span className="sr-only">Close</span>
-        </Dialog.Close>
+        <div className={close()}>
+          <Dialog.Close
+            data-testid="sheet-close"
+            render={
+              <Button
+                size="icon-sm"
+                variant="ghost"
+              />
+            }
+          >
+            <X />
+            <span className="sr-only">Close</span>
+          </Dialog.Close>
+        </div>
       )}
     </div>
   )

@@ -9,6 +9,8 @@ import { Loader } from '@/components/loader'
 
 import type { SelectProps } from './select.types'
 
+const SELECT_POPUP_OFFSET = 8
+
 const select = tv({
   defaultVariants: {
     size: 'md',
@@ -24,9 +26,9 @@ const select = tv({
     ],
     empty: 'select-empty px-3 py-4 text-center text-muted-foreground text-sm',
     groupLabel:
-      'select-group-label px-1.5 py-1 font-medium text-muted-foreground text-xs',
+      'select-group-label px-2.5 py-1.5 font-medium text-muted-foreground text-xs',
     item: [
-      'select-item relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5',
+      'select-item relative flex min-h-9 cursor-pointer items-center gap-2 rounded-md py-2 pr-8 pl-2.5',
       'select-none text-sm outline-none',
       'hover:bg-accent hover:text-accent-foreground',
       'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
@@ -35,9 +37,9 @@ const select = tv({
     ],
     itemCheck:
       'select-item-check pointer-events-none absolute right-2 flex size-4 items-center justify-center',
-    list: 'select-list min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-1',
+    list: 'select-list min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-1.5',
     multipleItem: [
-      'select-multiple-item relative flex cursor-default items-center gap-2 rounded-md px-1.5 py-1',
+      'select-multiple-item relative my-1 flex min-h-9 cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2',
       'select-none text-sm outline-none',
       'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
       'data-disabled:pointer-events-none data-disabled:opacity-50',
@@ -58,15 +60,17 @@ const select = tv({
     ],
     sentinel: 'select-sentinel h-1',
     trigger: [
-      'select-trigger flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
+      'select-trigger flex w-full min-w-0 cursor-pointer items-center justify-between gap-1.5 rounded-lg',
       'whitespace-nowrap border border-input bg-transparent px-2.5 text-sm',
       'select-none outline-none transition-colors',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-      'disabled:cursor-not-allowed disabled:opacity-50',
+      'data-popup-open:border-ring data-popup-open:ring-3 data-popup-open:ring-ring/50',
+      'disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
       'data-placeholder:text-muted-foreground',
+      'dark:bg-input/30 dark:disabled:bg-input/80',
     ],
     triggerValue:
-      'select-trigger-value flex flex-1 items-center gap-1.5 overflow-hidden text-left',
+      'select-trigger-value flex flex-1 items-center gap-2 overflow-hidden text-left',
   },
   variants: {
     size: {
@@ -360,7 +364,7 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
         <SelectPrimitive.Positioner
           alignItemWithTrigger={false}
           className="isolate z-50"
-          sideOffset={4}
+          sideOffset={SELECT_POPUP_OFFSET}
         >
           <SelectPrimitive.Popup
             className={popup()}
@@ -661,7 +665,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
       <Popover.Portal>
         <Popover.Positioner
           className="isolate z-50"
-          sideOffset={4}
+          sideOffset={SELECT_POPUP_OFFSET}
         >
           <Popover.Popup
             className={popup()}
@@ -949,7 +953,7 @@ function MultipleSelect<T, I = string, O = I>({
                   >
                     {renderValue ? renderValue(o) : getLabel(o, optionLabel)}
                     <button
-                      className="pointer-events-auto ml-0.5 rounded-full opacity-60 hover:opacity-100"
+                      className="pointer-events-auto ml-1 cursor-pointer rounded-full opacity-60 hover:opacity-100"
                       onClick={(e) => {
                         e.stopPropagation()
                         toggle(key, o)
@@ -999,7 +1003,7 @@ function MultipleSelect<T, I = string, O = I>({
       <Popover.Portal>
         <Popover.Positioner
           className="isolate z-50"
-          sideOffset={4}
+          sideOffset={SELECT_POPUP_OFFSET}
         >
           <Popover.Popup
             className={popup()}

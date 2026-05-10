@@ -71,7 +71,7 @@ const warningSlots = toastStyles({
   variant: 'warning',
 })
 
-function Toast({ position = 'bottom-right', theme = 'system' }: ToastProps) {
+function Toast({ position = 'top-center', theme = 'system' }: ToastProps) {
   return (
     <Sonner
       className={toastRoot()}

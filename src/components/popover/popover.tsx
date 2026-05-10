@@ -19,7 +19,10 @@ const popover = tv({
       'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',
     ],
     positioner: 'isolate z-50',
-    trigger: 'popover-trigger inline-flex',
+    trigger: [
+      'popover-trigger inline-flex',
+      'data-popup-open:[&_.input-field]:border-ring data-popup-open:[&_.input-field]:ring-3 data-popup-open:[&_.input-field]:ring-ring/50',
+    ],
   },
 })
 

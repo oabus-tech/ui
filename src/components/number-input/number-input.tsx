@@ -1,5 +1,6 @@
 import { NumberField } from '@base-ui/react/number-field'
 import { Minus, Plus } from 'lucide-react'
+import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import type { NumberInputProps } from './number-input.types'
@@ -10,7 +11,7 @@ const numberInput = tv({
   },
   slots: {
     btn: [
-      'number-input-btn flex items-center border-input px-2',
+      'number-input-btn flex cursor-pointer items-center border-input px-2',
       'bg-transparent text-muted-foreground transition-colors',
       'hover:bg-muted hover:text-foreground',
       'disabled:pointer-events-none disabled:opacity-50',
@@ -23,8 +24,10 @@ const numberInput = tv({
     ],
     group: [
       'number-input-group flex w-full overflow-hidden rounded-lg border border-input',
-      'transition-colors',
+      'bg-transparent transition-colors',
       'has-focus-visible:border-ring has-focus-visible:ring-3 has-focus-visible:ring-ring/50',
+      'data-disabled:pointer-events-none data-disabled:bg-input/50 data-disabled:opacity-50',
+      'dark:bg-input/30 dark:data-disabled:bg-input/80',
     ],
     root: 'number-input-root relative flex w-full items-center',
   },
@@ -55,6 +58,9 @@ function NumberInput({
   placeholder,
   grouping = true,
 }: NumberInputProps) {
+  const [displayValue, setDisplayValue] = useState<number | null | undefined>(
+    undefined,
+  )
   const { root, group, field, btn } = numberInput({
     size,
   })
@@ -65,6 +71,27 @@ function NumberInput({
         useGrouping: false,
       }
 
+  const resolvedValue = displayValue !== undefined ? displayValue : value
+
+  function handleValueChange(nextValue: number | null) {
+    if (nextValue === null) {
+      setDisplayValue(null)
+      onChange?.(null)
+      return
+    }
+
+    setDisplayValue(undefined)
+    onChange?.(nextValue)
+  }
+
+  function handleValueCommitted(nextValue: number | null) {
+    if (nextValue === null) {
+      return
+    }
+
+    setDisplayValue(undefined)
+  }
+
   return (
     <div
       className={root()}
@@ -72,17 +99,19 @@ function NumberInput({
     >
       <NumberField.Root
         className="w-full"
-        defaultValue={defaultValue}
+        defaultValue={defaultValue ?? undefined}
         disabled={disabled}
         format={resolvedFormat}
         max={max}
         min={min}
-        onValueChange={(val) => onChange?.(val ?? 0)}
+        onValueChange={handleValueChange}
+        onValueCommitted={handleValueCommitted}
         step={step}
-        value={value}
+        value={resolvedValue}
       >
         <NumberField.Group
           className={group()}
+          data-disabled={disabled ? '' : undefined}
           data-testid="number-input-group"
         >
           <NumberField.Decrement

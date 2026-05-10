@@ -14,13 +14,14 @@ const tagsInput = tv({
     field:
       'tags-input-field min-w-20 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground',
     removeBtn:
-      'tags-input-remove ml-0.5 rounded-full opacity-60 hover:opacity-100',
+      'tags-input-remove ml-0.5 cursor-pointer rounded-full opacity-60 hover:opacity-100',
     root: [
       'tags-input-root flex w-full flex-wrap items-center gap-1.5',
       'rounded-lg border border-input px-2.5 py-1.5',
-      'transition-colors',
+      'bg-transparent transition-colors',
       'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
-      'has-disabled:pointer-events-none has-disabled:opacity-50',
+      'has-disabled:pointer-events-none has-disabled:bg-input/50 has-disabled:opacity-50',
+      'dark:bg-input/30 dark:has-disabled:bg-input/80',
     ],
   },
   variants: {

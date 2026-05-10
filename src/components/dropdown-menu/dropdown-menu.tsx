@@ -1,5 +1,5 @@
 import { Menu } from '@base-ui/react/menu'
-import { CheckIcon, ChevronRightIcon } from 'lucide-react'
+import { CheckIcon } from 'lucide-react'
 import { isValidElement, type PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
@@ -11,9 +11,9 @@ import type {
   DropdownMenuProps,
   DropdownMenuRadioGroupProps,
   DropdownMenuRadioItemProps,
-  DropdownMenuSubContentProps,
-  DropdownMenuSubProps,
-  DropdownMenuSubTriggerProps,
+  // DropdownMenuSubContentProps,
+  // DropdownMenuSubProps,
+  // DropdownMenuSubTriggerProps,
   DropdownMenuTriggerProps,
 } from './dropdown-menu.types'
 
@@ -23,23 +23,23 @@ const styles = tv({
   },
   slots: {
     checkboxItem:
-      'relative flex cursor-default select-none items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+      'relative flex cursor-pointer select-none items-center gap-2 rounded-md py-2 pr-8 pl-2.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
     indicator:
       'pointer-events-none absolute right-2 flex items-center justify-center',
-    item: 'group/dropdown-menu-item relative flex cursor-default select-none items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
-    label: 'px-1.5 py-1 font-medium text-muted-foreground text-xs',
+    item: 'group/dropdown-menu-item relative flex min-h-9 cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-2 text-sm outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+    label: 'px-2.5 py-1.5 font-medium text-muted-foreground text-xs',
     popup:
-      'data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--available-height) w-(--anchor-width) min-w-32 origin-(--transform-origin) overflow-y-auto overflow-x-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md outline-none ring-1 ring-foreground/10 duration-100 data-closed:animate-out data-open:animate-in data-closed:overflow-hidden',
+      'data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--available-height) w-(--anchor-width) min-w-40 origin-(--transform-origin) overflow-y-auto overflow-x-hidden rounded-lg bg-popover p-1.5 text-popover-foreground shadow-md outline-none ring-1 ring-foreground/10 duration-100 data-closed:animate-out data-open:animate-in data-closed:overflow-hidden',
     positioner: 'isolate z-50 outline-none',
     radioItem:
-      'relative flex cursor-default select-none items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
-    separator: '-mx-1 my-1 h-px bg-border',
+      'relative flex cursor-pointer select-none items-center gap-2 rounded-md py-2 pr-8 pl-2.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+    separator: '-mx-1.5 my-1.5 h-px bg-border',
     shortcut:
       'ml-auto text-muted-foreground text-xs tracking-widest group-focus/dropdown-menu-item:text-accent-foreground',
     subPopup:
       'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--available-height) w-auto min-w-24 origin-(--transform-origin) overflow-y-auto overflow-x-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md outline-none ring-1 ring-foreground/10 duration-100 data-closed:animate-out data-open:animate-in',
     subTrigger:
-      'flex cursor-default select-none items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+      'flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-2 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground [&_svg:not([class*="size-"])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
     subTriggerIcon: 'ml-auto size-4',
   },
   variants: {
@@ -236,45 +236,45 @@ function DropdownMenuGroup({ children }: PropsWithChildren) {
   return <Menu.Group>{children}</Menu.Group>
 }
 
-function _DropdownMenuSub({
-  children,
-}: PropsWithChildren<DropdownMenuSubProps>) {
-  return <Menu.SubmenuRoot>{children}</Menu.SubmenuRoot>
-}
+// function _DropdownMenuSub({
+//   children,
+// }: PropsWithChildren<DropdownMenuSubProps>) {
+//   return <Menu.SubmenuRoot>{children}</Menu.SubmenuRoot>
+// }
 
-function _DropdownMenuSubTrigger({
-  children,
-  inset,
-}: PropsWithChildren<DropdownMenuSubTriggerProps>) {
-  const s = styles({
-    inset,
-  })
-  return (
-    <Menu.SubmenuTrigger className={s.subTrigger()}>
-      {children}
-      <ChevronRightIcon className={s.subTriggerIcon()} />
-    </Menu.SubmenuTrigger>
-  )
-}
+// function _DropdownMenuSubTrigger({
+//   children,
+//   inset,
+// }: PropsWithChildren<DropdownMenuSubTriggerProps>) {
+//   const s = styles({
+//     inset,
+//   })
+//   return (
+//     <Menu.SubmenuTrigger className={s.subTrigger()}>
+//       {children}
+//       <ChevronRightIcon className={s.subTriggerIcon()} />
+//     </Menu.SubmenuTrigger>
+//   )
+// }
 
-function _DropdownMenuSubContent({
-  children,
-}: PropsWithChildren<DropdownMenuSubContentProps>) {
-  const s = styles()
-  return (
-    <Menu.Portal>
-      <Menu.Positioner
-        align="start"
-        alignOffset={-3}
-        className={s.positioner()}
-        side="right"
-        sideOffset={0}
-      >
-        <Menu.Popup className={s.subPopup()}>{children}</Menu.Popup>
-      </Menu.Positioner>
-    </Menu.Portal>
-  )
-}
+// function _DropdownMenuSubContent({
+//   children,
+// }: PropsWithChildren<DropdownMenuSubContentProps>) {
+//   const s = styles()
+//   return (
+//     <Menu.Portal>
+//       <Menu.Positioner
+//         align="start"
+//         alignOffset={-3}
+//         className={s.positioner()}
+//         side="right"
+//         sideOffset={0}
+//       >
+//         <Menu.Popup className={s.subPopup()}>{children}</Menu.Popup>
+//       </Menu.Positioner>
+//     </Menu.Portal>
+//   )
+// }
 
 const DropdownMenu = Object.assign(DropdownMenuRoot, {
   CheckboxItem: DropdownMenuCheckboxItem,

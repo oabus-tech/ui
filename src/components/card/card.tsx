@@ -5,12 +5,12 @@ import type { CardFooterProps, CardHeaderProps, CardProps } from './card.types'
 
 const card = tv({
   slots: {
-    content: 'card-content px-4',
+    content: 'card-content px-5',
     description: 'card-description text-muted-foreground text-sm',
-    footer: 'card-footer flex items-center px-4',
+    footer: 'card-footer flex items-center px-5',
     header:
-      'card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-4',
-    root: 'card-root flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground text-sm shadow-sm ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0',
+      'card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-5',
+    root: 'card-root flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-5 text-card-foreground text-sm shadow-sm ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0',
     separator: 'card-separator border-t',
     title: 'card-title font-heading font-medium text-base leading-snug',
   },
@@ -22,12 +22,12 @@ const card = tv({
     },
     footerBordered: {
       true: {
-        footer: 'rounded-b-xl border-t bg-muted/50 py-4',
+        footer: 'rounded-b-xl border-t bg-muted/50 py-5',
       },
     },
     headerBordered: {
       true: {
-        header: 'border-b pb-4',
+        header: 'border-b pb-5',
       },
     },
   },

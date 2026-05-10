@@ -61,6 +61,7 @@ const trigger = tv({
     'rounded-lg border border-input bg-transparent px-2.5 py-1 text-left',
     'text-base outline-none transition-colors md:text-sm',
     'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+    'data-popup-open:border-ring data-popup-open:ring-3 data-popup-open:ring-ring/50',
     'disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
     'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20',
     'dark:bg-input/30 dark:disabled:bg-input/80',
@@ -127,7 +128,8 @@ const hexInput = tv({
     'font-mono text-sm uppercase outline-none transition-colors',
     'placeholder:text-muted-foreground placeholder:normal-case',
     'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-    'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
+    'disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
+    'dark:bg-input/30 dark:disabled:bg-input/80',
   ],
 })
 
