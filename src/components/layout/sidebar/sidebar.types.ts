@@ -24,6 +24,7 @@ export type SidebarState = 'expanded' | 'collapsed'
 
 export type SidebarContextValue = {
   state: SidebarState
+  variant: SidebarVariant
   open: boolean
   setOpen: (open: boolean | ((current: boolean) => boolean)) => void
   openMobile: boolean
@@ -40,6 +41,7 @@ export type SidebarProviderProps = React.ComponentProps<'div'> & {
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  variant?: SidebarVariant
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────

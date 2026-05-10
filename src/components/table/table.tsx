@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
-import { useState } from 'react'
+import { type CSSProperties, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Checkbox } from '@/components/checkbox'
@@ -12,20 +12,22 @@ const styles = tv({
   slots: {
     body: '[&_tr:last-child]:border-0',
     cell: 'whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0',
-    container: 'relative w-full overflow-x-auto rounded-md border',
+    cellContent: 'min-w-0 max-w-full [&>*]:min-w-0',
+    container: 'relative w-full overflow-hidden rounded-md border',
     emptyCell: 'p-8 text-center text-muted-foreground',
     head: 'h-10 whitespace-nowrap px-2 text-left align-middle font-medium text-foreground [&:has([role=checkbox])]:pr-0',
-    header: '[&_tr]:border-b',
+    header: 'bg-muted/40 [&_tr]:border-b',
     root: 'table-root flex flex-col gap-4',
     row: 'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
     sortButton: 'inline-flex cursor-pointer select-none items-center gap-1',
-    table: 'w-full caption-bottom text-sm',
+    table: 'w-full table-fixed caption-bottom text-sm',
   },
 })
 
 const {
   body,
   cell,
+  cellContent,
   container,
   emptyCell,
   head,
@@ -63,6 +65,11 @@ function Table<T>({
   const visibleColumns = columns.filter((col) => !col.hide)
   const totalColumns =
     visibleColumns.length + (selection === 'multiple' ? 1 : 0)
+  const selectionColumnWidth = selection === 'multiple' ? 40 : 0
+  const totalWidth = visibleColumns.reduce(
+    (acc, col) => acc + (col.width ?? 1),
+    selectionColumnWidth,
+  )
 
   const isEmpty = !items || items.length === 0
 
@@ -126,6 +133,31 @@ function Table<T>({
     return 'text-left'
   }
 
+  const getContentAlignClass = (align?: 'left' | 'center' | 'right') => {
+    if (align === 'center') {
+      return 'mx-auto'
+    }
+    if (align === 'right') {
+      return 'ml-auto'
+    }
+    return undefined
+  }
+
+  const getColumnStyle = (width?: number): CSSProperties | undefined =>
+    width
+      ? {
+          width: `${(width / totalWidth) * 100}%`,
+        }
+      : undefined
+
+  const getColumnContentStyle = (width?: number): CSSProperties | undefined =>
+    width
+      ? {
+          maxWidth: `min(100%, ${width}px)`,
+          width: '100%',
+        }
+      : undefined
+
   const allSelected = Boolean(
     items && items.length > 0 && selectedKeys.length === items.length,
   )
@@ -134,6 +166,21 @@ function Table<T>({
     <div className={root()}>
       <div className={container()}>
         <table className={table()}>
+          <colgroup>
+            {selection === 'multiple' && (
+              <col
+                style={{
+                  width: `${(selectionColumnWidth / totalWidth) * 100}%`,
+                }}
+              />
+            )}
+            {visibleColumns.map((col) => (
+              <col
+                key={col.key}
+                style={getColumnStyle(col.width)}
+              />
+            ))}
+          </colgroup>
           <thead className={header()}>
             <tr className={row()}>
               {selection === 'multiple' && (
@@ -154,25 +201,28 @@ function Table<T>({
                     className: getAlignClass(col.align),
                   })}
                   key={col.key}
-                  style={
-                    col.width
-                      ? {
-                          width: col.width,
-                        }
-                      : undefined
-                  }
                 >
                   {col.sorter ? (
                     <button
-                      className={sortButton()}
+                      className={sortButton({
+                        className: getContentAlignClass(col.align),
+                      })}
                       onClick={() => handleSort(col.key)}
+                      style={getColumnContentStyle(col.width)}
                       type="button"
                     >
                       {col.label}
                       {getSortIcon(col.key)}
                     </button>
                   ) : (
-                    col.label
+                    <div
+                      className={cellContent({
+                        className: getContentAlignClass(col.align),
+                      })}
+                      style={getColumnContentStyle(col.width)}
+                    >
+                      {col.label}
+                    </div>
                   )}
                 </th>
               ))}
@@ -220,17 +270,17 @@ function Table<T>({
                           className: getAlignClass(col.align),
                         })}
                         key={col.key}
-                        style={
-                          col.width
-                            ? {
-                                width: col.width,
-                              }
-                            : undefined
-                        }
                       >
-                        {col.selector
-                          ? col.selector(item, index)
-                          : (item[col.key as keyof T] as React.ReactNode)}
+                        <div
+                          className={cellContent({
+                            className: getContentAlignClass(col.align),
+                          })}
+                          style={getColumnContentStyle(col.width)}
+                        >
+                          {col.selector
+                            ? col.selector(item, index)
+                            : (item[col.key as keyof T] as React.ReactNode)}
+                        </div>
                       </td>
                     ))}
                   </tr>

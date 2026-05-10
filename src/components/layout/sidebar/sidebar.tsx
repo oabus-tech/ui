@@ -180,10 +180,34 @@ const sidebarInnerStyles = tv({
 const sidebarInsetStyles = tv({
   base: [
     'relative flex w-full flex-1 flex-col bg-background',
-    'md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
     'md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0',
-    'md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm',
+    'md:peer-data-[variant=inset]:overflow-hidden md:peer-data-[variant=inset]:rounded-xl',
+    'md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:border-border md:peer-data-[variant=inset]:shadow-sm',
+    'md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
   ],
+  compoundVariants: [
+    {
+      class: 'md:ml-2',
+      state: 'collapsed',
+      variant: 'inset',
+    },
+  ],
+  defaultVariants: {
+    state: 'expanded',
+    variant: 'sidebar',
+  },
+  variants: {
+    state: {
+      collapsed: '',
+      expanded: '',
+    },
+    variant: {
+      floating: '',
+      inset:
+        'md:m-2 md:ml-0 md:overflow-hidden md:rounded-xl md:border md:border-border md:shadow-sm',
+      sidebar: '',
+    },
+  },
 })
 
 const structureStyles = tv({
@@ -380,6 +404,7 @@ function SidebarProvider({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
+  variant = 'sidebar',
   className,
   style,
   children,
@@ -444,6 +469,7 @@ function SidebarProvider({
       setOpenMobile,
       state,
       toggleSidebar,
+      variant,
     }),
     [
       collapsible,
@@ -453,6 +479,7 @@ function SidebarProvider({
       setOpen,
       toggleSidebar,
       state,
+      variant,
     ],
   )
 
@@ -484,13 +511,20 @@ function SidebarProvider({
 
 function SidebarRoot({
   side = 'left',
-  variant = 'sidebar',
+  variant: variantProp,
   collapsible = 'offcanvas',
   className,
   children,
   ...props
 }: SidebarProps) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const {
+    isMobile,
+    state,
+    openMobile,
+    setOpenMobile,
+    variant: contextVariant,
+  } = useSidebar()
+  const variant = variantProp ?? contextVariant
 
   // Register this sidebar's collapsible mode into the provider context so that
   // SidebarMenuCollapsible (and useSidebar() consumers) can read it.
@@ -613,10 +647,14 @@ function SidebarTrigger({ onClick }: SidebarTriggerProps) {
 // ─── SidebarInset ─────────────────────────────────────────────────────────────
 
 function SidebarInset({ className, ...props }: SidebarInsetProps) {
+  const { state, variant } = useSidebar()
+
   return (
     <main
       className={sidebarInsetStyles({
         className,
+        state,
+        variant,
       })}
       data-slot="sidebar-inset"
       {...props}

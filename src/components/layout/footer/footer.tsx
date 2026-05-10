@@ -10,7 +10,7 @@ const styles = tv({
   },
   variants: {
     bordered: {
-      true: 'border-t',
+      true: 'border-border border-t',
     },
     size: {
       lg: 'h-16',

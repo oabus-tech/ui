@@ -17,8 +17,8 @@ const styles = tv({
     {
       bordered: true,
       class: {
-        footer: 'border-t',
-        header: 'border-b',
+        footer: 'border-border border-t',
+        header: 'border-border border-b',
       },
     },
   ],
