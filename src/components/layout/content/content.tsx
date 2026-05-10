@@ -4,11 +4,11 @@ import { tv } from 'tailwind-variants'
 import type { LayoutContentProps } from './content.types'
 
 const outerStyles = tv({
-  base: 'layout-content flex-1 overflow-y-auto',
+  base: 'layout-content min-h-0 min-w-0 flex-1 overflow-auto',
 })
 
 const innerStyles = tv({
-  base: 'layout-content-inner mx-auto h-full w-full',
+  base: 'layout-content-inner mx-auto min-h-full w-full min-w-0',
   variants: {
     maxWidth: {
       lg: 'max-w-7xl',

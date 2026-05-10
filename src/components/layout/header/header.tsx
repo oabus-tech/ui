@@ -4,7 +4,7 @@ import { tv } from 'tailwind-variants'
 import type { LayoutHeaderProps } from './header.types'
 
 const styles = tv({
-  base: 'layout-header flex shrink-0 items-center px-4',
+  base: 'layout-header flex min-w-0 shrink-0 items-center px-4',
   defaultVariants: {
     size: 'md',
   },

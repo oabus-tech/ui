@@ -7,6 +7,7 @@ export * from './components/avatar'
 export * from './components/badge'
 // Layout
 export * from './components/box'
+export * from './components/brand'
 export * from './components/breadcrumb'
 // Existing
 export * from './components/button'

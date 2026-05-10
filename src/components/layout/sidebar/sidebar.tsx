@@ -39,7 +39,7 @@ const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'
-const SIDEBAR_WIDTH_ICON = '3rem'
+const SIDEBAR_WIDTH_ICON = '3.5rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 
 // ─── Contexts ─────────────────────────────────────────────────────────────────
@@ -82,7 +82,10 @@ function useSidebar(): SidebarContextValue {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const wrapperStyles = tv({
-  base: 'group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar',
+  base: [
+    'group/sidebar-wrapper flex h-svh min-h-0 w-full max-w-full overflow-hidden',
+    'has-data-[variant=inset]:bg-sidebar',
+  ],
 })
 
 const mobileSidebarStyles = tv({
@@ -179,18 +182,11 @@ const sidebarInnerStyles = tv({
 
 const sidebarInsetStyles = tv({
   base: [
-    'relative flex w-full flex-1 flex-col bg-background',
+    'relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background',
     'md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0',
     'md:peer-data-[variant=inset]:overflow-hidden md:peer-data-[variant=inset]:rounded-xl',
     'md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:border-border md:peer-data-[variant=inset]:shadow-sm',
     'md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
-  ],
-  compoundVariants: [
-    {
-      class: 'md:ml-2',
-      state: 'collapsed',
-      variant: 'inset',
-    },
   ],
   defaultVariants: {
     state: 'expanded',
@@ -203,8 +199,7 @@ const sidebarInsetStyles = tv({
     },
     variant: {
       floating: '',
-      inset:
-        'md:m-2 md:ml-0 md:overflow-hidden md:rounded-xl md:border md:border-border md:shadow-sm',
+      inset: '',
       sidebar: '',
     },
   },

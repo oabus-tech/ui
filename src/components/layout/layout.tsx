@@ -9,7 +9,7 @@ import type { LayoutProps } from './layout.types'
 import { LayoutMain } from './main'
 
 const styles = tv({
-  base: 'layout-root flex h-screen flex-col',
+  base: 'layout-root flex h-svh min-w-0 flex-col overflow-hidden',
 })
 
 function LayoutRoot({
