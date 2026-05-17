@@ -2,9 +2,11 @@ import './index.css'
 
 // Basic UI
 export * from './components/accordion'
+export * from './components/action-sheet'
 export * from './components/alert'
 export * from './components/avatar'
 export * from './components/badge'
+export * from './components/bottom-tabs'
 // Layout
 export * from './components/box'
 export * from './components/brand'
@@ -20,6 +22,7 @@ export * from './components/color-scheme-provider'
 export * from './components/color-scheme-switcher'
 // Overlays
 export * from './components/confirm'
+export * from './components/confirm-sheet'
 export * from './components/container'
 // Form — Specialized
 export * from './components/currency-input'
@@ -50,6 +53,7 @@ export * from './components/popover'
 export * from './components/progress'
 export * from './components/radio'
 export * from './components/select'
+export * from './components/select-sheet'
 // Other
 export * from './components/separator'
 export * from './components/sheet'
