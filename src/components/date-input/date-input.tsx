@@ -48,6 +48,7 @@ function DateInput({
       align="start"
       content={
         <Calendar
+          className="rounded-[inherit]"
           mode="single"
           onDateChange={handleSelect}
           selected={selectedDate}
@@ -56,7 +57,9 @@ function DateInput({
       }
       onOpenChange={setOpen}
       open={open}
+      popupClassName="overflow-hidden p-0"
       side="bottom"
+      sideOffset={8}
     >
       <Input
         {...props}

@@ -34,4 +34,5 @@ export type PopoverProps = {
   side?: PopoverSide // preferred side for placement
   sideOffset?: number // distance from trigger in px
   align?: PopoverAlign // alignment relative to trigger
+  popupClassName?: string // className for the popover popup
 }

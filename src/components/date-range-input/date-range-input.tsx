@@ -66,6 +66,7 @@ function DateRangeInput({
       align="start"
       content={
         <Calendar
+          className="rounded-[inherit]"
           mode="range"
           onDateChange={handleSelect}
           selected={selectedRange}
@@ -74,7 +75,9 @@ function DateRangeInput({
       }
       onOpenChange={setOpen}
       open={open}
+      popupClassName="overflow-hidden p-0"
       side="bottom"
+      sideOffset={8}
     >
       <Input
         {...props}

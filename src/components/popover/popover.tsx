@@ -2,6 +2,8 @@ import { Popover as PopoverPrimitive } from '@base-ui/react/popover'
 import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
+import { cn } from '@/support/utils'
+
 import type { PopoverProps } from './popover.types'
 
 const popover = tv({
@@ -36,6 +38,7 @@ function Popover({
   side = 'bottom',
   sideOffset = 4,
   align = 'center',
+  popupClassName,
 }: PropsWithChildren<PopoverProps>) {
   return (
     <PopoverPrimitive.Root
@@ -56,7 +59,7 @@ function Popover({
           sideOffset={sideOffset}
         >
           <PopoverPrimitive.Popup
-            className={popup()}
+            className={cn(popup(), popupClassName)}
             data-testid="popover-popup"
           >
             {content}
