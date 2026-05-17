@@ -11,6 +11,20 @@ const typography = tv({
     weight: 'normal',
   },
   variants: {
+    align: {
+      center: 'text-center',
+      left: 'text-left',
+      right: 'text-right',
+    },
+    centered: {
+      true: 'mx-auto',
+    },
+    maxWidth: {
+      lg: 'max-w-lg',
+      md: 'max-w-md',
+      sm: 'max-w-sm',
+      xs: 'max-w-xs',
+    },
     size: {
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
@@ -48,7 +62,10 @@ const typography = tv({
 })
 
 function Typography({
+  align,
+  centered,
   component: Component = 'span',
+  maxWidth,
   size,
   variant,
   weight,
@@ -58,6 +75,9 @@ function Typography({
   return (
     <Component
       className={typography({
+        align,
+        centered,
+        maxWidth,
         size,
         truncate,
         variant,

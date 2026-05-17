@@ -178,11 +178,6 @@ function Table<T>({
     return undefined
   }
 
-  const getColumnAlign = (
-    index: number,
-    align?: 'left' | 'center' | 'right',
-  ) => (index === visibleColumns.length - 1 ? 'right' : align)
-
   const getColumnStyle = (width?: number): CSSProperties | undefined =>
     width
       ? {
@@ -245,7 +240,7 @@ function Table<T>({
                 </th>
               )}
               {visibleColumns.map((col, index) => {
-                const align = getColumnAlign(index, col.align)
+                const align = col.align
 
                 return (
                   <Fragment key={col.key}>
@@ -325,7 +320,7 @@ function Table<T>({
                       </td>
                     )}
                     {visibleColumns.map((col, columnIndex) => {
-                      const align = getColumnAlign(columnIndex, col.align)
+                      const align = col.align
 
                       return (
                         <Fragment key={col.key}>

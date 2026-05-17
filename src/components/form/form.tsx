@@ -23,6 +23,7 @@ const styles = tv({
   defaultVariants: {
     invalid: false,
     legendVariant: 'legend',
+    separatorSurface: 'background',
   },
   slots: {
     // Field wrapper — groups label + input + description + error
@@ -52,7 +53,7 @@ const styles = tv({
     // Separator inline text label
     fieldSeparatorContent: [
       'relative mx-auto block w-fit',
-      'bg-background px-2',
+      'px-2',
       'text-center text-muted-foreground text-sm',
     ],
 
@@ -83,6 +84,17 @@ const styles = tv({
       },
       legend: {
         fieldLegend: 'text-base',
+      },
+    },
+    separatorSurface: {
+      background: {
+        fieldSeparatorContent: 'bg-background',
+      },
+      card: {
+        fieldSeparatorContent: 'bg-card',
+      },
+      transparent: {
+        fieldSeparatorContent: 'bg-transparent',
       },
     },
   },
@@ -189,8 +201,10 @@ function FormFieldSet({
   )
 }
 
-function FormFieldSeparator({ children }: FormFieldSeparatorProps) {
-  const { fieldSeparator, fieldSeparatorLine, fieldSeparatorContent } = styles()
+function FormFieldSeparator({ children, surface }: FormFieldSeparatorProps) {
+  const { fieldSeparator, fieldSeparatorLine, fieldSeparatorContent } = styles({
+    separatorSurface: surface,
+  })
 
   return (
     <div className={fieldSeparator()}>

@@ -33,8 +33,8 @@ const styles = tv({
     ],
     body: 'modal-body flex-1 overflow-auto p-5',
     description: 'modal-description text-muted-foreground text-sm',
-    footer: 'modal-footer flex flex-row-reverse gap-2 p-5 pt-0',
-    header: 'modal-header flex items-start justify-between gap-2 p-5 pb-0',
+    footer: 'modal-footer flex flex-row-reverse gap-2 p-5',
+    header: 'modal-header flex items-start justify-between gap-2 p-5',
     headerContent: 'modal-header-content flex flex-col gap-1',
     popup: [
       'modal-popup fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] w-full',
@@ -49,8 +49,8 @@ const styles = tv({
     bordered: {
       true: {
         body: 'py-2',
-        footer: 'pt-2',
-        header: 'pb-2',
+        footer: '',
+        header: '',
       },
     },
     size: {

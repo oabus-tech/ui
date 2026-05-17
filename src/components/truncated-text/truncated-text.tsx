@@ -1,9 +1,25 @@
+import { tv } from 'tailwind-variants'
+
 import { Tooltip } from '@/components/tooltip'
 
 import type {
   TruncatedTextPosition,
   TruncatedTextProps,
 } from './truncated-text.types'
+
+const styles = tv({
+  base: 'max-w-full overflow-hidden',
+  defaultVariants: {
+    lines: 1,
+  },
+  variants: {
+    lines: {
+      1: 'inline-block truncate whitespace-nowrap align-bottom',
+      2: 'line-clamp-2 block whitespace-normal break-words',
+      3: 'line-clamp-3 block whitespace-normal break-words',
+    },
+  },
+})
 
 function truncateText(
   text: string,
@@ -38,18 +54,31 @@ function truncateText(
 
 export function TruncatedText({
   component: Component = 'span',
-  end = 6,
-  position = 'middle',
-  start = 8,
+  end,
+  lines = 1,
+  position,
+  start,
   value,
 }: TruncatedTextProps) {
   const text = String(value)
-  const safeEnd = Math.max(end, 0)
-  const safeStart = Math.max(start, 0)
+  const shouldTruncateByCharacters =
+    end !== undefined || position !== undefined || start !== undefined
+  const safeEnd = Math.max(end ?? 6, 0)
+  const safePosition = position ?? 'middle'
+  const safeStart = Math.max(start ?? 8, 0)
+  const displayText = shouldTruncateByCharacters
+    ? truncateText(text, safePosition, safeStart, safeEnd)
+    : text
 
   return (
     <Tooltip content={text}>
-      <Component>{truncateText(text, position, safeStart, safeEnd)}</Component>
+      <Component
+        className={styles({
+          lines,
+        })}
+      >
+        {displayText}
+      </Component>
     </Tooltip>
   )
 }

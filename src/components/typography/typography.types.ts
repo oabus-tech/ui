@@ -37,6 +37,10 @@ export type TypographySize =
 
 export type TypographyVariant = 'default' | 'muted'
 
+export type TypographyAlign = 'left' | 'center' | 'right'
+
+export type TypographyMaxWidth = 'xs' | 'sm' | 'md' | 'lg'
+
 export type TypographyWeight =
   | 'thin'
   | 'extralight'
@@ -60,7 +64,10 @@ export type TypographyComponent =
   | 'div'
 
 export type TypographyProps = {
+  align?: TypographyAlign // text alignment
+  centered?: boolean // centers the text block when maxWidth is set
   component?: TypographyComponent // HTML element to render as (polymorphic)
+  maxWidth?: TypographyMaxWidth // maximum readable text width
   size?: TypographySize // font size preset
   variant?: TypographyVariant // color variant
   weight?: TypographyWeight // font weight

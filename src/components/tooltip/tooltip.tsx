@@ -27,7 +27,7 @@ const tooltip = tv({
       'data-open:fade-in-0 data-open:zoom-in-95 data-open:animate-in',
       'data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:animate-out',
     ],
-    trigger: 'tooltip-trigger inline-flex',
+    trigger: 'tooltip-trigger inline-flex min-w-0 max-w-full',
   },
 })
 

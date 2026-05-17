@@ -83,9 +83,9 @@ const styles = tv({
     body: 'sheet-body flex-1 overflow-y-auto p-5',
     close: 'sheet-close absolute top-4 right-4',
     description: 'sheet-description text-muted-foreground text-sm',
-    footer: 'sheet-footer flex flex-row-reverse gap-3 p-5 pt-0',
+    footer: 'sheet-footer flex flex-row-reverse gap-3 p-5',
     header:
-      'sheet-header relative flex items-start justify-between gap-4 p-5 pb-0',
+      'sheet-header relative flex items-start justify-between gap-4 p-5',
     headerContent: 'sheet-header-content flex flex-col gap-2',
     popup: [
       'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
@@ -97,9 +97,9 @@ const styles = tv({
   variants: {
     bordered: {
       true: {
-        body: 'pb-4',
-        footer: 'pt-4',
-        header: 'pb-4',
+        body: '',
+        footer: '',
+        header: '',
       },
     },
     side: {

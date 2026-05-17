@@ -66,8 +66,11 @@ export type FormFieldGroupProps = {
   children: React.ReactNode
 }
 
+export type FormFieldSeparatorSurface = 'background' | 'card' | 'transparent'
+
 export type FormFieldSeparatorProps = {
   children?: React.ReactNode // optional label text shown centered on the separator
+  surface?: FormFieldSeparatorSurface // background behind the inline label
 }
 
 export type FormFieldSetTooltip = string | TooltipProps

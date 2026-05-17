@@ -30,12 +30,41 @@ const card = tv({
         header: 'border-b pb-5',
       },
     },
+    minHeight: {
+      lg: {
+        root: 'min-h-[30rem]',
+      },
+      md: {
+        root: 'min-h-96',
+      },
+      sm: {
+        root: 'min-h-80',
+      },
+      xl: {
+        root: 'min-h-[34.375rem]',
+      },
+    },
+    verticalAlign: {
+      center: {
+        root: 'justify-center',
+      },
+      start: {
+        root: 'justify-start',
+      },
+    },
   },
 })
 
-function CardRoot({ onClick, children }: PropsWithChildren<CardProps>) {
+function CardRoot({
+  children,
+  minHeight,
+  onClick,
+  verticalAlign,
+}: PropsWithChildren<CardProps>) {
   const { root } = card({
     clickable: !!onClick,
+    minHeight,
+    verticalAlign,
   })
 
   return (

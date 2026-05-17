@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 
 import { ThemeContext } from './theme-provider.context'
 import type { Theme, ThemeProviderProps } from './theme-provider.types'
@@ -22,7 +22,7 @@ export function ThemeProvider({
     setTheme(next)
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [
     theme,

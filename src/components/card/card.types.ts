@@ -22,8 +22,14 @@
  * Dependencies: none (pure CSS)
  */
 
+export type CardMinHeight = 'sm' | 'md' | 'lg' | 'xl'
+
+export type CardVerticalAlign = 'start' | 'center'
+
 export type CardProps = {
+  minHeight?: CardMinHeight // minimum card height preset
   onClick?: React.MouseEventHandler<HTMLDivElement> // makes card interactive/clickable
+  verticalAlign?: CardVerticalAlign // vertical alignment for card sections
 }
 
 export type CardHeaderProps = {

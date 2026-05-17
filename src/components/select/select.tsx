@@ -1,6 +1,6 @@
 import { Popover } from '@base-ui/react/popover'
 import { Select as SelectPrimitive } from '@base-ui/react/select'
-import { Check, ChevronDown, ChevronUp, X } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, Search, X } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { tv } from 'tailwind-variants'
 
@@ -676,6 +676,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
               className={search()}
               data-testid="select-search"
             >
+              <Search className="mr-2 size-4 shrink-0 text-muted-foreground" />
               <input
                 className={searchInput()}
                 data-testid="select-search-input"
@@ -1014,6 +1015,7 @@ function MultipleSelect<T, I = string, O = I>({
                 className={search()}
                 data-testid="select-search"
               >
+                <Search className="mr-2 size-4 shrink-0 text-muted-foreground" />
                 <input
                   className={searchInput()}
                   data-testid="select-search-input"
