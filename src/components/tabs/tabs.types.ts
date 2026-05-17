@@ -6,18 +6,18 @@
  *
  * Behavior:
  * - Clicking a trigger activates its associated content panel
- * - Active trigger shows bg-background (elevated pill effect) on muted list background
- * - Justified variant stretches triggers to equal width
+ * - Active trigger shows an underline by default
+ * - Justified layout stretches triggers to equal width
  * - Orientation: horizontal (default) or vertical
  * - Trigger supports an icon before the label
  * - Focus ring on keyboard navigation
  *
  * Implementation:
- * - Use Radix UI Tabs primitive for accessibility (keyboard nav, ARIA roles)
- * - List renders as muted background container with rounded corners
- * - Smooth background transitions on active trigger
+ * - Use Base UI Tabs primitive for accessibility (keyboard nav, ARIA roles)
+ * - List renders as line navigation by default
+ * - Use variant="pill" for the previous segmented style
  * - <Tabs value={tab} onChange={setTab}>
- *     <Tabs.List justified>
+ *     <Tabs.List>
  *       <Tabs.Trigger value="a" icon={<Icon />}>Tab A</Tabs.Trigger>
  *       <Tabs.Trigger value="b">Tab B</Tabs.Trigger>
  *     </Tabs.List>
@@ -25,19 +25,23 @@
  *     <Tabs.Content value="b">Panel B</Tabs.Content>
  *   </Tabs>
  *
- * Dependencies: @radix-ui/react-tabs
+ * Dependencies: @base-ui/react/tabs
  */
 
 export type TabsOrientation = 'horizontal' | 'vertical'
+export type TabsVariant = 'line' | 'pill'
 
 export type TabsProps = {
   orientation?: TabsOrientation // layout direction for tab list
+  variant?: TabsVariant // visual style; default line
+  justified?: boolean // stretches tabs to fill available width by default
   value?: string // controlled active tab
   defaultValue?: string // uncontrolled initial tab
   onChange?: (value: string) => void // fires when active tab changes
 }
 
 export type TabsListProps = {
+  variant?: TabsVariant // optional per-list visual override
   justified?: boolean // stretches tabs to fill available width
 }
 

@@ -67,9 +67,9 @@ export const ControlledEmpty: Story = {
     const [value, setValue] = useState<number | null>(null)
     return (
       <CurrencyInput
-        {...args}
         onChange={setValue}
         placeholder="0,00"
+        size={args.size}
         value={value}
         variant="brl"
       />
@@ -82,8 +82,33 @@ export const ControlledWithValue: Story = {
     const [value, setValue] = useState<number | null>(123456)
     return (
       <CurrencyInput
-        {...args}
         onChange={setValue}
+        size={args.size}
+        value={value}
+        variant="brl"
+      />
+    )
+  },
+}
+
+export const Range: Story = {
+  render: (args) => {
+    const [value, setValue] = useState<{
+      from?: number | null
+      to?: number | null
+    } | null>({
+      from: 1000,
+      to: 10000,
+    })
+
+    return (
+      <CurrencyInput
+        fromPlaceholder="Valor mínimo"
+        mode="range"
+        onChange={setValue}
+        placeholder="Filtre por valor"
+        size={args.size}
+        toPlaceholder="Valor máximo"
         value={value}
         variant="brl"
       />

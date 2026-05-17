@@ -59,16 +59,43 @@ export const WithIcons: Story = {
   ),
 }
 
-export const Justified: Story = {
+export const Compact: Story = {
   render: () => (
-    <Tabs defaultValue="tab1">
-      <Tabs.List justified>
+    <Tabs
+      defaultValue="account"
+      justified={false}
+    >
+      <Tabs.List>
+        <Tabs.Trigger value="account">Account</Tabs.Trigger>
+        <Tabs.Trigger value="password">Password</Tabs.Trigger>
+        <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="account">
+        <p>Account settings and preferences.</p>
+      </Tabs.Content>
+      <Tabs.Content value="password">
+        <p>Change your password here.</p>
+      </Tabs.Content>
+      <Tabs.Content value="settings">
+        <p>General application settings.</p>
+      </Tabs.Content>
+    </Tabs>
+  ),
+}
+
+export const Pill: Story = {
+  render: () => (
+    <Tabs
+      defaultValue="tab1"
+      variant="pill"
+    >
+      <Tabs.List>
         <Tabs.Trigger value="tab1">First</Tabs.Trigger>
         <Tabs.Trigger value="tab2">Second</Tabs.Trigger>
         <Tabs.Trigger value="tab3">Third</Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="tab1">
-        <p>First panel. Tabs stretch to fill the container.</p>
+        <p>First panel with the previous segmented visual style.</p>
       </Tabs.Content>
       <Tabs.Content value="tab2">
         <p>Second panel.</p>

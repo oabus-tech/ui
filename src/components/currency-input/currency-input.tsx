@@ -1,38 +1,51 @@
-import { Button } from '@base-ui/react'
-import { ChevronsUpDown } from 'lucide-react'
+import { Button as ButtonPrimitive } from '@base-ui/react'
+import { ChevronsUpDown, X } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { IMaskInput } from 'react-imask'
 import { tv } from 'tailwind-variants'
 
+import { Button } from '@/components/button'
 import { DropdownMenu } from '@/components/dropdown-menu'
+import { Input } from '@/components/input'
 import { inputShared } from '@/components/input/input.shared'
+import { Popover } from '@/components/popover'
 
 import { buttonShared } from '../button/button.shared'
 import type { InputSize } from '../input/input.types'
-import type { Currency, CurrencyInputProps } from './currency-input.types'
+import type {
+  Currency,
+  CurrencyInputProps,
+  CurrencyInputRangeProps,
+  CurrencyInputRangeValue,
+  CurrencyInputSingleProps,
+} from './currency-input.types'
 
 type CurrencyConfig = {
   symbol: string
   thousandsSeparator: string
   radix: string
   label: string
+  locale: string
 }
 
 const CURRENCY_CONFIGS: Record<Currency, CurrencyConfig> = {
   brl: {
     label: 'BRL',
+    locale: 'pt-BR',
     radix: ',',
     symbol: 'R$',
     thousandsSeparator: '.',
   },
   eur: {
     label: 'EUR',
+    locale: 'de-DE',
     radix: ',',
     symbol: '€',
     thousandsSeparator: '.',
   },
   usd: {
     label: 'USD',
+    locale: 'en-US',
     radix: '.',
     symbol: '$',
     thousandsSeparator: ',',
@@ -102,7 +115,101 @@ const inputFieldStyles = tv({
   ],
 })
 
-function CurrencyInput({
+const rangeStyles = tv({
+  slots: {
+    actions:
+      'flex items-center justify-end gap-2 border-border border-t bg-background px-3 py-2',
+    clearTrigger:
+      'visible cursor-pointer text-muted-foreground hover:text-foreground',
+    content: 'flex flex-col gap-3 rounded-[inherit] bg-background p-3',
+    fields: 'grid grid-cols-2 gap-2',
+    root: 'currency-input-range-root',
+  },
+  variants: {
+    disabled: {
+      true: {
+        clearTrigger:
+          'invisible cursor-not-allowed text-muted-foreground opacity-50',
+      },
+    },
+    hasValue: {
+      false: {
+        clearTrigger:
+          'invisible cursor-pointer text-muted-foreground hover:text-foreground',
+      },
+    },
+  },
+})
+
+function formatCurrencyValue(
+  cents: number | null | undefined,
+  config: CurrencyConfig,
+): string {
+  if (cents === null || cents === undefined) {
+    return ''
+  }
+
+  return new Intl.NumberFormat(config.locale, {
+    currency: config.label,
+    style: 'currency',
+  }).format(cents / 100)
+}
+
+function formatCurrencyRange(
+  range: CurrencyInputRangeValue | null | undefined,
+  config: CurrencyConfig,
+): string {
+  if (!range) {
+    return ''
+  }
+
+  const from = formatCurrencyValue(range.from, config)
+  const to = formatCurrencyValue(range.to, config)
+
+  if (from && to) {
+    return `${from} ~ ${to}`
+  }
+
+  if (from) {
+    return `A partir de ${from}`
+  }
+
+  if (to) {
+    return `Até ${to}`
+  }
+
+  return ''
+}
+
+function normalizeRange(
+  range: CurrencyInputRangeValue | null | undefined,
+): CurrencyInputRangeValue | null {
+  if (!range || (range.from == null && range.to == null)) {
+    return null
+  }
+
+  return {
+    from: range.from ?? null,
+    to: range.to ?? null,
+  }
+}
+
+function copyRange(
+  range: CurrencyInputRangeValue | null | undefined,
+): CurrencyInputRangeValue | null {
+  const normalized = normalizeRange(range)
+
+  if (!normalized) {
+    return null
+  }
+
+  return {
+    from: normalized.from,
+    to: normalized.to,
+  }
+}
+
+function CurrencySingleInput({
   variant = 'brl',
   value,
   defaultValue,
@@ -110,7 +217,7 @@ function CurrencyInput({
   disabled,
   size,
   placeholder,
-}: CurrencyInputProps) {
+}: CurrencyInputSingleProps) {
   const [internalCurrency, setInternalCurrency] = useState<Currency>(
     variant === 'any' ? 'brl' : (variant as Currency),
   )
@@ -161,7 +268,7 @@ function CurrencyInput({
       {variant === 'any' ? (
         <DropdownMenu>
           <DropdownMenu.Trigger asChild>
-            <Button
+            <ButtonPrimitive
               className={triggerStyles({
                 size,
               })}
@@ -171,7 +278,7 @@ function CurrencyInput({
             >
               {config.label}
               <ChevronsUpDown className="size-4 opacity-50" />
-            </Button>
+            </ButtonPrimitive>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content
             sideOffset={4}
@@ -226,6 +333,181 @@ function CurrencyInput({
       />
     </div>
   )
+}
+
+function CurrencyRangeInput({
+  variant = 'brl',
+  value,
+  defaultValue,
+  onChange,
+  disabled,
+  size,
+  placeholder = 'Filtre por valor',
+  fromPlaceholder = 'Valor mínimo',
+  toPlaceholder = 'Valor máximo',
+  ...props
+}: CurrencyInputRangeProps) {
+  const [open, setOpen] = useState(false)
+  const [internalCurrency] = useState<Currency>(
+    variant === 'any' ? 'brl' : (variant as Currency),
+  )
+  const [internalRange, setInternalRange] = useState<
+    CurrencyInputRangeValue | null | undefined
+  >(defaultValue)
+  const [draftRange, setDraftRange] = useState<CurrencyInputRangeValue | null>(
+    copyRange(defaultValue),
+  )
+
+  const activeCurrency =
+    variant === 'any' ? internalCurrency : (variant as Currency)
+  const config = CURRENCY_CONFIGS[activeCurrency]
+  const isControlled = value !== undefined
+  const selectedRange = isControlled ? value : internalRange
+  const displayValue = formatCurrencyRange(selectedRange, config)
+  const hasValue = !!displayValue
+  const { actions, clearTrigger, content, fields, root } = rangeStyles()
+
+  function commit(nextRange: CurrencyInputRangeValue | null | undefined) {
+    const normalized = normalizeRange(nextRange)
+
+    if (!isControlled) {
+      setInternalRange(normalized)
+    }
+
+    onChange?.(normalized)
+  }
+
+  function handleOpenChange(nextOpen: boolean) {
+    if (disabled) {
+      return
+    }
+
+    if (nextOpen) {
+      setDraftRange(copyRange(selectedRange))
+    }
+
+    setOpen(nextOpen)
+  }
+
+  function handleFromChange(nextValue: number | null) {
+    setDraftRange((current) => ({
+      ...(current ?? {}),
+      from: nextValue,
+    }))
+  }
+
+  function handleToChange(nextValue: number | null) {
+    setDraftRange((current) => ({
+      ...(current ?? {}),
+      to: nextValue,
+    }))
+  }
+
+  function handleCancel() {
+    setDraftRange(copyRange(selectedRange))
+    setOpen(false)
+  }
+
+  function handleConfirm() {
+    commit(draftRange)
+    setOpen(false)
+  }
+
+  function handleClear(event: React.MouseEvent) {
+    event.stopPropagation()
+    commit(null)
+    setDraftRange(null)
+    setOpen(false)
+  }
+
+  return (
+    <Popover
+      align="start"
+      content={
+        <>
+          <div className={content()}>
+            <div className={fields()}>
+              <CurrencySingleInput
+                disabled={disabled}
+                onChange={handleFromChange}
+                placeholder={fromPlaceholder}
+                size={size}
+                value={draftRange?.from ?? null}
+                variant={activeCurrency}
+              />
+              <CurrencySingleInput
+                disabled={disabled}
+                onChange={handleToChange}
+                placeholder={toPlaceholder}
+                size={size}
+                value={draftRange?.to ?? null}
+                variant={activeCurrency}
+              />
+            </div>
+          </div>
+          <div className={actions()}>
+            <Button
+              disabled={disabled}
+              onClick={handleCancel}
+              size="sm"
+              variant="ghost"
+            >
+              Cancelar
+            </Button>
+            <Button
+              disabled={disabled}
+              onClick={handleConfirm}
+              size="sm"
+            >
+              Aplicar
+            </Button>
+          </div>
+        </>
+      }
+      onOpenChange={handleOpenChange}
+      open={open}
+      popupClassName="min-w-72 overflow-hidden p-0"
+      side="bottom"
+      sideOffset={8}
+    >
+      <Input
+        {...props}
+        className={root()}
+        disabled={disabled}
+        leftSection={
+          <span className="font-medium text-muted-foreground text-sm leading-none">
+            {config.symbol}
+          </span>
+        }
+        placeholder={placeholder}
+        readOnly
+        rightSection={
+          <ButtonPrimitive
+            className={clearTrigger({
+              disabled,
+              hasValue,
+            })}
+            disabled={disabled}
+            onClick={handleClear}
+            tabIndex={hasValue && !disabled ? 0 : -1}
+            type="button"
+          >
+            <X className="size-4" />
+          </ButtonPrimitive>
+        }
+        size={size}
+        value={displayValue}
+      />
+    </Popover>
+  )
+}
+
+function CurrencyInput(props: CurrencyInputProps) {
+  if (props.mode === 'range') {
+    return <CurrencyRangeInput {...props} />
+  }
+
+  return <CurrencySingleInput {...props} />
 }
 
 export { CurrencyInput }

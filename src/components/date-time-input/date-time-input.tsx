@@ -16,9 +16,10 @@ const styles = tv({
   slots: {
     clearTrigger:
       'visible cursor-pointer text-muted-foreground hover:text-foreground',
-    popoverContent: 'flex flex-col gap-3',
+    popoverContent:
+      'flex flex-col overflow-hidden rounded-[inherit] bg-background',
     root: 'date-time-input-root',
-    timeRow: 'flex items-stretch gap-2 border-border border-t pt-3',
+    timeRow: 'flex items-center gap-2 border-border border-t px-2 pt-3 pb-2',
   },
   variants: {
     disabled: {
@@ -158,6 +159,7 @@ function DateTimeInput({
       content={
         <div className={popoverContent()}>
           <Calendar
+            className="rounded-[inherit]"
             maxDate={maxDate}
             minDate={minDate}
             mode="single"
@@ -196,7 +198,9 @@ function DateTimeInput({
         setOpen(op)
       }}
       open={open}
+      popupClassName="overflow-hidden p-0"
       side="bottom"
+      sideOffset={8}
     >
       <Input
         {...props}

@@ -30,12 +30,34 @@ export type Currency = 'brl' | 'usd' | 'eur'
 
 export type CurrencyVariant = Currency | 'any'
 
-export type CurrencyInputProps = Omit<
+export type CurrencyInputRangeValue = {
+  from?: number | null
+  to?: number | null
+}
+
+type CurrencyInputBaseProps = Omit<
   InputProps,
   'value' | 'defaultValue' | 'onChange'
 > & {
   variant?: CurrencyVariant // currency type determines symbol/formatting
+}
+
+export type CurrencyInputSingleProps = CurrencyInputBaseProps & {
+  mode?: 'single'
   value?: number | null // controlled value in integer cents
   defaultValue?: number | null // uncontrolled initial value in integer cents
   onChange?: (value: number | null) => void // fires with integer cents
 }
+
+export type CurrencyInputRangeProps = CurrencyInputBaseProps & {
+  mode: 'range'
+  value?: CurrencyInputRangeValue | null // controlled from/to values in integer cents
+  defaultValue?: CurrencyInputRangeValue | null // uncontrolled initial range in integer cents
+  onChange?: (value: CurrencyInputRangeValue | null) => void // fires on confirm
+  fromPlaceholder?: string
+  toPlaceholder?: string
+}
+
+export type CurrencyInputProps =
+  | CurrencyInputSingleProps
+  | CurrencyInputRangeProps
