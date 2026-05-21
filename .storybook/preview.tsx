@@ -11,7 +11,7 @@ const withOABusProvider = (Story: React.ComponentType) => (
 const preview: Preview = {
   decorators: [withOABusProvider],
   parameters: {
-    layout: "centered",
+    layout: "padded",
     controls: {
       matchers: {
         color: /(background|color)$/i,

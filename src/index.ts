@@ -37,6 +37,7 @@ export * from './components/grid'
 export * from './components/input'
 export * from './components/label'
 export * from './components/layout'
+export * from './components/list'
 // Feedback
 export * from './components/loader'
 export * from './components/loading-overlay'
