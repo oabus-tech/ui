@@ -40,12 +40,12 @@ const actionSheet = tv({
     content: 'action-sheet-content flex flex-col gap-1',
     group: 'action-sheet-group flex flex-col gap-1',
     item: [
-      'action-sheet-item flex min-h-12 w-full items-center gap-3 rounded-lg px-3 py-2 text-left',
+      'action-sheet-item flex min-h-12 w-full items-center gap-3 rounded-lg text-left',
       'text-sm outline-none transition-colors hover:bg-muted hover:text-foreground',
       'disabled:pointer-events-none disabled:opacity-50',
     ],
     itemContent: 'action-sheet-item-content flex min-w-0 flex-1 items-center',
-    itemIcon: 'action-sheet-item-icon mr-3 flex shrink-0 text-muted-foreground',
+    itemIcon: 'action-sheet-item-icon flex shrink-0 text-muted-foreground',
     itemLabel: 'action-sheet-item-label min-w-0 flex-1 truncate',
     itemRight:
       'action-sheet-item-right ml-3 flex shrink-0 text-muted-foreground',
