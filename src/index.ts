@@ -27,6 +27,7 @@ export * from './components/container'
 // Form — Specialized
 export * from './components/currency-input'
 export * from './components/date-input'
+export * from './components/date-native-input'
 export * from './components/date-range-input'
 export * from './components/date-time-input'
 export * from './components/document-input'
