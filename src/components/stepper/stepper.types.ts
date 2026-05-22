@@ -51,7 +51,6 @@ export type StepperProps = {
   active: number // required: zero-based index of the active step (controlled)
   allowNextStepsSelect?: boolean // when true, indicators jump to any step (default false: linear)
   autoFocus?: boolean // focus active panel heading on advance (default false)
-  className?: string // applied to the root <ol>
   completedIcon?: StepFragment // override completed indicator (default: check)
   icon?: StepFragment // default indicator content (default: step + 1)
   iconPosition?: StepperIconPosition // indicator side relative to label (default 'left')
@@ -70,8 +69,6 @@ export type StepperStepProps = {
   allowStepClick?: boolean // overrides root allowNextStepsSelect for this step
   allowStepSelect?: boolean // alias of allowStepClick (Mantine parity)
   children?: ReactNode // panel body rendered when this step is active
-  className?: string // applied to the panel wrapper
-  color?: string // CSS color or Tailwind utility for indicator accent
   completedIcon?: StepFragment // per-step override
   description?: ReactNode // sub-line below label
   icon?: StepFragment // per-step override
@@ -82,7 +79,6 @@ export type StepperStepProps = {
 
 export type StepperCompletedProps = {
   children?: ReactNode
-  className?: string
 }
 
 export type StepperPreviousProps = Omit<ButtonProps, 'onClick' | 'type'> & {
