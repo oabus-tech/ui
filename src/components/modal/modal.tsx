@@ -57,6 +57,10 @@ const styles = tv({
       '2xl': {
         popup: 'max-w-6xl',
       },
+      full: {
+        popup:
+          'top-0 left-0 h-dvh max-h-dvh max-w-none translate-x-0 translate-y-0 rounded-none shadow-none ring-0',
+      },
       lg: {
         popup: 'max-w-2xl',
       },

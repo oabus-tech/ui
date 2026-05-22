@@ -392,3 +392,59 @@ export const SizeTwoExtraLarge: Story = {
     )
   },
 }
+
+export const Fullscreen: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Fullscreen Modal</Button>
+        <Modal
+          onChange={setOpen}
+          open={open}
+          size="full"
+        >
+          <Modal.Header
+            bordered
+            closable
+          >
+            <Modal.Header.Title>Fullscreen Modal</Modal.Header.Title>
+            <Modal.Header.Description>
+              Use this layout for dense workflows that need the full viewport.
+            </Modal.Header.Description>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="grid gap-4 md:grid-cols-2">
+              {Array.from(
+                {
+                  length: 12,
+                },
+                (_, i) => (
+                  <div
+                    className="rounded-lg border border-border p-4"
+                    key={i}
+                  >
+                    <h3 className="font-medium text-sm">Section {i + 1}</h3>
+                    <p className="mt-2 text-muted-foreground text-sm">
+                      Fullscreen content keeps the header and footer visible
+                      while the body handles overflow.
+                    </p>
+                  </div>
+                ),
+              )}
+            </div>
+          </Modal.Body>
+          <Modal.Footer bordered>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  },
+}

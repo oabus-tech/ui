@@ -32,7 +32,7 @@
 export type ModalProps = {
   open?: boolean // controlled open state
   onChange?: (open: boolean) => void // fires on open/close
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' // popup max-width (default: 'md' = max-w-lg)
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' // popup size (default: 'md' = max-w-lg)
 }
 
 export type ModalHeaderProps = {
