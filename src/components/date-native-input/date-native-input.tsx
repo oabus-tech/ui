@@ -128,6 +128,7 @@ function DateNativeInput({
     ? format(selectedValue, getDisplayFormat(mode, valueFormat))
     : ''
   const lastNativeValueRef = useRef(nativeValue)
+  const nativeInputRef = useRef<HTMLInputElement>(null)
 
   const { clearTrigger, nativeInput, root, trigger } = styles()
 
@@ -159,6 +160,22 @@ function DateNativeInput({
 
   const handleNativeInput = (event: React.FormEvent<HTMLInputElement>) => {
     commitNativeValue(event.currentTarget.value)
+  }
+
+  const handleNativeClick = () => {
+    const input = nativeInputRef.current
+
+    if (!input || disabled) {
+      return
+    }
+
+    input.focus()
+
+    try {
+      input.showPicker()
+    } catch {
+      // Some WebViews/Safari variants throw despite exposing showPicker.
+    }
   }
 
   const handleClear = (event: React.MouseEvent) => {
@@ -215,9 +232,11 @@ function DateNativeInput({
         name={name}
         onBlur={onBlur}
         onChange={handleNativeChange}
+        onClick={handleNativeClick}
         onFocus={onFocus}
         onInput={handleNativeInput}
         onInvalid={onInvalid}
+        ref={nativeInputRef}
         required={required}
         step={step}
         style={{
