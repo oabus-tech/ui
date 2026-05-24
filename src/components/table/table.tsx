@@ -290,7 +290,7 @@ function Table<T>({
                   className={emptyCell()}
                   colSpan={totalColumns}
                 >
-                  {emptySection ?? 'Nenhum dado encontrado'}
+                  {emptySection ?? 'Nenhum registro encontrado'}
                 </td>
               </tr>
             ) : (

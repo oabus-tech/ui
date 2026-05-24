@@ -29,6 +29,62 @@ export const WithValue: Story = {
   },
 }
 
+export const WithCustomPresets: Story = {
+  render: () => {
+    const [range, setRange] = useState<DateRange | null>(null)
+
+    return (
+      <DateRangeInput
+        onChange={setRange}
+        presets={[
+          {
+            getValue: () => {
+              const today = new Date()
+              return {
+                from: today,
+                to: today,
+              }
+            },
+            key: 'today',
+            label: 'Hoje',
+          },
+          {
+            getValue: () => {
+              const today = new Date()
+              const from = new Date(today)
+              from.setDate(today.getDate() - 13)
+              return {
+                from,
+                to: today,
+              }
+            },
+            key: 'last14Days',
+            label: 'Últimos 14 dias',
+          },
+          {
+            key: 'custom',
+            label: 'Personalizado',
+          },
+        ]}
+        value={range}
+      />
+    )
+  },
+}
+
+export const WithoutPresets: Story = {
+  args: {
+    showPresets: false,
+  },
+}
+
+export const CustomLabels: Story = {
+  args: {
+    applyLabel: 'Filtrar',
+    cancelLabel: 'Fechar',
+  },
+}
+
 export const Disabled: Story = {
   args: {
     disabled: true,
