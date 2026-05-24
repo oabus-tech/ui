@@ -84,9 +84,13 @@ const styles = tv({
     close: 'sheet-close absolute top-4 right-4',
     description: 'sheet-description text-muted-foreground text-sm',
     footer: 'sheet-footer flex flex-row-reverse gap-3 p-5',
-    header:
+    header: [
       'sheet-header relative flex items-start justify-between gap-4 p-5',
-    headerContent: 'sheet-header-content flex flex-col gap-2',
+      '[&:has(.sheet-close)_.sheet-header-content]:pr-10',
+      '[&:not(:has(.sheet-description))_.sheet-close]:top-1/2',
+      '[&:not(:has(.sheet-description))_.sheet-close]:-translate-y-1/2',
+    ],
+    headerContent: 'sheet-header-content flex min-w-0 flex-1 flex-col gap-2',
     popup: [
       'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
       'transition duration-200 ease-in-out',
