@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react-vite'
 import { Search, User } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { SelectSheet } from './select-sheet'
 
@@ -30,6 +30,19 @@ type GitHubUserOption = {
   url: string
   type: string
 }
+
+type GitHubSearchResponse = {
+  total_count: number
+  items: Array<{
+    avatar_url: string
+    html_url: string
+    id: number
+    login: string
+    type: string
+  }>
+}
+
+const GITHUB_PAGE_SIZE = 10
 
 const FRAMEWORKS: FrameworkOption[] = [
   {
@@ -175,7 +188,7 @@ export const MultipleUsers = {
 
     return (
       <div className="max-w-sm">
-        <SelectSheet<UserOption, string, string, 'multiple'>
+        <SelectSheet<UserOption, string, string>
           mode="multiple"
           onChange={setValue}
           optionLabel="name"
@@ -386,22 +399,31 @@ export const GitHubAsyncSearch = {
     const [search, setSearch] = useState('openai')
     const [value, setValue] = useState<number | null>(null)
     const [options, setOptions] = useState<GitHubUserOption[]>([])
+    const [page, setPage] = useState(1)
+    const [totalCount, setTotalCount] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [loadingMore, setLoadingMore] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const cappedTotal = Math.min(totalCount, 1000)
+    const hasMore = options.length < cappedTotal
 
     useEffect(() => {
       const query = search.trim()
       if (!query) {
         setOptions([])
+        setPage(1)
+        setTotalCount(0)
+        setError(null)
         return
       }
 
       const controller = new AbortController()
       setLoading(true)
       setError(null)
+      setPage(1)
 
       fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=10`,
+        `https://api.github.com/search/users?q=${encodeURIComponent(query)}&page=1&per_page=${GITHUB_PAGE_SIZE}`,
         {
           signal: controller.signal,
         },
@@ -410,17 +432,10 @@ export const GitHubAsyncSearch = {
           if (!response.ok) {
             throw new Error(`GitHub API returned ${response.status}`)
           }
-          return response.json() as Promise<{
-            items: Array<{
-              avatar_url: string
-              html_url: string
-              id: number
-              login: string
-              type: string
-            }>
-          }>
+          return response.json() as Promise<GitHubSearchResponse>
         })
         .then((data) => {
+          setTotalCount(data.total_count)
           setOptions(
             data.items.map((item) => ({
               avatarUrl: item.avatar_url,
@@ -435,6 +450,7 @@ export const GitHubAsyncSearch = {
           if (requestError.name !== 'AbortError') {
             setError(requestError.message)
             setOptions([])
+            setTotalCount(0)
           }
         })
         .finally(() => {
@@ -448,11 +464,64 @@ export const GitHubAsyncSearch = {
       search,
     ])
 
+    const handleLoadMore = useCallback(() => {
+      const query = search.trim()
+      if (!query || loading || loadingMore || !hasMore) {
+        return
+      }
+
+      const nextPage = page + 1
+      setLoadingMore(true)
+      setError(null)
+
+      fetch(
+        `https://api.github.com/search/users?q=${encodeURIComponent(query)}&page=${nextPage}&per_page=${GITHUB_PAGE_SIZE}`,
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`GitHub API returned ${response.status}`)
+          }
+          return response.json() as Promise<GitHubSearchResponse>
+        })
+        .then((data) => {
+          setPage(nextPage)
+          setTotalCount(data.total_count)
+          setOptions((currentOptions) => [
+            ...currentOptions,
+            ...data.items.map((item) => ({
+              avatarUrl: item.avatar_url,
+              id: item.id,
+              login: item.login,
+              type: item.type,
+              url: item.html_url,
+            })),
+          ])
+        })
+        .catch((requestError: Error) => {
+          setError(requestError.message)
+        })
+        .finally(() => {
+          setLoadingMore(false)
+        })
+    }, [
+      hasMore,
+      loading,
+      loadingMore,
+      page,
+      search,
+    ])
+
     return (
       <div className="flex max-w-sm flex-col gap-2">
         <SelectSheet<GitHubUserOption, number, number>
           debounce
           emptySection={error ?? 'No GitHub users found.'}
+          infinite={{
+            hasMore,
+            loadingMore,
+            loadingMoreText: 'Loading more GitHub users...',
+            onLoadMore: handleLoadMore,
+          }}
           loading={loading}
           mode="single"
           onChange={setValue}
@@ -484,7 +553,8 @@ export const GitHubAsyncSearch = {
           value={value}
         />
         <span className="text-muted-foreground text-xs">
-          Selected GitHub user id: {value ?? 'none'}
+          Selected GitHub user id: {value ?? 'none'} · Loaded {options.length}
+          {totalCount ? ` of ${cappedTotal}` : ''}
         </span>
       </div>
     )

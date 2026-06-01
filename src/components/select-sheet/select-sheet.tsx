@@ -1,5 +1,6 @@
 import { Check, ChevronDown, Search, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import { tv } from 'tailwind-variants'
 
 import { Badge } from '@/components/badge'
@@ -35,7 +36,6 @@ const selectSheet = tv({
       'select-sheet-loading flex items-center justify-center gap-2 p-8 text-center text-muted-foreground text-sm',
     search: 'select-sheet-search mb-2 shrink-0',
     selectedBadges: 'select-sheet-selected-badges flex min-w-0 gap-1',
-    sentinel: 'select-sheet-sentinel h-1',
     trigger: [
       'select-sheet-trigger flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
       'whitespace-nowrap border border-input bg-transparent px-2.5 text-sm outline-none transition-colors',
@@ -208,7 +208,11 @@ function SingleSelectSheet<T, I = string, O = I>({
       description={description}
       disabled={disabled}
       emptySection={emptySection}
-      filteredOptions={filterOptions(options, optionLabel, currentSearch)}
+      filteredOptions={
+        onSearchChange
+          ? options
+          : filterOptions(options, optionLabel, currentSearch)
+      }
       infinite={infinite}
       leftSection={leftSection}
       loading={loading}
@@ -362,7 +366,11 @@ function MultipleSelectSheet<T, I = string, O = I>({
       description={description}
       disabled={disabled}
       emptySection={emptySection}
-      filteredOptions={filterOptions(options, optionLabel, currentSearch)}
+      filteredOptions={
+        onSearchChange
+          ? options
+          : filterOptions(options, optionLabel, currentSearch)
+      }
       infinite={infinite}
       leftSection={leftSection}
       loading={loading}
@@ -393,7 +401,7 @@ function MultipleSelectSheet<T, I = string, O = I>({
   )
 }
 
-type SelectSheetBaseProps<T, O> = {
+type SelectSheetBaseOwnProps<T> = {
   currentOpen: boolean
   currentSearch: string
   filteredOptions: T[]
@@ -401,31 +409,38 @@ type SelectSheetBaseProps<T, O> = {
   selectedOptions: T[]
   triggerLabel: string
   multiple: boolean
-  optionLabel: keyof T | ((option: T) => string)
-  optionValue: keyof T | ((option: T) => O)
-  optionGroup?: keyof T | ((option: T) => string)
-  renderOption?: (option: T) => React.ReactNode
-  renderValue?: (option: T) => React.ReactNode
-  placeholder?: string
-  searchable?: boolean
-  searchPlaceholder?: string
-  emptySection?: React.ReactNode
-  leftSection?: React.ReactNode
-  rightSection?: React.ReactNode
-  infinite?: SelectSheetProps<T>['infinite']
-  disabled?: boolean
-  loading?: boolean
-  size?: SelectSheetProps<T>['size']
-  clearable?: boolean
-  side?: SelectSheetProps<T>['side']
-  sheetSize?: SelectSheetProps<T>['sheetSize']
-  title?: React.ReactNode
-  description?: React.ReactNode
   onOpenChange: (open: boolean) => void
   onSearchChange: (query: string | null) => void
   onClear: React.MouseEventHandler<HTMLElement>
   toggleOption: (option: T) => void
 }
+
+type SelectSheetBaseInheritedProps<T, O> = Pick<
+  SelectSheetProps<T, unknown, O, 'single'>,
+  | 'clearable'
+  | 'description'
+  | 'disabled'
+  | 'emptySection'
+  | 'infinite'
+  | 'leftSection'
+  | 'loading'
+  | 'optionGroup'
+  | 'optionLabel'
+  | 'optionValue'
+  | 'placeholder'
+  | 'renderOption'
+  | 'renderValue'
+  | 'rightSection'
+  | 'searchable'
+  | 'searchPlaceholder'
+  | 'sheetSize'
+  | 'side'
+  | 'size'
+  | 'title'
+>
+
+type SelectSheetBaseProps<T, O> = SelectSheetBaseOwnProps<T> &
+  SelectSheetBaseInheritedProps<T, O>
 
 function SelectSheetBase<T, O>({
   currentOpen,
@@ -460,7 +475,7 @@ function SelectSheetBase<T, O>({
   onClear,
   toggleOption,
 }: SelectSheetBaseProps<T, O>) {
-  const sentinelRef = useRef<HTMLDivElement>(null)
+  const listId = useId()
   const {
     trigger,
     triggerButton,
@@ -478,35 +493,24 @@ function SelectSheetBase<T, O>({
     itemCheck,
     empty,
     loading: loadingSlot,
-    sentinel,
   } = selectSheet({
     size,
   })
 
-  useEffect(() => {
-    if (!infinite?.onLoadMore || !sentinelRef.current) {
-      return
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      if (
-        entries[0].isIntersecting &&
-        infinite.hasMore &&
-        !infinite.loadingMore
-      ) {
-        infinite.onLoadMore?.()
-      }
-    })
-
-    observer.observe(sentinelRef.current)
-    return () => observer.disconnect()
-  }, [
-    infinite,
-  ])
-
   const hasValue = selectedOptions.length > 0
   const groupedOptions = groupOptions(filteredOptions, optionGroup)
   const isEmpty = groupedOptions.length === 0
+  const infiniteHasMore = Boolean(
+    infinite?.hasMore &&
+      infinite.onLoadMore &&
+      !loading &&
+      !infinite.loadingMore,
+  )
+  const handleLoadMore = () => {
+    if (infiniteHasMore) {
+      infinite?.onLoadMore?.()
+    }
+  }
 
   return (
     <>
@@ -607,6 +611,7 @@ function SelectSheetBase<T, O>({
             <div
               className={list()}
               data-testid="select-sheet-list"
+              id={listId}
             >
               {isEmpty ? (
                 loading ? (
@@ -620,59 +625,59 @@ function SelectSheetBase<T, O>({
                   </SelectSheetEmptyState>
                 )
               ) : (
-                groupedOptions.map((optionGroupItem) => (
-                  <div
-                    className={group()}
-                    data-testid="select-sheet-group"
-                    key={optionGroupItem.group}
-                  >
-                    {optionGroupItem.group && (
-                      <div className={groupLabel()}>
-                        {optionGroupItem.group}
-                      </div>
-                    )}
-                    {optionGroupItem.items.map((option) => {
-                      const optionKey = toKey(getValue(option, optionValue))
-                      const selected = selectedKeys.includes(optionKey)
+                <InfiniteScroll
+                  dataLength={filteredOptions.length}
+                  hasMore={infiniteHasMore}
+                  loader={null}
+                  next={handleLoadMore}
+                  scrollableTarget={listId}
+                  scrollThreshold="64px"
+                >
+                  {groupedOptions.map((optionGroupItem) => (
+                    <div
+                      className={group()}
+                      data-testid="select-sheet-group"
+                      key={optionGroupItem.group}
+                    >
+                      {optionGroupItem.group && (
+                        <div className={groupLabel()}>
+                          {optionGroupItem.group}
+                        </div>
+                      )}
+                      {optionGroupItem.items.map((option) => {
+                        const optionKey = toKey(getValue(option, optionValue))
+                        const selected = selectedKeys.includes(optionKey)
 
-                      return (
-                        <button
-                          aria-pressed={selected}
-                          className={item()}
-                          data-testid="select-sheet-item"
-                          key={optionKey}
-                          onClick={() => toggleOption(option)}
-                          type="button"
-                        >
-                          <span className={itemContent()}>
-                            {renderOption?.(option) ??
-                              getLabel(option, optionLabel)}
-                          </span>
-                          {selected && (
-                            <span className={itemCheck()}>
-                              <Check className="size-4" />
+                        return (
+                          <button
+                            aria-pressed={selected}
+                            className={item()}
+                            data-testid="select-sheet-item"
+                            key={optionKey}
+                            onClick={() => toggleOption(option)}
+                            type="button"
+                          >
+                            <span className={itemContent()}>
+                              {renderOption?.(option) ??
+                                getLabel(option, optionLabel)}
                             </span>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
-                ))
+                            {selected && (
+                              <span className={itemCheck()}>
+                                <Check className="size-4" />
+                              </span>
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ))}
+                </InfiniteScroll>
               )}
               {infinite?.loadingMore && (
-                <div className="flex justify-center py-3">
-                  <Loader size="sm" />
-                  {infinite.loadingMoreText && (
-                    <span className="ml-2 text-muted-foreground text-sm">
-                      {infinite.loadingMoreText}
-                    </span>
-                  )}
-                </div>
+                <SelectSheetLoadMoreState
+                  loadingMoreText={infinite.loadingMoreText}
+                />
               )}
-              <div
-                className={sentinel()}
-                ref={sentinelRef}
-              />
             </div>
           </div>
         </Sheet.Body>
@@ -736,6 +741,28 @@ function SelectSheetLoadingState({ className }: SelectSheetLoadingStateProps) {
     >
       <Loader size="sm" />
       <span>Loading options...</span>
+    </div>
+  )
+}
+
+type SelectSheetLoadMoreStateProps = {
+  loadingMoreText?: React.ReactNode
+}
+
+function SelectSheetLoadMoreState({
+  loadingMoreText,
+}: SelectSheetLoadMoreStateProps) {
+  return (
+    <div
+      className="flex justify-center py-3"
+      data-testid="select-sheet-loading-more"
+    >
+      <Loader size="sm" />
+      {loadingMoreText && (
+        <span className="ml-2 text-muted-foreground text-sm">
+          {loadingMoreText}
+        </span>
+      )}
     </div>
   )
 }
