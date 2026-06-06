@@ -21,7 +21,7 @@ const styles = tv({
       'list-end-reached px-4 py-2 text-center text-muted-foreground text-sm',
     footer: 'min-w-0 list-footer',
     infiniteControl: 'flex min-w-0 list-infinite-control flex-col gap-2',
-    item: 'list-item min-w-0 overflow-hidden',
+    item: 'list-item min-w-0',
     list: 'flex min-w-0 list-content flex-col',
     loadingMore:
       'flex min-w-0 list-loading-more items-center justify-center gap-2 py-3 text-muted-foreground text-sm',

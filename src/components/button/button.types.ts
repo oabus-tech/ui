@@ -42,6 +42,7 @@ export type ButtonVariant =
   | 'secondary'
   | 'ghost'
   | 'link'
+  | 'link-muted'
 
 export type ButtonProps = {
   form?: string // associates button with a form by id
@@ -54,5 +55,6 @@ export type ButtonProps = {
   loading?: boolean // shows loading spinner and disables interaction
   disabled?: boolean // prevents interaction
   asChild?: boolean // render as child element via Slot
+  className?: string // extra classes merged onto the button
   onClick?: React.MouseEventHandler<HTMLButtonElement> // click handler
 }

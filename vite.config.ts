@@ -29,6 +29,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
     dts({
+      exclude: [
+        '**/*.stories.tsx',
+        '**/*.test.tsx',
+      ],
       rollupTypes: true,
       tsconfigPath: './tsconfig.app.json',
     }),

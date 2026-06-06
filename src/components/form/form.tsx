@@ -1,11 +1,18 @@
 import { Separator } from '@base-ui/react/separator'
 import { Info } from 'lucide-react'
-import type { PropsWithChildren } from 'react'
+import {
+  type PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Label } from '@/components/label'
 import type { TooltipProps } from '@/components/tooltip'
 import { Tooltip } from '@/components/tooltip'
+import { cn } from '@/support/utils'
 
 import type {
   FormFieldGroupProps,
@@ -65,15 +72,38 @@ const styles = tv({
 
     // Fieldset — groups related sections with legend
     fieldSet: 'flex flex-col gap-4',
+
+    floatingLabel: [
+      'pointer-events-none absolute top-1/2 left-2.5 z-10 origin-left',
+      '-translate-y-1/2 px-1 font-normal text-muted-foreground text-sm',
+      'transition-all duration-150',
+      'group-focus-within/field:top-0 group-focus-within/field:bg-background',
+      'group-focus-within/field:text-foreground group-focus-within/field:text-xs',
+      'group-data-[filled]/field:top-0 group-data-[filled]/field:bg-background',
+      'group-data-[filled]/field:text-xs',
+    ],
     root: '',
   },
 
   variants: {
-    // Error state — paints label and helper text in destructive color
+    floating: {
+      true: {
+        field: [
+          'relative',
+          '[&>label]:w-fit',
+          '[&_input::placeholder]:opacity-0 [&_textarea::placeholder]:opacity-0',
+          'group-focus-within/field:[&_input::placeholder]:opacity-100',
+          'group-focus-within/field:[&_textarea::placeholder]:opacity-100',
+        ],
+      },
+    },
+
     invalid: {
       true: {
         field: 'text-destructive',
         fieldDescription: 'text-destructive/80',
+        floatingLabel:
+          'text-destructive group-focus-within/field:text-destructive',
       },
     },
 
@@ -124,11 +154,32 @@ function FormField({
   description,
   error,
   label,
+  labelFloating,
   name,
 }: PropsWithChildren<FormFieldProps>) {
   const invalid = !!error
 
-  const { field, fieldDescription, fieldError } = styles({
+  const ref = useRef<HTMLDivElement>(null)
+  const [filled, setFilled] = useState(false)
+
+  const syncFilled = useCallback(() => {
+    const el = ref.current?.querySelector<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >('input, textarea, select')
+    setFilled(!!el && el.value !== '')
+  }, [])
+
+  useEffect(() => {
+    if (labelFloating) {
+      syncFilled()
+    }
+  }, [
+    labelFloating,
+    syncFilled,
+  ])
+
+  const { field, fieldDescription, fieldError, floatingLabel } = styles({
+    floating: labelFloating,
     invalid,
   })
 
@@ -144,6 +195,36 @@ function FormField({
             ...label,
           }
         : undefined
+
+  if (labelFloating) {
+    return (
+      <div
+        className={field()}
+        data-filled={filled ? '' : undefined}
+        onInput={syncFilled}
+        ref={ref}
+      >
+        {children}
+        {labelConfig && (
+          <Label
+            {...labelConfig}
+            className={cn(floatingLabel(), labelConfig.className)}
+          >
+            {labelConfig.content}
+          </Label>
+        )}
+        {description && <p className={fieldDescription()}>{description}</p>}
+        {error && (
+          <div
+            className={fieldError()}
+            role="alert"
+          >
+            {error}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className={field()}>

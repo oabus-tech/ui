@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Tooltip } from '@/components/tooltip'
+import { cn } from '@/support/utils'
 
 import type { LabelProps } from './label.types'
 
@@ -29,6 +30,7 @@ function Label({
   optional,
   disabled,
   tooltip,
+  className,
 }: PropsWithChildren<LabelProps>) {
   const { root, indicator, hint, tooltipIcon } = label({
     disabled,
@@ -36,7 +38,7 @@ function Label({
 
   return (
     <label
-      className={root()}
+      className={cn(root(), className)}
       data-testid="label-root"
       htmlFor={htmlFor}
     >

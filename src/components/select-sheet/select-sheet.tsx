@@ -186,7 +186,7 @@ function SingleSelectSheet<T, I = string, O = I>({
   const handleChange = (nextOption: T) => {
     const nextValue = getValue(nextOption, optionValue)
     if (value === undefined) {
-      setInternalValue(nextValue as I)
+      setInternalValue(nextValue as unknown as I)
     }
     onChange?.(nextValue)
     setOpen(false)
@@ -337,13 +337,13 @@ function MultipleSelectSheet<T, I = string, O = I>({
       ? currentValue.filter((item) => toKey(item) !== nextKey)
       : [
           ...currentValue,
-          nextValue as I,
+          nextValue as unknown as I,
         ]
 
     if (value === undefined) {
       setInternalValue(nextValues)
     }
-    onChange?.(nextValues as O[])
+    onChange?.(nextValues as unknown as O[])
   }
 
   const handleClear: React.MouseEventHandler<HTMLElement> = (event) => {

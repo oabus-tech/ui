@@ -23,6 +23,7 @@ function Button({
   asChild,
   type = 'button',
   form,
+  className,
   onClick,
 }: PropsWithChildren<ButtonProps>) {
   const content = (
@@ -47,6 +48,7 @@ function Button({
     <ButtonPrimitive
       className={buttonShared({
         block,
+        className,
         size,
         variant,
       })}

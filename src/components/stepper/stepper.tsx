@@ -49,9 +49,9 @@ const stepper = tv({
     indicator:
       'stepper-indicator inline-flex shrink-0 items-center justify-center bg-muted font-medium text-muted-foreground transition-colors data-[state=stepCompleted]:bg-primary data-[state=stepProgress]:bg-primary data-[state=stepCompleted]:text-primary-foreground data-[state=stepProgress]:text-primary-foreground',
     label: 'stepper-label font-medium text-foreground text-sm',
-    list: 'stepper-list flex w-full items-center justify-center gap-2',
+    list: 'stepper-list flex w-full items-center justify-between gap-2',
     panels: 'stepper-panels flex min-h-0 flex-1 flex-col',
-    root: 'stepper-root flex min-h-screen w-full',
+    root: 'stepper-root flex min-h-0 w-full',
     step: 'stepper-step flex min-w-0 items-center gap-2',
     trigger:
       'stepper-trigger inline-flex cursor-pointer items-center gap-2 rounded-md p-1 outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
@@ -100,17 +100,17 @@ const stepper = tv({
     size: {
       lg: {
         description: 'text-sm',
-        indicator: 'size-10 text-base',
+        indicator: 'size-10 text-base [&>svg]:size-5',
         label: 'text-base',
       },
       md: {
         description: 'text-xs',
-        indicator: 'size-8 text-sm',
+        indicator: 'size-8 text-sm [&>svg]:size-4',
         label: 'text-sm',
       },
       sm: {
         description: 'text-[0.7rem]',
-        indicator: 'size-6 text-xs',
+        indicator: 'size-6 text-xs [&>svg]:size-3.5',
         label: 'text-xs',
       },
     },

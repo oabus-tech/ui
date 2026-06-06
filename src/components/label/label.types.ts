@@ -26,6 +26,7 @@ export type LabelProps = {
   optional?: boolean // shows optional indicator text
   disabled?: boolean // applies disabled styling
   tooltip?: React.ReactNode // tooltip content shown next to label
+  className?: string // extra classes merged onto the label root
 }
 
 export type WithLabelProps<T> = T & {

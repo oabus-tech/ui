@@ -47,6 +47,9 @@ const typography = tv({
       default: 'text-foreground',
       muted: 'text-muted-foreground',
     },
+    destructive: {
+      true: 'text-destructive',
+    },
     weight: {
       black: 'font-black',
       bold: 'font-bold',
@@ -70,6 +73,7 @@ function Typography({
   variant,
   weight,
   truncate,
+  destructive,
   children,
 }: PropsWithChildren<TypographyProps>) {
   return (
@@ -77,6 +81,7 @@ function Typography({
       className={typography({
         align,
         centered,
+        destructive,
         maxWidth,
         size,
         truncate,

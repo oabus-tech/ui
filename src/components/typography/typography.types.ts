@@ -72,4 +72,5 @@ export type TypographyProps = {
   variant?: TypographyVariant // color variant
   weight?: TypographyWeight // font weight
   truncate?: boolean // truncates text with ellipsis on overflow
+  destructive?: boolean // applies destructive (error) text color
 }

@@ -15,21 +15,22 @@ const BottomTabsContext = createContext<
 
 const bottomTabs = tv({
   slots: {
-    icon: 'bottom-tabs-icon flex size-5 items-center justify-center',
+    icon: 'bottom-tabs-icon flex size-5 items-center justify-center transition-transform',
     item: [
-      'bottom-tabs-item flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg',
+      'bottom-tabs-item flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl',
       'px-2 py-1.5 text-muted-foreground text-xs outline-none transition-colors',
-      'hover:bg-muted hover:text-foreground',
+      'hover:text-foreground',
       'focus-visible:ring-3 focus-visible:ring-ring/50',
       'disabled:pointer-events-none disabled:opacity-50',
-      'data-[selected]:bg-primary data-[selected]:text-primary-foreground',
-      'aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground',
-      'data-[selected]:font-medium data-[selected]:shadow-sm',
+      'data-[selected]:text-foreground',
+      'data-[selected]:font-semibold',
+      'data-[selected]:[&_.bottom-tabs-icon]:scale-110',
     ],
-    label: 'bottom-tabs-label max-w-full truncate',
+    label: 'bottom-tabs-label max-w-full truncate text-sm',
     root: [
       'fixed inset-x-0 bottom-0 bottom-tabs z-40 flex gap-1 border-border border-t',
       'bg-background/95 px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] backdrop-blur',
+      'shadow-[0_-4px_16px_-4px_rgba(0,0,0,0.12)]',
     ],
   },
 })
@@ -93,10 +94,10 @@ function BottomTabsItem({
   if (asChild && isValidElement(children)) {
     const child = children as ReactElement<{
       onClick?: React.MouseEventHandler<HTMLElement>
+      'data-selected'?: string
     }>
 
     return cloneElement(child, {
-      'aria-current': selected ? 'page' : undefined,
       'data-selected': selected ? '' : undefined,
       onClick: (event: React.MouseEvent<HTMLElement>) => {
         child.props.onClick?.(event)
@@ -109,7 +110,6 @@ function BottomTabsItem({
 
   return (
     <button
-      aria-current={selected ? 'page' : undefined}
       className={item()}
       data-selected={selected ? '' : undefined}
       data-testid="bottom-tabs-item"
