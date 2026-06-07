@@ -1,5 +1,5 @@
 import { Button } from '@base-ui/react/button'
-import { CheckIcon, ChevronsUpDown } from 'lucide-react'
+import { ChevronsUpDown } from 'lucide-react'
 import * as React from 'react'
 import * as RPNInput from 'react-phone-number-input'
 import flags from 'react-phone-number-input/flags'
@@ -52,6 +52,18 @@ const flagStyles = tv({
   base: '[&>svg]:!h-4 [&>svg]:!w-6 flex h-4 w-6 overflow-hidden rounded-sm bg-foreground/20',
 })
 
+const itemStyles = tv({
+  base: 'gap-2 [&>svg:last-child]:hidden',
+  defaultVariants: {
+    selected: false,
+  },
+  variants: {
+    selected: {
+      true: 'bg-muted text-foreground',
+    },
+  },
+})
+
 const chevronStyles = tv({
   base: '-mr-2 size-4',
   defaultVariants: {
@@ -61,19 +73,6 @@ const chevronStyles = tv({
     disabled: {
       false: 'opacity-50',
       true: 'opacity-30',
-    },
-  },
-})
-
-const checkIconStyles = tv({
-  base: 'ml-auto size-4',
-  defaultVariants: {
-    selected: false,
-  },
-  variants: {
-    selected: {
-      false: 'opacity-0',
-      true: 'opacity-100',
     },
   },
 })
@@ -308,7 +307,9 @@ const CountrySelectOption = ({
 
   return (
     <CommandItem
-      className="gap-2"
+      className={itemStyles({
+        selected: country === selectedCountry,
+      })}
       onSelect={handleSelect}
     >
       <FlagComponent
@@ -316,12 +317,7 @@ const CountrySelectOption = ({
         countryName={countryName}
       />
       <span className="flex-1 text-sm">{countryName}</span>
-      <span className="text-foreground/50 text-sm">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
-      <CheckIcon
-        className={checkIconStyles({
-          selected: country === selectedCountry,
-        })}
-      />
+      <span className="w-12 shrink-0 text-right text-foreground/50 text-sm tabular-nums">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
     </CommandItem>
   )
 }
