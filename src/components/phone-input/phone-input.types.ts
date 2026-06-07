@@ -4,8 +4,8 @@ import type { InputProps } from '@/components/input/input.types'
 
 export type PhoneValue = {
   iso: string // selected country ISO code
-  number: string // phone number string
   ddi?: string // dialing code
+  number: string // national phone number string, without dialing code
 }
 
 export type PhoneInputProps = Omit<
