@@ -19,7 +19,8 @@ import { ScrollArea } from '@/shadcn/scroll-area'
 import { buttonShared } from '../button/button.shared'
 import { Input } from '../input'
 import type { InputProps, InputSize } from '../input/input.types'
-import type { PhoneInputProps, PhoneValue } from './phone-input.types'
+import type { PhoneInputProps } from './phone-input.types'
+import { getPhoneInputValue, getPhoneValue } from './phone-input.utils'
 
 const rootStyles = tv({
   base: 'flex',
@@ -94,8 +95,15 @@ const PhoneInput = React.forwardRef<
     },
     ref,
   ) => {
+    const valueCountry = value?.iso as RPNInput.Country | undefined
+    const defaultValueCountry = defaultValue?.iso as
+      | RPNInput.Country
+      | undefined
+    const inputValue = getPhoneInputValue(value)
+    const defaultInputValue = getPhoneInputValue(defaultValue)
+
     const selectedCountryRef = React.useRef<RPNInput.Country | undefined>(
-      (value?.iso ?? defaultValue?.iso) as RPNInput.Country | undefined,
+      valueCountry ?? defaultValueCountry,
     )
 
     const inputComponent = React.useCallback(
@@ -146,7 +154,7 @@ const PhoneInput = React.forwardRef<
           className,
         })}
         countrySelectComponent={countrySelectComponent}
-        defaultValue={defaultValue?.number ?? undefined}
+        defaultValue={defaultInputValue}
         flagComponent={FlagComponent}
         inputComponent={inputComponent}
         onChange={(phoneNumber) => {
@@ -157,21 +165,13 @@ const PhoneInput = React.forwardRef<
             onChange(null)
             return
           }
-          const iso = selectedCountryRef.current ?? ''
-          const phoneValue: PhoneValue = {
-            ddi: iso
-              ? String(RPNInput.getCountryCallingCode(iso as RPNInput.Country))
-              : undefined,
-            iso,
-            number: phoneNumber,
-          }
-          onChange(phoneValue)
+          onChange(getPhoneValue(phoneNumber, selectedCountryRef.current))
         }}
         onCountryChange={(country) => {
           selectedCountryRef.current = country
         }}
         smartCaret={false}
-        value={value?.number ?? undefined}
+        value={inputValue}
         {...props}
       />
     )
