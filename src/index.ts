@@ -55,6 +55,7 @@ export * from './components/phone-input'
 export * from './components/popover'
 export * from './components/progress'
 export * from './components/radio'
+export * from './components/rating'
 export * from './components/select'
 export * from './components/select-sheet'
 // Other

@@ -56,7 +56,7 @@ function Label({
           className={hint()}
           data-testid="label-hint"
         >
-          (optional)
+          (opcional)
         </span>
       )}
       {tooltip && (

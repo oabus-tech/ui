@@ -19,6 +19,9 @@ const typography = tv({
     centered: {
       true: 'mx-auto',
     },
+    destructive: {
+      true: 'text-destructive',
+    },
     maxWidth: {
       lg: 'max-w-lg',
       md: 'max-w-md',
@@ -46,9 +49,6 @@ const typography = tv({
     variant: {
       default: 'text-foreground',
       muted: 'text-muted-foreground',
-    },
-    destructive: {
-      true: 'text-destructive',
     },
     weight: {
       black: 'font-black',

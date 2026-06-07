@@ -30,6 +30,7 @@ export const buttonShared = tv({
       sm: 'h-9 gap-1 px-2.5 text-[0.8rem] [&_svg:not([class*=size-])]:size-3.5',
     },
     variant: {
+      dark: 'bg-foreground text-background hover:bg-foreground/90',
       dashed:
         'border-border border-dashed bg-background hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
       default: 'bg-primary text-primary-foreground hover:bg-primary/80',

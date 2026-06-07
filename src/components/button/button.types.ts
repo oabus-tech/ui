@@ -36,6 +36,7 @@ export type ButtonSize =
 
 export type ButtonVariant =
   | 'default'
+  | 'dark'
   | 'destructive'
   | 'outline'
   | 'dashed'

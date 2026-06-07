@@ -9,8 +9,7 @@
   --popover: oklch(0.9911 0 0);
   --popover-foreground: oklch(0.2435 0 0);
 
-  /* PRIMARY AMARELO */
-  --primary: oklch(92.47% 0.204 106.36);
+  --primary: #fff500;
   --primary-foreground: #000000;
 
   --secondary: oklch(0.9200 0.0651 74.3695);
@@ -28,7 +27,6 @@
   --border: oklch(0.8822 0 0);
   --input: oklch(0.8822 0 0);
 
-  /* HERDANDO DO PRIMARY */
   --ring: var(--primary);
 
   --chart-1: var(--primary);
@@ -113,8 +111,7 @@
   --popover: oklch(0.2134 0 0);
   --popover-foreground: oklch(0.9491 0 0);
 
-  /* PRIMARY AMARELO */
-  --primary: oklch(92.47% 0.204 106.36);
+  --primary: #fff500;
   --primary-foreground: #000000;
 
   --secondary: oklch(0.3163 0.0190 63.6992);
@@ -132,7 +129,6 @@
   --border: oklch(0.2351 0.0115 91.7467);
   --input: oklch(0.4017 0 0);
 
-  /* HERDANDO DO PRIMARY */
   --ring: var(--primary);
 
   --chart-1: var(--primary);
