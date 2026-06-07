@@ -46,7 +46,7 @@ const styles = tv({
       '[&>span]:text-xs [&>span]:opacity-70',
     ],
     root: [
-      'calendar-root group/calendar bg-background p-2',
+      'calendar-root group/calendar bg-transparent p-2',
       '[--cell-radius:var(--radius-md)]',
     ],
   },

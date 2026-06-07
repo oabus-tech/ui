@@ -39,7 +39,7 @@ const selectSheet = tv({
     trigger: [
       'select-sheet-trigger flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
       'whitespace-nowrap border border-input bg-transparent px-2.5 text-sm outline-none transition-colors',
-      'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+      'has-[.select-sheet-trigger-button:focus]:border-ring has-[.select-sheet-trigger-button:focus]:ring-3 has-[.select-sheet-trigger-button:focus]:ring-ring/50',
       'disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
       'dark:bg-input/30 dark:disabled:bg-input/80',
     ],
@@ -514,68 +514,101 @@ function SelectSheetBase<T, O>({
 
   return (
     <>
-      <div
-        className={trigger()}
-        data-testid="select-sheet-trigger"
-      >
-        <button
-          className={triggerButton()}
-          disabled={disabled || loading}
-          onClick={() => onOpenChange(true)}
-          type="button"
+      {multiple || renderValue ? (
+        <div
+          className={trigger()}
+          data-testid="select-sheet-trigger"
         >
-          <span className={triggerValue()}>
-            {leftSection}
-            {hasValue ? (
-              multiple ? (
-                <span className={selectedBadges()}>
-                  {selectedOptions.slice(0, 2).map((option) => (
-                    <Badge
-                      key={toKey(getValue(option, optionValue))}
-                      variant="secondary"
-                    >
-                      {renderValue?.(option) ?? getLabel(option, optionLabel)}
-                    </Badge>
-                  ))}
-                  {selectedOptions.length > 2 && (
-                    <Badge variant="outline">
-                      +{selectedOptions.length - 2}
-                    </Badge>
-                  )}
-                </span>
-              ) : (
-                <span className={valueText()}>
-                  {renderValue?.(selectedOptions[0]) ?? triggerLabel}
-                </span>
-              )
-            ) : (
-              <span
-                className={valueText({
-                  className: 'text-muted-foreground',
-                })}
-              >
-                {placeholder}
-              </span>
-            )}
-          </span>
-        </button>
-        {loading ? (
-          <Loader size="sm" />
-        ) : clearable && hasValue ? (
           <button
-            aria-label="Clear selection"
-            className={clear()}
-            onClick={onClear}
+            className={triggerButton()}
+            disabled={disabled || loading}
+            onClick={(event) => {
+              event.currentTarget.focus()
+              onOpenChange(true)
+            }}
             type="button"
           >
-            <X className="size-4" />
+            <span className={triggerValue()}>
+              {leftSection}
+              {hasValue ? (
+                multiple ? (
+                  <span className={selectedBadges()}>
+                    {selectedOptions.slice(0, 2).map((option) => (
+                      <Badge
+                        key={toKey(getValue(option, optionValue))}
+                        variant="secondary"
+                      >
+                        {renderValue?.(option) ?? getLabel(option, optionLabel)}
+                      </Badge>
+                    ))}
+                    {selectedOptions.length > 2 && (
+                      <Badge variant="outline">
+                        +{selectedOptions.length - 2}
+                      </Badge>
+                    )}
+                  </span>
+                ) : (
+                  <span className={valueText()}>
+                    {renderValue?.(selectedOptions[0]) ?? triggerLabel}
+                  </span>
+                )
+              ) : (
+                <span
+                  className={valueText({
+                    className: 'text-muted-foreground',
+                  })}
+                >
+                  {placeholder}
+                </span>
+              )}
+            </span>
           </button>
-        ) : (
-          (rightSection ?? (
-            <ChevronDown className="size-4 text-muted-foreground" />
-          ))
-        )}
-      </div>
+          {loading ? (
+            <Loader size="sm" />
+          ) : clearable && hasValue ? (
+            <button
+              aria-label="Clear selection"
+              className={clear()}
+              onClick={onClear}
+              type="button"
+            >
+              <X className="size-4" />
+            </button>
+          ) : (
+            (rightSection ?? (
+              <ChevronDown className="size-4 text-muted-foreground" />
+            ))
+          )}
+        </div>
+      ) : (
+        <Input
+          className="select-sheet-trigger focus:border-ring focus:ring-3 focus:ring-ring/50"
+          disabled={disabled}
+          leftSection={leftSection}
+          loading={loading}
+          onClick={() => !disabled && !loading && onOpenChange(true)}
+          placeholder={placeholder}
+          readOnly
+          rightSection={
+            clearable && hasValue ? (
+              <button
+                aria-label="Clear selection"
+                className={clear()}
+                onClick={onClear}
+                type="button"
+              >
+                <X className="size-4" />
+              </button>
+            ) : (
+              (rightSection ?? (
+                <ChevronDown className="size-4 text-muted-foreground" />
+              ))
+            )
+          }
+          size={size}
+          value={triggerLabel}
+        />
+      )}
       <Sheet
         onChange={onOpenChange}
         open={currentOpen}

@@ -90,7 +90,7 @@ function DatePickerSheet({
           ) : null}
         </Sheet.Header>
 
-        <Sheet.Body>
+        <Sheet.Body minHeight="25rem">
           <Calendar
             fullWidth
             maxDate={maxDate}

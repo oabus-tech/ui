@@ -6,6 +6,7 @@ import { tv } from 'tailwind-variants'
 import { Button } from '@/components/button'
 
 import type {
+  SheetBodyProps,
   SheetFooterProps,
   SheetHeaderProps,
   SheetProps,
@@ -238,13 +239,20 @@ function SheetDescription({ children }: PropsWithChildren) {
   )
 }
 
-function SheetBody({ children }: PropsWithChildren) {
+function SheetBody({ children, minHeight }: PropsWithChildren<SheetBodyProps>) {
   const { body } = styles()
 
   return (
     <div
       className={body()}
       data-testid="sheet-body"
+      style={
+        minHeight === undefined
+          ? undefined
+          : {
+              minHeight,
+            }
+      }
     >
       {children}
     </div>

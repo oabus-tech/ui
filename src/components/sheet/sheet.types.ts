@@ -48,7 +48,9 @@ export type SheetTitleProps = {}
 
 export type SheetDescriptionProps = {}
 
-export type SheetBodyProps = {}
+export type SheetBodyProps = {
+  minHeight?: string | number // minimum body height
+}
 
 export type SheetFooterProps = {
   bordered?: boolean // adds top border
