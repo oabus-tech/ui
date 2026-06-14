@@ -13,6 +13,7 @@ import type { SelectSheetProps } from './select-sheet.types'
 const selectSheet = tv({
   defaultVariants: {
     size: 'md',
+    variant: 'default',
   },
   slots: {
     clear: [
@@ -36,6 +37,8 @@ const selectSheet = tv({
       'select-sheet-loading flex items-center justify-center gap-2 p-8 text-center text-muted-foreground text-sm',
     search: 'select-sheet-search mb-2 shrink-0',
     selectedBadges: 'select-sheet-selected-badges flex min-w-0 gap-1',
+    simpleTrigger:
+      'select-sheet-trigger focus:border-ring focus:ring-3 focus:ring-ring/50',
     trigger: [
       'select-sheet-trigger flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg',
       'whitespace-nowrap border border-input bg-transparent px-2.5 text-sm outline-none transition-colors',
@@ -50,6 +53,14 @@ const selectSheet = tv({
     valueText: 'select-sheet-value-text min-w-0 truncate',
   },
   variants: {
+    variant: {
+      default: {},
+      ghost: {
+        simpleTrigger: 'focus:border-transparent',
+        trigger:
+          'border-transparent bg-transparent has-[.select-sheet-trigger-button:focus]:border-transparent disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent',
+      },
+    },
     size: {
       lg: {
         trigger: 'h-11',
@@ -120,6 +131,7 @@ function SingleSelectSheet<T, I = string, O = I>({
   disabled,
   loading,
   size,
+  variant,
   clearable = true,
   value,
   defaultValue,
@@ -249,6 +261,7 @@ function SingleSelectSheet<T, I = string, O = I>({
       title={title}
       toggleOption={handleChange}
       triggerLabel={selectedOption ? getLabel(selectedOption, optionLabel) : ''}
+      variant={variant}
     />
   )
 }
@@ -273,6 +286,7 @@ function MultipleSelectSheet<T, I = string, O = I>({
   disabled,
   loading,
   size,
+  variant,
   clearable = true,
   value,
   defaultValue = [],
@@ -397,6 +411,7 @@ function MultipleSelectSheet<T, I = string, O = I>({
       triggerLabel={selectedOptions
         .map((option) => getLabel(option, optionLabel))
         .join(', ')}
+      variant={variant}
     />
   )
 }
@@ -437,6 +452,7 @@ type SelectSheetBaseInheritedProps<T, O> = Pick<
   | 'side'
   | 'size'
   | 'title'
+  | 'variant'
 >
 
 type SelectSheetBaseProps<T, O> = SelectSheetBaseOwnProps<T> &
@@ -465,6 +481,7 @@ function SelectSheetBase<T, O>({
   disabled,
   loading,
   size,
+  variant,
   clearable,
   side,
   sheetSize,
@@ -481,6 +498,7 @@ function SelectSheetBase<T, O>({
     triggerButton,
     triggerValue,
     valueText,
+    simpleTrigger,
     clear,
     selectedBadges,
     content,
@@ -495,6 +513,7 @@ function SelectSheetBase<T, O>({
     loading: loadingSlot,
   } = selectSheet({
     size,
+    variant,
   })
 
   const hasValue = selectedOptions.length > 0
@@ -582,7 +601,7 @@ function SelectSheetBase<T, O>({
         </div>
       ) : (
         <Input
-          className="select-sheet-trigger focus:border-ring focus:ring-3 focus:ring-ring/50"
+          className={simpleTrigger()}
           disabled={disabled}
           leftSection={leftSection}
           loading={loading}
@@ -607,6 +626,7 @@ function SelectSheetBase<T, O>({
           }
           size={size}
           value={triggerLabel}
+          variant={variant}
         />
       )}
       <Sheet

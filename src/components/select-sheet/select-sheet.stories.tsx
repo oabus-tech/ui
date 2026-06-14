@@ -145,6 +145,23 @@ export const WithDefaultValue = {
   ),
 }
 
+export const Ghost = {
+  render: () => (
+    <div className="max-w-sm">
+      <SelectSheet<FrameworkOption>
+        mode="single"
+        optionGroup="group"
+        optionLabel="label"
+        options={FRAMEWORKS}
+        optionValue="id"
+        placeholder="Borderless select"
+        title="Framework"
+        variant="ghost"
+      />
+    </div>
+  ),
+}
+
 export const ControlledSearch = {
   render: () => {
     const [search, setSearch] = useState('')

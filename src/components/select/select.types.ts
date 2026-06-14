@@ -35,6 +35,7 @@ export type SelectInfiniteProps = {
 }
 
 export type SelectSize = 'sm' | 'md' | 'lg'
+export type SelectVariant = 'default' | 'ghost'
 
 export type BaseSelectProps<T, O> = {
   options: T[] // array of option objects
@@ -56,6 +57,7 @@ export type BaseSelectProps<T, O> = {
   disabled?: boolean // prevents interaction
   loading?: boolean // shows loading state
   size?: SelectSize // visual size
+  variant?: SelectVariant // visual style variant
   clearable?: boolean // shows an X button to clear the value when one is selected (default: true)
 }
 

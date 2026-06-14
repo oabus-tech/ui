@@ -14,6 +14,7 @@ const SELECT_POPUP_OFFSET = 8
 const select = tv({
   defaultVariants: {
     size: 'md',
+    variant: 'default',
   },
   slots: {
     checkbox: [
@@ -82,6 +83,13 @@ const select = tv({
       },
       sm: {
         trigger: 'h-9',
+      },
+    },
+    variant: {
+      default: {},
+      ghost: {
+        trigger:
+          'border-transparent bg-transparent focus-visible:border-transparent data-popup-open:border-transparent disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent',
       },
     },
   },
@@ -166,6 +174,7 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
   disabled,
   loading,
   size,
+  variant,
   value,
   defaultValue,
   onChange,
@@ -186,6 +195,7 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
     clearTrigger,
   } = select({
     size,
+    variant,
   })
 
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -474,6 +484,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
   disabled,
   loading,
   size,
+  variant,
   value,
   defaultValue,
   onChange,
@@ -496,6 +507,7 @@ function SingleSearchableSelect<T, I = string, O = I>({
     clearTrigger,
   } = select({
     size,
+    variant,
   })
 
   const [query, setQuery] = useState('')
@@ -790,6 +802,7 @@ function MultipleSelect<T, I = string, O = I>({
   disabled,
   loading,
   size,
+  variant,
   value,
   defaultValue,
   onChange,
@@ -812,6 +825,7 @@ function MultipleSelect<T, I = string, O = I>({
     clearTrigger,
   } = select({
     size,
+    variant,
   })
 
   const isControlled = value !== undefined

@@ -230,6 +230,19 @@ export const SingleSearchable = {
   ),
 }
 
+export const Ghost = {
+  render: () => (
+    <Select<Option>
+      mode="single"
+      optionLabel="label"
+      options={OPTIONS}
+      optionValue="id"
+      placeholder="Borderless select..."
+      variant="ghost"
+    />
+  ),
+}
+
 export const SingleDebouncedSearch = {
   render: () => {
     const [search, setSearch] = useState('')
