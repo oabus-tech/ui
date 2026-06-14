@@ -5,6 +5,7 @@ export const DEFAULT_SECTION_WIDTH = 36
 export const inputShared = tv({
   defaultVariants: {
     size: 'md',
+    variant: 'default',
   },
   slots: {
     field: [
@@ -41,6 +42,13 @@ export const inputShared = tv({
       },
       sm: {
         field: 'h-9 px-2.5 py-1',
+      },
+    },
+    variant: {
+      default: {},
+      ghost: {
+        field:
+          'border-transparent bg-transparent focus-visible:border-transparent disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent',
       },
     },
   },

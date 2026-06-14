@@ -31,7 +31,7 @@ export type DocumentValue = {
 
 export type DocumentInputProps = Omit<
   MaskInputProps,
-  'mask' | 'value' | 'defaultValue' | 'onChange'
+  'mask' | 'value' | 'defaultValue' | 'onChange' | 'variant'
 > & {
   variant: DocumentType // determines mask pattern and validation (required)
   value?: DocumentValue | null // controlled value

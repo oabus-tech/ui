@@ -10,6 +10,7 @@ import type { InputProps } from './input.types'
 const input = tv({
   defaultVariants: {
     size: 'md',
+    variant: 'default',
   },
   slots: {
     field: [
@@ -39,12 +40,20 @@ const input = tv({
         field: 'h-9 px-2.5 py-1',
       },
     },
+    variant: {
+      default: {},
+      ghost: {
+        field:
+          'border-transparent bg-transparent focus-visible:border-transparent disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent',
+      },
+    },
   },
 })
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     size,
+    variant,
     value,
     defaultValue,
     leftSection,
@@ -88,6 +97,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
   const { root, field, section } = input({
     size,
+    variant,
   })
 
   const fieldStyle: React.CSSProperties = {

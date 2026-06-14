@@ -170,6 +170,7 @@ function SpinSegment({
 
 function TimeInput({
   size,
+  variant,
   value,
   defaultValue,
   leftSection,
@@ -334,6 +335,7 @@ function TimeInput({
 
   const { root, field, section } = inputShared({
     size,
+    variant,
   })
 
   // Apply the shared field styling to the wrapper so that the multi-input
@@ -342,9 +344,13 @@ function TimeInput({
   const wrapperClass = cn(
     field({}),
     'flex cursor-text items-center gap-0',
-    'has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/50',
+    variant === 'ghost'
+      ? 'has-[input:focus-visible]:border-transparent has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/50'
+      : 'has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/50',
     disabled &&
-      'pointer-events-none cursor-not-allowed bg-input/50 opacity-50 dark:bg-input/80',
+      (variant === 'ghost'
+        ? 'pointer-events-none cursor-not-allowed bg-transparent opacity-50 dark:bg-transparent'
+        : 'pointer-events-none cursor-not-allowed bg-input/50 opacity-50 dark:bg-input/80'),
     className,
   )
 

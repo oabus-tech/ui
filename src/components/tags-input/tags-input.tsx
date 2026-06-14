@@ -9,6 +9,7 @@ import type { TagsInputProps } from './tags-input.types'
 const tagsInput = tv({
   defaultVariants: {
     size: 'md',
+    variant: 'default',
   },
   slots: {
     field:
@@ -36,6 +37,12 @@ const tagsInput = tv({
         root: 'min-h-9',
       },
     },
+    variant: {
+      default: {},
+      ghost: {
+        root: 'border-transparent bg-transparent focus-within:border-transparent has-disabled:bg-transparent dark:bg-transparent dark:has-disabled:bg-transparent',
+      },
+    },
   },
 })
 
@@ -48,6 +55,7 @@ function TagsInput({
   placeholder,
   disabled,
   size,
+  variant,
   ...props
 }: TagsInputProps) {
   const [internalValue, setInternalValue] = useState<string[]>(defaultValue)
@@ -56,6 +64,7 @@ function TagsInput({
   const inputRef = useRef<HTMLInputElement>(null)
   const { root, field } = tagsInput({
     size,
+    variant,
   })
 
   const updateTags = (next: string[]) => {

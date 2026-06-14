@@ -89,6 +89,7 @@ const PhoneInput = React.forwardRef<
       loading,
       onChange,
       size,
+      variant,
       value,
       ...props
     },
@@ -126,11 +127,13 @@ const PhoneInput = React.forwardRef<
           }
           ref={ref as React.Ref<HTMLInputElement>}
           size={size}
+          variant={variant}
           {...inputProps}
         />
       ),
       [
         size,
+        variant,
         ref,
       ],
     )

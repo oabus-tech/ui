@@ -37,7 +37,7 @@ export type CurrencyInputRangeValue = {
 
 type CurrencyInputBaseProps = Omit<
   InputProps,
-  'value' | 'defaultValue' | 'onChange'
+  'value' | 'defaultValue' | 'onChange' | 'variant'
 > & {
   variant?: CurrencyVariant // currency type determines symbol/formatting
 }

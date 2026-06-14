@@ -23,6 +23,7 @@
  */
 
 export type InputSize = 'sm' | 'md' | 'lg'
+export type InputVariant = 'default' | 'ghost'
 
 export type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -33,6 +34,7 @@ export type InputProps = Omit<
   value?: string | null // controlled value (null clears)
   defaultValue?: string | null // uncontrolled initial value
   size?: InputSize // visual size variant
+  variant?: InputVariant // visual style variant
   rootClassName?: string // className for the root wrapper div
   leftSection?: React.ReactNode // element rendered on the left (e.g. icon)
   leftSectionWidth?: number // left section padding in px (default 36)

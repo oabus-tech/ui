@@ -29,6 +29,13 @@ export const WithRightSection: Story = {
   },
 }
 
+export const Ghost: Story = {
+  args: {
+    placeholder: 'Borderless input...',
+    variant: 'ghost',
+  },
+}
+
 export const Loading: Story = {
   args: {
     loading: true,

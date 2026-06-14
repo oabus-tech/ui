@@ -8,6 +8,7 @@ import type { MaskInputProps } from './mask-input.types'
 function MaskInput({
   mask,
   size,
+  variant,
   value,
   defaultValue,
   leftSection,
@@ -26,6 +27,7 @@ function MaskInput({
 
   const { root, field, section } = inputShared({
     size,
+    variant,
   })
 
   const maskOptions = Array.isArray(mask)
