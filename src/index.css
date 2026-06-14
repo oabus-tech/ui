@@ -4,6 +4,8 @@
 @import "@fontsource-variable/geist";
 @import "./mono.css";
 @import "./nova.css";
+@import "./flow.css";
+
 
 @custom-variant dark (&:is(.dark *));
 
