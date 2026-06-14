@@ -53,14 +53,6 @@ const selectSheet = tv({
     valueText: 'select-sheet-value-text min-w-0 truncate',
   },
   variants: {
-    variant: {
-      default: {},
-      ghost: {
-        simpleTrigger: 'focus:border-transparent',
-        trigger:
-          'border-transparent bg-transparent has-[.select-sheet-trigger-button:focus]:border-transparent disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent',
-      },
-    },
     size: {
       lg: {
         trigger: 'h-11',
@@ -70,6 +62,14 @@ const selectSheet = tv({
       },
       sm: {
         trigger: 'h-9',
+      },
+    },
+    variant: {
+      default: {},
+      ghost: {
+        simpleTrigger: 'focus:border-transparent',
+        trigger:
+          'border-transparent bg-transparent disabled:bg-transparent has-[.select-sheet-trigger-button:focus]:border-transparent dark:bg-transparent dark:disabled:bg-transparent',
       },
     },
   },

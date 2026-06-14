@@ -89,7 +89,7 @@ const select = tv({
       default: {},
       ghost: {
         trigger:
-          'border-transparent bg-transparent focus-visible:border-transparent data-popup-open:border-transparent disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent',
+          'border-transparent bg-transparent focus-visible:border-transparent disabled:bg-transparent data-popup-open:border-transparent dark:bg-transparent dark:disabled:bg-transparent',
       },
     },
   },
