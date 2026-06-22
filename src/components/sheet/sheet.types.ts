@@ -9,7 +9,7 @@
  * - Width: 75% on mobile, max-w-sm on desktop (for left/right sides)
  * - Overlay: fixed black/80 background
  * - Header: sticky top with optional close button and bordered bottom
- * - Body: scrollable content area
+ * - Body: scrollable content area, constrained within viewport for top/bottom sheets
  * - Footer: sticky bottom with optional bordered top
  * - Clicking overlay or pressing Escape closes the sheet
  *

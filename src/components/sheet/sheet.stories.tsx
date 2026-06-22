@@ -270,6 +270,62 @@ export const Bottom: Story = {
   },
 }
 
+export const BottomScrollable: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Tall Bottom Sheet</Button>
+        <Sheet
+          onChange={setOpen}
+          open={open}
+          side="bottom"
+        >
+          <Sheet.Header
+            bordered
+            closable
+          >
+            <Sheet.Header.Title>Scrollable Bottom Sheet</Sheet.Header.Title>
+            <Sheet.Header.Description>
+              Header and footer stay visible while the body scrolls.
+            </Sheet.Header.Description>
+          </Sheet.Header>
+          <Sheet.Body>
+            <div className="flex flex-col gap-2">
+              {Array.from(
+                {
+                  length: 24,
+                },
+                (_, index) => (
+                  <div
+                    className="rounded-lg border border-border p-3"
+                    key={index}
+                  >
+                    <p className="font-medium text-sm">Item {index + 1}</p>
+                    <p className="text-muted-foreground text-sm">
+                      Content that should remain inside the viewport instead of
+                      pushing the sheet off screen.
+                    </p>
+                  </div>
+                ),
+              )}
+            </div>
+          </Sheet.Body>
+          <Sheet.Footer bordered>
+            <Button onClick={() => setOpen(false)}>Confirm</Button>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Sheet.Footer>
+        </Sheet>
+      </>
+    )
+  },
+}
+
 export const SizeSmall: Story = {
   render: () => {
     const [open, setOpen] = useState(false)

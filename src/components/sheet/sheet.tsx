@@ -81,7 +81,7 @@ const styles = tv({
       'transition-opacity duration-200 ease-in-out',
       'data-ending-style:opacity-0 data-starting-style:opacity-0',
     ],
-    body: 'sheet-body flex-1 overflow-y-auto p-5',
+    body: 'sheet-body min-h-0 flex-1 overflow-y-auto p-5',
     close: 'sheet-close absolute top-4 right-4',
     description: 'sheet-description text-muted-foreground text-sm',
     footer: 'sheet-footer flex flex-row-reverse gap-3 p-5',
@@ -93,7 +93,7 @@ const styles = tv({
     ],
     headerContent: 'sheet-header-content flex min-w-0 flex-1 flex-col gap-2',
     popup: [
-      'sheet-popup fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-xl outline-none',
+      'sheet-popup fixed z-50 flex min-h-0 flex-col overflow-hidden bg-popover text-popover-foreground shadow-xl outline-none',
       'transition duration-200 ease-in-out',
       'data-ending-style:opacity-0 data-starting-style:opacity-0',
     ],
@@ -110,7 +110,7 @@ const styles = tv({
     side: {
       bottom: {
         popup: [
-          'inset-x-0 bottom-0 h-auto border-t',
+          'inset-x-0 bottom-0 h-auto max-h-[calc(100dvh-1rem)] border-t',
           'data-ending-style:translate-y-full data-starting-style:translate-y-full',
         ],
       },
@@ -128,7 +128,7 @@ const styles = tv({
       },
       top: {
         popup: [
-          'inset-x-0 top-0 h-auto border-b',
+          'inset-x-0 top-0 h-auto max-h-[calc(100dvh-1rem)] border-b',
           'data-ending-style:-translate-y-full data-starting-style:-translate-y-full',
         ],
       },
