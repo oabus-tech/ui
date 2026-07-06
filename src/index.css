@@ -5,6 +5,7 @@
 @import "./mono.css";
 @import "./nova.css";
 @import "./flow.css";
+@import "./mob.css";
 
 
 @custom-variant dark (&:is(.dark *));

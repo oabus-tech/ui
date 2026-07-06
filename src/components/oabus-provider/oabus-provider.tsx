@@ -1,12 +1,12 @@
 import { ColorSchemeProvider } from '@/components/color-scheme-provider'
-import { ThemeProvider } from '@/components/theme-provider'
+import { Theme, ThemeProvider } from '@/components/theme-provider'
 import { Toast } from '@/components/toast'
 
 import type { OABusProviderProps } from './oabus-provider.types'
 
 export function OABusProvider({
   children,
-  theme = 'mono',
+  theme = Theme.Mono,
   defaultColorScheme,
 }: OABusProviderProps) {
   return (
