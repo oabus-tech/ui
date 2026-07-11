@@ -132,7 +132,7 @@ function PasswordInput({
                     className: i < score ? activeColor : 'bg-muted',
                   })}
                   data-testid="password-input-strength-bar"
-                  key={String(_)}
+                  key={String(i)}
                 />
               ),
             )}

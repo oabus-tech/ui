@@ -346,7 +346,8 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
         ) : rightSection ? (
           <span className="shrink-0">{rightSection}</span>
         ) : showClear ? (
-          <button
+          // biome-ignore lint/a11y/useSemanticElements: nested button inside the select trigger is invalid HTML
+          <span
             aria-label="Clear"
             className={clearTrigger()}
             data-testid="select-clear"
@@ -355,15 +356,23 @@ function SinglePrimitiveSelect<T, I = string, O = I>({
               e.stopPropagation()
               handleClear()
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                e.stopPropagation()
+                handleClear()
+              }
+            }}
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
             }}
             onPointerDown={(e) => e.stopPropagation()}
-            type="button"
+            role="button"
+            tabIndex={0}
           >
             <X size={14} />
-          </button>
+          </span>
         ) : (
           <SelectPrimitive.Icon
             render={<ChevronDown className="size-4 text-muted-foreground" />}
@@ -652,7 +661,8 @@ function SingleSearchableSelect<T, I = string, O = I>({
         ) : rightSection ? (
           <span className="shrink-0">{rightSection}</span>
         ) : showClear ? (
-          <button
+          // biome-ignore lint/a11y/useSemanticElements: nested button inside the select trigger is invalid HTML
+          <span
             aria-label="Clear"
             className={clearTrigger()}
             data-testid="select-clear"
@@ -661,15 +671,23 @@ function SingleSearchableSelect<T, I = string, O = I>({
               e.stopPropagation()
               handleClear()
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                e.stopPropagation()
+                handleClear()
+              }
+            }}
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
             }}
             onPointerDown={(e) => e.stopPropagation()}
-            type="button"
+            role="button"
+            tabIndex={0}
           >
             <X size={14} />
-          </button>
+          </span>
         ) : (
           <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
         )}
@@ -993,7 +1011,8 @@ function MultipleSelect<T, I = string, O = I>({
         ) : rightSection ? (
           <span className="shrink-0">{rightSection}</span>
         ) : showClear ? (
-          <button
+          // biome-ignore lint/a11y/useSemanticElements: nested button inside the select trigger is invalid HTML
+          <span
             aria-label="Clear"
             className={clearTrigger()}
             data-testid="select-clear"
@@ -1002,15 +1021,23 @@ function MultipleSelect<T, I = string, O = I>({
               e.stopPropagation()
               handleClear()
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                e.stopPropagation()
+                handleClear()
+              }
+            }}
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
             }}
             onPointerDown={(e) => e.stopPropagation()}
-            type="button"
+            role="button"
+            tabIndex={0}
           >
             <X size={14} />
-          </button>
+          </span>
         ) : (
           <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
         )}
