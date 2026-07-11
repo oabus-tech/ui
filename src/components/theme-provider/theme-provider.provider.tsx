@@ -1,17 +1,21 @@
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 
 import { ThemeContext } from './theme-provider.context'
-import type { Theme, ThemeProviderProps } from './theme-provider.types'
+import { Theme, type ThemeProviderProps } from './theme-provider.types'
 
 const STORAGE_KEY = 'oabus-theme'
 
+function isTheme(value: string | null): value is Theme {
+  return Object.values(Theme).some((theme) => theme === value)
+}
+
 export function ThemeProvider({
   children,
-  defaultTheme = 'mono',
+  defaultTheme = Theme.Mono,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'mono' || stored === 'nova') {
+    if (isTheme(stored)) {
       return stored
     }
     return defaultTheme

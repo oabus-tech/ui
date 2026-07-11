@@ -1,6 +1,13 @@
 import type { PropsWithChildren } from 'react'
 
-export type Theme = 'mono' | 'nova' | 'flow'
+export const Theme = {
+  Flow: 'flow',
+  Mob: 'mob',
+  Mono: 'mono',
+  Nova: 'nova',
+} as const
+
+export type Theme = (typeof Theme)[keyof typeof Theme]
 
 export type ThemeProviderProps = PropsWithChildren<{
   defaultTheme?: Theme

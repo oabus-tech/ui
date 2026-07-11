@@ -35,7 +35,8 @@ Each component lives in `src/components/<name>/` with three files:
 
 - Tailwind CSS v4 via `@tailwindcss/vite`
 - `src/support/utils.ts` exports `cn()` (clsx + tailwind-merge) for conditional class merging
-- Two themes: **mono** (default) and **nova**, defined in `src/mono.css` and `src/nova.css`
+- Four themes: **mono** (default), **nova**, **flow**, and **mob**, defined in
+  `src/<theme>.css`
 - Theme is set via `data-theme` attribute on `<html>`; dark mode via `.dark` class
 - CSS variables follow shadcn/ui conventions (oklch colors, `--radius`, etc.)
 - Biome enforces sorted Tailwind classes on `className` and the `tv()` function
@@ -208,7 +209,8 @@ The stub files in `src/components/<name>/<name>.tsx` already have this scaffold 
 ### Provider setup
 
 `OABusProvider` (wrapping `ThemeProvider` + `ColorSchemeProvider`) must wrap the app. It accepts:
-- `theme`: `'mono' | 'nova'` (default: `'mono'`)
+- `theme`: `Theme.Mono | Theme.Nova | Theme.Flow | Theme.Mob` (default:
+  `Theme.Mono`)
 - `defaultColorScheme`: `'light' | 'dark' | 'system'`
 
 Both theme and color scheme are persisted to `localStorage` under keys `oabus-theme` and `oabus-color-scheme`.
