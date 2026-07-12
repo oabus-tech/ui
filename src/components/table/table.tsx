@@ -323,7 +323,7 @@ function Table<T>({
                               overflow,
                             })}
                           >
-                            {col.label}asdadaddsa
+                            {col.label}
                           </span>
                           {getSortIcon(col.key)}
                         </ButtonPrimitive>
