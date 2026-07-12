@@ -20,7 +20,7 @@ const users: User[] = [
     age: 28,
     email: 'alice@example.com',
     id: '1',
-    name: 'Alice Johnson',
+    name: 'Alice JohnsonS',
     role: 'Admin',
     status: 'active',
   },
