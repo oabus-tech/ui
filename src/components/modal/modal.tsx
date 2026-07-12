@@ -1,6 +1,6 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { X } from 'lucide-react'
-import type { PropsWithChildren } from 'react'
+import type { MouseEvent, PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Button } from '@/components/button'
@@ -86,6 +86,11 @@ function ModalRoot({
   const { backdrop, popup } = styles({
     size,
   })
+
+  function handleOverlayClick(event: MouseEvent<HTMLDivElement>) {
+    event.stopPropagation()
+  }
+
   return (
     <Dialog.Root
       onOpenChange={onChange}
@@ -95,10 +100,12 @@ function ModalRoot({
         <Dialog.Backdrop
           className={backdrop()}
           data-testid="modal-backdrop"
+          onClick={handleOverlayClick}
         />
         <Dialog.Popup
           className={popup()}
           data-testid="modal-popup"
+          onClick={handleOverlayClick}
         >
           {children}
         </Dialog.Popup>
