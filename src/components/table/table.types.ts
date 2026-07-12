@@ -31,12 +31,15 @@ export type TableSelection = 'none' | 'multiple'
 
 export type TableColumnAlign = 'left' | 'center' | 'right'
 
+export type TableColumnOverflow = 'clip' | 'truncate' | 'wrap'
+
 export type TableColumns<T> = Array<{
   key: string // unique column identifier
   label?: string // column header text
   selector?: (row: T, index: number) => React.ReactNode // custom cell renderer
   align?: TableColumnAlign // cell text alignment
-  width?: number // fixed column width in px
+  width?: number // reference width in px; automatic columns absorb remaining space
+  overflow?: TableColumnOverflow // explicit cell/header overflow policy
   sorter?: boolean // enables sorting on this column
   hide?: boolean // hides the column
 }>
@@ -53,6 +56,7 @@ export type TableProps<T> = {
   pagination?: PaginationProps // pagination config (renders pagination below table)
   sort?: string // current sort column key (prefix '-' for desc)
   layoutWidth?: number // reference width in px for consistent column scaling
+  minWidth?: number // optional minimum table width in px; enables horizontal scrolling
   hidePagination?: boolean // hides pagination even if configured
   loading?: boolean // shows loading overlay
   emptySection?: React.ReactNode // content shown when items is empty

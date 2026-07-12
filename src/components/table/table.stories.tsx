@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 
 import { Badge } from '@/components/badge'
+import { Button } from '@/components/button'
 
 import { Table } from './table'
 import type { TableColumns } from './table.types'
@@ -81,6 +82,27 @@ const users: User[] = [
     status: 'inactive',
   },
 ]
+
+const longContentUser: User = {
+  age: 28,
+  email:
+    'alice.johnson.with.a.deliberately.long.address@operations.oabus.example.com',
+  id: 'long-content',
+  name: 'Alice Johnson with a deliberately long unbroken identifier 1234567890',
+  role: 'Administrator',
+  status: 'active',
+}
+
+const overflowValue =
+  'oabus:table:content:with:no:natural:breaking:point:0123456789abcdefghijklmnopqrstuvwxyz'
+
+type OverflowPolicyExample = {
+  clip: string
+  id: string
+  sentinel: string
+  truncate: string
+  wrap: string
+}
 
 const columns: TableColumns<User> = [
   {
@@ -457,5 +479,227 @@ export const Loading: Story = {
     itemKey: 'id',
     items: users.slice(0, 5),
     loading: true,
+  },
+}
+
+export const LongScalarAndSortableHeader = {
+  render: () => {
+    const [sort, setSort] = useState<string | undefined>()
+    const proofColumns: TableColumns<User> = [
+      {
+        key: 'name',
+        label:
+          'A deliberately long sortable header that must preserve its icon',
+        sorter: true,
+        width: 180,
+      },
+      {
+        key: 'role',
+        label: 'Sentinel',
+        selector: () => (
+          <span className="rounded bg-emerald-600 px-2 py-1 font-semibold text-white text-xs">
+            VISIBLE
+          </span>
+        ),
+        width: 120,
+      },
+    ]
+
+    return (
+      <div className="flex w-[360px] flex-col gap-2">
+        <p className="text-muted-foreground text-sm">
+          The long scalar and header truncate. Sort: {sort ?? 'none'}
+        </p>
+        <Table<User>
+          columns={proofColumns}
+          itemKey="id"
+          items={[
+            longContentUser,
+          ]}
+          onSortChange={setSort}
+          sort={sort}
+        />
+      </div>
+    )
+  },
+}
+
+export const ExplicitOverflowPolicies = {
+  render: () => {
+    const policyColumns: TableColumns<OverflowPolicyExample> = [
+      {
+        key: 'truncate',
+        label: 'Truncate',
+        overflow: 'truncate',
+        width: 160,
+      },
+      {
+        key: 'wrap',
+        label: 'Wrap',
+        overflow: 'wrap',
+        width: 160,
+      },
+      {
+        key: 'clip',
+        label: 'Clip',
+        overflow: 'clip',
+        width: 160,
+      },
+      {
+        key: 'sentinel',
+        label: 'Sentinel',
+        selector: () => (
+          <span className="rounded bg-emerald-600 px-2 py-1 font-semibold text-white text-xs">
+            VISIBLE
+          </span>
+        ),
+        width: 120,
+      },
+    ]
+
+    return (
+      <div className="flex w-[640px] flex-col gap-2">
+        <p className="text-muted-foreground text-sm">
+          The same value uses ellipsis, wrapping, and clipping without covering
+          the sentinel.
+        </p>
+        <Table<OverflowPolicyExample>
+          columns={policyColumns}
+          itemKey="id"
+          items={[
+            {
+              clip: overflowValue,
+              id: 'overflow-policies',
+              sentinel: 'VISIBLE',
+              truncate: overflowValue,
+              wrap: overflowValue,
+            },
+          ]}
+        />
+      </div>
+    )
+  },
+}
+
+export const MixedWidthsWithSelection = {
+  render: () => {
+    const mixedColumns: TableColumns<User> = [
+      {
+        key: 'name',
+        label: 'Fixed 140px',
+        width: 140,
+      },
+      {
+        key: 'email',
+        label: 'Automatic column absorbs the remaining space',
+      },
+      {
+        key: 'role',
+        label: 'Fixed 90px',
+        width: 90,
+      },
+    ]
+
+    return (
+      <div className="flex w-[560px] flex-col gap-2">
+        <p className="text-muted-foreground text-sm">
+          Selection stays 40px while the automatic column receives free space.
+        </p>
+        <Table<User>
+          columns={mixedColumns}
+          defaultSelectedKeys={[
+            longContentUser.id,
+          ]}
+          itemKey="id"
+          items={[
+            longContentUser,
+          ]}
+          selection="multiple"
+        />
+      </div>
+    )
+  },
+}
+
+export const CompositeCellPreservesFocus = {
+  render: () => {
+    const compositeColumns: TableColumns<User> = [
+      {
+        key: 'name',
+        label: 'Composite cell without an explicit overflow policy',
+        selector: () => (
+          <Button
+            size="sm"
+            variant="outline"
+          >
+            Focus me with Tab
+          </Button>
+        ),
+        width: 260,
+      },
+      {
+        key: 'role',
+        label: 'Sentinel',
+        selector: () => (
+          <span className="rounded bg-emerald-600 px-2 py-1 font-semibold text-white text-xs">
+            VISIBLE
+          </span>
+        ),
+        width: 120,
+      },
+    ]
+
+    return (
+      <div className="flex w-[440px] flex-col gap-2">
+        <p className="text-muted-foreground text-sm">
+          Tab to the button: its external focus ring remains visible.
+        </p>
+        <Table<User>
+          columns={compositeColumns}
+          itemKey="id"
+          items={[
+            longContentUser,
+          ]}
+        />
+      </div>
+    )
+  },
+}
+
+export const WithMinimumWidthScrolling = {
+  render: () => {
+    const scrollingColumns: TableColumns<User> = [
+      {
+        key: 'name',
+        label: 'Name',
+        width: 240,
+      },
+      {
+        key: 'email',
+        label: 'Email',
+        width: 240,
+      },
+      {
+        key: 'role',
+        label: 'Role',
+        width: 240,
+      },
+    ]
+
+    return (
+      <div className="flex w-[360px] flex-col gap-2">
+        <p className="text-muted-foreground text-sm">
+          Scroll horizontally: the 720px table is inside a 360px container.
+        </p>
+        <Table<User>
+          columns={scrollingColumns}
+          itemKey="id"
+          items={[
+            longContentUser,
+          ]}
+          minWidth={720}
+        />
+      </div>
+    )
   },
 }

@@ -1,18 +1,47 @@
+import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
-import { type CSSProperties, Fragment, type MouseEvent, useState } from 'react'
+import {
+  type CSSProperties,
+  Fragment,
+  type MouseEvent,
+  type ReactNode,
+  useState,
+} from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Checkbox } from '@/components/checkbox'
 import { LoadingOverlay } from '@/components/loading-overlay'
 import { Pagination } from '@/components/pagination'
 
-import type { TableProps } from './table.types'
+import type { TableColumnOverflow, TableProps } from './table.types'
+import { resolveTableLayout } from './table.utils'
+
+const contentStyles = tv({
+  base: 'min-w-0 max-w-full [&>*]:min-w-0',
+  variants: {
+    overflow: {
+      clip: 'overflow-hidden text-clip whitespace-nowrap [&>*]:max-w-full',
+      truncate: 'truncate [&>*]:max-w-full',
+      wrap: 'overflow-hidden whitespace-normal break-words [&>*]:max-w-full',
+    },
+  },
+})
+
+const sortLabelStyles = tv({
+  base: 'block min-w-0 flex-1',
+  variants: {
+    overflow: {
+      clip: 'overflow-hidden text-clip whitespace-nowrap',
+      truncate: 'truncate',
+      wrap: 'whitespace-normal break-words',
+    },
+  },
+})
 
 const styles = tv({
   slots: {
     body: '[&_tr:last-child]:border-0',
     cell: 'whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0',
-    cellContent: 'min-w-0 max-w-full [&>*]:min-w-0',
     container:
       'relative w-full min-w-0 overflow-x-auto overflow-y-hidden rounded-md border',
     emptyCell: 'p-8 text-center text-muted-foreground',
@@ -20,7 +49,8 @@ const styles = tv({
     header: 'bg-muted/40 [&_tr]:border-b',
     root: 'table-root flex w-full min-w-0 flex-col gap-4',
     row: 'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
-    sortButton: 'inline-flex cursor-pointer select-none items-center gap-1',
+    sortButton:
+      'inline-flex min-w-0 max-w-full cursor-pointer select-none items-center gap-1',
     table: 'w-full table-fixed caption-bottom text-sm',
   },
 })
@@ -28,7 +58,6 @@ const styles = tv({
 const {
   body,
   cell,
-  cellContent,
   container,
   emptyCell,
   head,
@@ -38,6 +67,19 @@ const {
   sortButton,
   table,
 } = styles()
+
+const resolveCellOverflow = (
+  content: ReactNode,
+  overflow: TableColumnOverflow | undefined,
+): TableColumnOverflow | undefined => {
+  if (overflow) {
+    return overflow
+  }
+
+  return typeof content === 'string' || typeof content === 'number'
+    ? 'truncate'
+    : undefined
+}
 
 const interactiveSelector = [
   'a',
@@ -60,6 +102,7 @@ function Table<T>({
   items,
   layoutWidth,
   loading,
+  minWidth,
   onRowClick,
   onSelectionChange,
   onSortChange,
@@ -77,20 +120,18 @@ function Table<T>({
     : internalSelectedKeys
 
   const visibleColumns = columns.filter((col) => !col.hide)
-  const selectionColumnWidth = selection === 'multiple' ? 40 : 0
-  const columnWidth = visibleColumns.reduce(
-    (acc, col) => acc + (col.width ?? 1),
+  const {
+    columnWidths,
     selectionColumnWidth,
-  )
-  const totalWidth = Math.max(columnWidth, layoutWidth ?? columnWidth)
-  const spacerWidth = totalWidth - columnWidth
-  const spacerIndex =
-    visibleColumns.length > 1 ? visibleColumns.length - 1 : undefined
-  const hasSpacer = spacerWidth > 0 && spacerIndex !== undefined
-  const totalColumns =
-    visibleColumns.length +
-    (selection === 'multiple' ? 1 : 0) +
-    (hasSpacer ? 1 : 0)
+    spacer,
+    totalColumns,
+    totalWidth,
+    widthMode,
+  } = resolveTableLayout({
+    columns: visibleColumns,
+    layoutWidth,
+    selection,
+  })
 
   const isEmpty = !items || items.length === 0
 
@@ -150,12 +191,12 @@ function Table<T>({
 
   const getSortIcon = (columnKey: string) => {
     if (sort === columnKey) {
-      return <ArrowUp className="size-3.5" />
+      return <ArrowUp className="size-3.5 shrink-0" />
     }
     if (sort === `-${columnKey}`) {
-      return <ArrowDown className="size-3.5" />
+      return <ArrowDown className="size-3.5 shrink-0" />
     }
-    return <ArrowUpDown className="size-3.5" />
+    return <ArrowUpDown className="size-3.5 shrink-0" />
   }
 
   const getAlignClass = (align?: 'left' | 'center' | 'right') => {
@@ -178,22 +219,28 @@ function Table<T>({
     return undefined
   }
 
-  const getColumnStyle = (width?: number): CSSProperties | undefined =>
-    width
-      ? {
-          width: `${(width / totalWidth) * 100}%`,
-        }
-      : undefined
+  const getWidthStyle = (width?: number): CSSProperties | undefined => {
+    if (width === undefined) {
+      return undefined
+    }
 
-  const getSpacerStyle = (): CSSProperties | undefined =>
-    hasSpacer
-      ? {
-          width: `${(spacerWidth / totalWidth) * 100}%`,
-        }
-      : undefined
+    if (widthMode === 'pixels') {
+      return {
+        width,
+      }
+    }
+
+    if (totalWidth === 0) {
+      return undefined
+    }
+
+    return {
+      width: `${(width / totalWidth) * 100}%`,
+    }
+  }
 
   const getColumnContentStyle = (width?: number): CSSProperties | undefined =>
-    width
+    width !== undefined
       ? {
           maxWidth: `min(100%, ${width}px)`,
           width: '100%',
@@ -207,21 +254,26 @@ function Table<T>({
   return (
     <div className={root()}>
       <div className={container()}>
-        <table className={table()}>
+        <table
+          className={table()}
+          style={
+            minWidth === undefined
+              ? undefined
+              : {
+                  minWidth,
+                }
+          }
+        >
           <colgroup>
             {selection === 'multiple' && (
-              <col
-                style={{
-                  width: `${(selectionColumnWidth / totalWidth) * 100}%`,
-                }}
-              />
+              <col style={getWidthStyle(selectionColumnWidth)} />
             )}
             {visibleColumns.map((col, index) => (
               <Fragment key={col.key}>
-                {hasSpacer && index === spacerIndex && (
-                  <col style={getSpacerStyle()} />
+                {spacer?.index === index && (
+                  <col style={getWidthStyle(spacer.width)} />
                 )}
-                <col style={getColumnStyle(col.width)} />
+                <col style={getWidthStyle(columnWidths[index])} />
               </Fragment>
             ))}
           </colgroup>
@@ -241,10 +293,12 @@ function Table<T>({
               )}
               {visibleColumns.map((col, index) => {
                 const align = col.align
+                const columnWidth = columnWidths[index]
+                const overflow = col.overflow ?? 'truncate'
 
                 return (
                   <Fragment key={col.key}>
-                    {hasSpacer && index === spacerIndex && (
+                    {spacer?.index === index && (
                       <th
                         aria-hidden
                         className={head()}
@@ -256,23 +310,30 @@ function Table<T>({
                       })}
                     >
                       {col.sorter ? (
-                        <button
+                        <ButtonPrimitive
                           className={sortButton({
                             className: getContentAlignClass(align),
                           })}
                           onClick={() => handleSort(col.key)}
-                          style={getColumnContentStyle(col.width)}
+                          style={getColumnContentStyle(columnWidth)}
                           type="button"
                         >
-                          {col.label}
+                          <span
+                            className={sortLabelStyles({
+                              overflow,
+                            })}
+                          >
+                            {col.label}asdadaddsa
+                          </span>
                           {getSortIcon(col.key)}
-                        </button>
+                        </ButtonPrimitive>
                       ) : (
                         <div
-                          className={cellContent({
+                          className={contentStyles({
                             className: getContentAlignClass(align),
+                            overflow,
                           })}
-                          style={getColumnContentStyle(col.width)}
+                          style={getColumnContentStyle(columnWidth)}
                         >
                           {col.label}
                         </div>
@@ -321,10 +382,18 @@ function Table<T>({
                     )}
                     {visibleColumns.map((col, columnIndex) => {
                       const align = col.align
+                      const columnWidth = columnWidths[columnIndex]
+                      const content = col.selector
+                        ? col.selector(item, index)
+                        : (item[col.key as keyof T] as ReactNode)
+                      const overflow = resolveCellOverflow(
+                        content,
+                        col.overflow,
+                      )
 
                       return (
                         <Fragment key={col.key}>
-                          {hasSpacer && columnIndex === spacerIndex && (
+                          {spacer?.index === columnIndex && (
                             <td
                               aria-hidden
                               className={cell()}
@@ -336,14 +405,13 @@ function Table<T>({
                             })}
                           >
                             <div
-                              className={cellContent({
+                              className={contentStyles({
                                 className: getContentAlignClass(align),
+                                overflow,
                               })}
-                              style={getColumnContentStyle(col.width)}
+                              style={getColumnContentStyle(columnWidth)}
                             >
-                              {col.selector
-                                ? col.selector(item, index)
-                                : (item[col.key as keyof T] as React.ReactNode)}
+                              {content}
                             </div>
                           </td>
                         </Fragment>
