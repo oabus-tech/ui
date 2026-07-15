@@ -52,7 +52,7 @@ export type TableProps<T> = {
   defaultSelectedKeys?: string[] // uncontrolled: initially selected
   pagination?: PaginationProps // pagination config (renders pagination below table)
   sort?: string // current sort column key (prefix '-' for desc)
-  layoutWidth?: number // reference width in px for consistent column scaling
+  layoutWidth?: number // opt-in minimum width in px; overflows horizontally when needed
   hidePagination?: boolean // hides pagination even if configured
   loading?: boolean // shows loading overlay
   emptySection?: React.ReactNode // content shown when items is empty

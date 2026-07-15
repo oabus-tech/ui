@@ -209,9 +209,13 @@ function Table<T>({
       <div className={container()}>
         <table
           className={table()}
-          style={{
-            minWidth: `${totalWidth}px`,
-          }}
+          style={
+            layoutWidth
+              ? {
+                  minWidth: `${totalWidth}px`,
+                }
+              : undefined
+          }
         >
           <colgroup>
             {selection === 'multiple' && (

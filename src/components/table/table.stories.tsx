@@ -301,6 +301,7 @@ export const WithColumnWidths = {
         columns={widthColumns}
         itemKey="id"
         items={users.slice(0, 5)}
+        layoutWidth={800}
       />
     )
   },
