@@ -1,4 +1,5 @@
 import { AlertDialog } from '@base-ui/react/alert-dialog'
+import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { tv } from 'tailwind-variants'
 
@@ -63,6 +64,10 @@ function Confirm({
     }
   }
 
+  function handleOverlayClick(event: MouseEvent<HTMLDivElement>) {
+    event.stopPropagation()
+  }
+
   return (
     <AlertDialog.Root
       onOpenChange={(isOpen) => {
@@ -76,10 +81,12 @@ function Confirm({
         <AlertDialog.Backdrop
           className={backdrop()}
           data-testid="confirm-backdrop"
+          onClick={handleOverlayClick}
         />
         <AlertDialog.Popup
           className={popup()}
           data-testid="confirm-popup"
+          onClick={handleOverlayClick}
         >
           <div
             className={header()}

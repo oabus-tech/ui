@@ -1,6 +1,6 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { X } from 'lucide-react'
-import type { PropsWithChildren } from 'react'
+import type { MouseEvent, PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
 import { Button } from '@/components/button'
@@ -155,6 +155,10 @@ function SheetRoot({
     size,
   })
 
+  function handleOverlayClick(event: MouseEvent<HTMLDivElement>) {
+    event.stopPropagation()
+  }
+
   return (
     <Dialog.Root
       onOpenChange={onChange}
@@ -164,11 +168,13 @@ function SheetRoot({
         <Dialog.Backdrop
           className={backdrop()}
           data-testid="sheet-backdrop"
+          onClick={handleOverlayClick}
         />
         <Dialog.Popup
           className={popup()}
           data-side={side}
           data-testid="sheet-popup"
+          onClick={handleOverlayClick}
         >
           {children}
         </Dialog.Popup>
