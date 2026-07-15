@@ -46,6 +46,7 @@ export type ButtonVariant =
   | 'link-muted'
 
 export type ButtonProps = {
+  ariaLabel?: string // accessible name for icon-only buttons
   form?: string // associates button with a form by id
   type?: ButtonType // HTML button type attribute
   size?: ButtonSize // visual size variant

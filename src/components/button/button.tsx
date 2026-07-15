@@ -12,6 +12,7 @@ import { buttonShared } from './button.shared'
 import type { ButtonProps } from './button.types'
 
 function Button({
+  ariaLabel,
   children,
   variant,
   size,
@@ -46,6 +47,7 @@ function Button({
 
   return (
     <ButtonPrimitive
+      aria-label={ariaLabel}
       className={buttonShared({
         block,
         className,
